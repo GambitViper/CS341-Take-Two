@@ -1,6 +1,7 @@
-/*====================
- *= DenTask Software =
- *====================
+/********************
+ * DenTask Software *
+ ********************
+ *
  * CS341
  * Authors: Matt Milos, Tom Jensen, Zach Baklund
  */
