@@ -13,4 +13,7 @@ public class DenTask {
 		
 	}
 
+	public void login() {
+		//Do Login Calls Here
+	}
 }
