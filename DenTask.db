@@ -1,0 +1,99 @@
+DROP TABLE IF EXISTS [User];
+
+DROP TABLE IF EXISTS [Appointment];
+
+DROP TABLE IF EXISTS [Availability];
+
+DROP TABLE IF EXISTS [RequestOff];
+
+PRAGMA foreign_keys = ON;
+/******************************************************
+    Create Tables
+*******************************************************/
+
+CREATE TABLE [User]    (
+  [UserID] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  [UserType] INTEGER NOT NULL,
+  [Email] NVARCHAR(60) NOT NULL,
+  [Password] NVARCHAR(24) NOT NULL,
+  [Prefix] NVARCHAR(10) ,
+  [FirstName] NVARCHAR(24) NOT NULL,
+  [LastName] NVARCHAR(24) NOT NULL,
+  [PhoneNumber] NVARCHAR(24) NOT NULL,
+  [CreateDate] DATETIME NOT NULL,
+  [DeleteDate] DATETIME
+);
+
+CREATE TABLE [Appointment]    (
+    [PatientID] INTEGER NOT NULL,
+    [EmployeeID] INTEGER NOT NULL,
+    [AppointmentType] NVARCHAR(60) NOT NULL,
+    [AppointmentDetails] BLOB,
+    [Date] DATETIME NOT NULL,
+ 
+    FOREIGN KEY ([PatientID]) REFERENCES [User] ([UserID])
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY ([EmployeeID]) REFERENCES [User] ([UserID])
+        ON DELETE NO ACTION ON UPDATE NO ACTION,                          
+    CONSTRAINT [PK_Appointment]  PRIMARY KEY ([PatientID], [EmployeeID], [Date])
+);
+
+CREATE TABLE [Availability]    (
+    [UserID] INTEGER NOT NULL,
+    [DayOfWeek] NVARCHAR(10) NOT NULL,
+    [TimeStart] DATETIME,
+    [TimeEnd] DATETIME,
+    [BreakStart] DATETIME,
+    [BreakEnd] DATETIME,
+    
+    FOREIGN KEY ([UserID]) REFERENCES [User] ([UserID])
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT [PK_Availability] PRIMARY KEY ([UserID], [DayOfWeek])
+);
+
+CREATE TABLE [RequestOff]    (
+    [UserID] INTEGER NOT NULL,
+    [OffDate] DATETIME NOT NULL,
+    [DayOfWeek] NVARCHAR(10) NOT NULL, 
+    CONSTRAINT [PK_RequestOff] PRIMARY KEY ([OffDate], [UserID]),
+    FOREIGN KEY ([UserID]) REFERENCES [User] ([UserID])
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+
+/*************************************************
+    Create Foreign Key Indexes
+*************************************************
+CREATE INDEX [IFK_AppointmentPatientID] ON [Appointment] ([PatientID]);
+CREATE INDEX [IFK_AppointmentEmployeeID] ON [Appointment] ([EmployeeID]);
+CREATE INDEX [IFK_AvailabilityUserID] ON [Availability] ([UserID]);
+CREATE INDEX [IFK_RequestOffUserID] ON [RequestOff] ([UserID]);
+**************************************************/
+
+
+
+/*************************************************
+    Insert Sample Data
+**************************************************/
+
+/**************************************************
+Template: User
+UserType => 0 - Admin, 1 - Doctor, 2 - Hygienist, 3 - Patient
+INSERT INTO [User] ([UserType], [Email], [Password], [FirstName], [LastName], [PhoneNumber], [CreateDate], [DeleteDate]) VALUES ( , '', '', '', '', '', "", NULL);
+**************************************************/
+
+/*************************************************
+Template: Appointment
+INSERT INTO [Appointment] ([PatientID], [EmployeeID], [AppointmentType], [Date]) VALUES (, , '', "");
+*************************************************/
+
+/*************************************************
+Template: Availiability
+INSERT INTO [Availability] ([EmployeeID], [DayOfWeek], [TimeStart], [TimeEnd]) VALUES (, '', ":", ":");
+*************************************************/
+
+/*************************************************
+Template: RequestOff
+INSERT INTO [RequestOff] ([UserID], [OffDate], [DayOfWeek]) VALUES (, "--", '');
+*************************************************/
+
