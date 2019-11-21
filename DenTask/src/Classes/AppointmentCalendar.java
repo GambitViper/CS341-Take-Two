@@ -1,5 +1,7 @@
 package Classes;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -9,23 +11,50 @@ import java.util.GregorianCalendar;
  *
  */
 public class AppointmentCalendar {
+	
+	private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		// Creating a calendar
 		Calendar calendar = Calendar.getInstance();
+		
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int date = calendar.get(Calendar.DATE);
 
 		// Getting value of all calendar date fields
-		System.out.println("The given calendar's year is: " + calendar.get(Calendar.YEAR));
-		System.out.println("The given calendar's month is: " + calendar.get(Calendar.MONTH));
-		System.out.println("The given calendar's day is: " + calendar.get(Calendar.DATE));
-		
-		int[][] calendarByMonth = fillArrayByMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+		System.out.println("The given calendar's year is: " + year);
+		System.out.println("The given calendar's month is: " + month);
+		System.out.println("The given calendar's day is: " + date);
+
+		int[][] calendarByMonth = fillArrayByMonth(year, month);
 		for(int i = 0; i < calendarByMonth.length; i++) {
 			System.out.println(Arrays.toString(calendarByMonth[i]));
 		}
+		
+		ArrayList<Appointment> testApps = new ArrayList<Appointment>();
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1")
+				.setAppType("testApp1").setAppDetail("abcdefg")
+				.setDate(LocalDate.of(year, month, 24)).setTime(10));
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1")
+				.setAppType("testApp1").setAppDetail("abcdefg")
+				.setDate(LocalDate.of(year, month, 24)).setTime(11));
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1")
+				.setAppType("testApp1").setAppDetail("abcdefg")
+				.setDate(LocalDate.of(year, month, 24)).setTime(12));
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1")
+				.setAppType("testApp1").setAppDetail("abcdefg")
+				.setDate(LocalDate.of(year, month, 24)).setTime(13));
+		
+		
+	}
+	
+	public static void fillAppointments(ArrayList<Appointment> apps) {
+		
 	}
 
 	public static void printCalendar(int year, int month) {
@@ -139,7 +168,5 @@ public class AppointmentCalendar {
 		}
 		// This puts some space after the calendar is printed.
 		return calendarByMonth;
-
 	}
-
 }
