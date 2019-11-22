@@ -340,5 +340,9 @@ public class EmployeeDashboard {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
+	public void setVisible(boolean b) {
+		frame.setVisible(b);
+	}
 
 }

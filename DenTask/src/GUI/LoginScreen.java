@@ -18,6 +18,8 @@ import java.awt.Toolkit;
 
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginScreen extends JFrame{
 
@@ -57,6 +59,8 @@ public class LoginScreen extends JFrame{
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setBounds(dim.width/2-(629/2), dim.height/2-(309/2), 629, 309);
 		frame.setUndecorated(true);
+		frame.isResizable();
+		
 
 		txtUsername = new JTextField();
 		txtUsername.setColumns(10);
@@ -68,14 +72,35 @@ public class LoginScreen extends JFrame{
 		frame.getContentPane().add(txtPassword);
 		
 		JButton btnLogin = new JButton("Login");
+		
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				frame.dispose();
-				Dashboard dash = new Dashboard();
-				dash.setVisible(true);
+				
+				String myPass=String.valueOf(txtPassword.getPassword());
+				
+				System.out.println(myPass);
+				System.out.println(txtUsername.getText());
+				
+				if(myPass.equals("admin") && txtUsername.getText().equals("admin")) {
+					System.out.println("ADMIN DASH");
+					frame.dispose();
+					AdminDashboard adash = new AdminDashboard();
+					adash.setVisible(true);
+				} else if (myPass == "emp" && txtUsername.getText() == "emp") {
+					System.out.println("EMP DASH");
+					frame.dispose();
+					EmployeeDashboard edash = new EmployeeDashboard();
+					edash.setVisible(true);
+				} else {
+					System.out.println("PATIENT DASH");
+					frame.dispose();
+					Dashboard dash = new Dashboard();
+					dash.setVisible(true);
+				}
 			}
 		});
+		
 		btnLogin.setBounds(376, 202, 185, 30);
 		frame.getContentPane().add(btnLogin);
 		
@@ -90,12 +115,14 @@ public class LoginScreen extends JFrame{
 		frame.getContentPane().add(lblPassword);
 		
 		JLabel closeButton = new JLabel("X");
+		
 		closeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				frame.dispose();
 			}
 		});
+		
 		closeButton.setFont(new Font("Tahoma", Font.BOLD, 50));
 		closeButton.setBounds(10, 254, 40, 44);
 		frame.getContentPane().add(closeButton);

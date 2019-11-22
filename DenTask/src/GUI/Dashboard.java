@@ -382,7 +382,7 @@ public class Dashboard {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(0, 51, 255));
-		frame.setBounds(100, 100, 941, 720);
+		frame.setBounds(100, 100, 1080, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 

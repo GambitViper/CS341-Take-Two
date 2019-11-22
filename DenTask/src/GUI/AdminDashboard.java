@@ -148,6 +148,18 @@ public class AdminDashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+		
+		JLabel lblMainMenu_1 = new JLabel("Main Menu");
+		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenu_1.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenu_1);
+		pnlMainMenuContent.setVisible(true);
+		
 		JPanel pnlMakeAppContent = new JPanel();
 		pnlMakeAppContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlMakeAppContent);
@@ -171,18 +183,6 @@ public class AdminDashboard {
 		lblViewAppointments_1.setBounds(0, 0, 846, 96);
 		pnlViewAppContent.add(lblViewAppointments_1);
 		pnlViewAppContent.setVisible(false);
-		
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-		
-		JLabel lblMainMenu_1 = new JLabel("Main Menu");
-		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenu_1.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenu_1);
-		pnlMainMenuContent.setVisible(true);
 		
 		JPanel pnlEditProfileContent = new JPanel();
 		pnlEditProfileContent.setBounds(218, 0, 846, 681);
@@ -339,6 +339,10 @@ public class AdminDashboard {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void setVisible(boolean b) {
+		frame.setVisible(b);
 	}
 
 }
