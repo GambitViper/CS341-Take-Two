@@ -45,6 +45,16 @@ public class AppointmentCalendar {
 				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(12));
 		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1").setAppType("testApp1")
 				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(13));
+		
+		Dentist dentest = new Dentist();
+		dentest = (Dentist) Login.registerUser(dentest, "dentest", "test1234");
+		int[] avail = { 1, 1, 1, 0, 1, 1, 1, 1, 1};
+		dentest.setDayAvailability("Monday", avail)
+		       .setDayAvailability("Tuesday", avail)
+		       .setDayAvailability("Wednesday", avail)
+		       .setDayAvailability("Thursday", avail)
+		       .setDayAvailability("Friday", avail);
+		System.out.println(dentest);
 
 	}
 

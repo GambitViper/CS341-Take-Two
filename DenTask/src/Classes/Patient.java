@@ -1,6 +1,6 @@
 package Classes;
 
-public class Patient extends User{
+public class Patient extends User {
 	
 	public String toString() {
 		StringBuilder printStr = new StringBuilder();

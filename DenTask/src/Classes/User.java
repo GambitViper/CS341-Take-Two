@@ -1,7 +1,5 @@
 package Classes;
 
-import java.time.LocalDate;
-
 abstract class User {
 	
 	private String username;
