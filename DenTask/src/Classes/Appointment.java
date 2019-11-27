@@ -10,6 +10,7 @@ public class Appointment {
 	private String appDetail;
 	private LocalDate date;
 	private int time;
+	private String result;
 
 	// Getters
 	// Get Patient
@@ -40,6 +41,11 @@ public class Appointment {
 	// Get Time
 	public int getTime() {
 		return time;
+	}
+	
+	// Get Result
+	public String getresult()	{
+		return result;
 	}
 
 	//Setters ***Builder Pattern***
@@ -76,6 +82,11 @@ public class Appointment {
 	//Set Time
 	public Appointment setTime(int time) {
 		this.time = time;
+		return this;
+	}
+	
+	public Appointment setResult(String result)	{
+		this.result = result;
 		return this;
 	}
 	
