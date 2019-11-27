@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 /**
  * @author Zach Baklund
@@ -12,7 +13,17 @@ import java.util.GregorianCalendar;
  */
 public class AppointmentCalendar {
 
-	private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+	private static HashMap<String, ArrayList<Appointment>> appointments = new HashMap<>();
+	
+	private static ArrayList<Dentist> employees = new ArrayList<>();
+	
+	public static HashMap<String, ArrayList<Appointment>> getAppointments() {
+		return appointments;
+	}
+	
+	public static ArrayList<Dentist> getEmployees() {
+		return employees;
+	}
 
 	/**
 	 * @param args
@@ -37,14 +48,16 @@ public class AppointmentCalendar {
 		}
 
 		ArrayList<Appointment> testApps = new ArrayList<Appointment>();
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1").setAppType("testApp1")
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
 				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(10));
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1").setAppType("testApp1")
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
 				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(11));
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1").setAppType("testApp1")
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
 				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(12));
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("testEmpl1").setAppType("testApp1")
+		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
 				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(13));
+		
+		fillAppointments(testApps);
 		
 		Dentist dentest = new Dentist();
 		dentest = (Dentist) Login.registerUser(dentest, "dentest", "test1234");
@@ -55,13 +68,78 @@ public class AppointmentCalendar {
 		       .setDayAvailability("Thursday", avail)
 		       .setDayAvailability("Friday", avail);
 		System.out.println(dentest);
+		
+		addEmployee(dentest);
+		
+		Dentist dentest2 = new Dentist();
+		dentest2 = (Dentist) Login.registerUser(dentest2, "dentest", "test1234");
+		int[] avail2 = { 1, 1, 1, 0, 1, 1, 1, 1, 1};
+		dentest.setDayAvailability("Monday", avail2)
+		       .setDayAvailability("Tuesday", avail2)
+		       .setDayAvailability("Wednesday", avail2)
+		       .setDayAvailability("Thursday", avail2)
+		       .setDayAvailability("Friday", avail2);
+		System.out.println(dentest2);
+		
+		addEmployee(dentest2);
+		
+		printAppointments();
+		
+		
+		
 
+	}
+	
+	public static void addEmployee(Dentist emp) {
+		ArrayList<Dentist> newEmps = getEmployees();
+		newEmps.add(emp);
+		employees = newEmps;
 	}
 
 	public static void fillAppointments(ArrayList<Appointment> apps) {
-
+		HashMap<String, ArrayList<Appointment>> newAppointments = getAppointments();
+		for(int i = 0; i < apps.size(); i++) {
+			Appointment newApp = apps.get(i);
+			System.out.println(newApp.getDate().toString() + " " + newApp.getPatient() + " " + newApp.getTime());
+			if(newAppointments.containsKey(newApp.getDate().toString())) {
+				//Date in calendar already contains appointments
+				ArrayList<Appointment> currentApps = newAppointments.get(newApp.getDate().toString());
+				currentApps.add(newApp);
+				newAppointments.put(newApp.getDate().toString(), currentApps);
+			}else {
+				//Date in calendar does not already contain appointments
+				ArrayList<Appointment> newApps = new ArrayList<>();
+				newApps.add(newApp);
+				newAppointments.put(newApp.getDate().toString(), newApps);
+			}
+		}
+		appointments = newAppointments;
 	}
-
+	
+//	public static ArrayList<String> employeeSelectList(String date, int time) {
+//		ArrayList<String> selectList = new ArrayList<>();
+//		ArrayList<Dentist> employees = getEmployees();
+//		for(int i = 0; i < employees.size(); i++) {
+//			Dentist employee = employees.get(i);
+//			HashMap<String, int[]> avail = employee.getAvailability();
+//			for(String day : avail.keySet()) {
+//				if(avail.get(day)[time - 8] == 1) {
+//					//Available at day time
+//				}
+//			}
+//		}
+//	}
+	
+	private static void printAppointments() {
+		StringBuilder printStr = new StringBuilder();
+		HashMap<String, ArrayList<Appointment>> apps = getAppointments();
+		printStr.append("Appointments: ");
+		for(String key : apps.keySet()) {
+			printStr.append("\n" + key + apps.get(key));
+		}
+		System.out.println(printStr.toString());
+	}
+	
 	public static void printCalendar(int year, int month) {
 		int dayOfWeek = 1;
 		String space = "   ";
