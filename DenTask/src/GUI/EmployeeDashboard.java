@@ -109,7 +109,7 @@ public class EmployeeDashboard {
 		
 		JPanel pnlEditProfile = new JPanel();
 		pnlEditProfile.setBackground(SystemColor.activeCaption);
-		pnlEditProfile.setBounds(0, 337, 220, 60);
+		pnlEditProfile.setBounds(0, 395, 220, 60);
 		pnlEditProfile.setBorder(blackline);
 		panel.add(pnlEditProfile);
 		pnlEditProfile.setLayout(null);
@@ -136,7 +136,7 @@ public class EmployeeDashboard {
 		
 		JPanel pnlAvailability = new JPanel();
 		pnlAvailability.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlAvailability.setBounds(0, 395, 220, 60);
+		pnlAvailability.setBounds(0, 337, 220, 60);
 		panel.add(pnlAvailability);
 		pnlAvailability.setLayout(null);
 		pnlAvailability.setBackground(SystemColor.activeCaption);
@@ -163,6 +163,17 @@ public class EmployeeDashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		pnlLogOut.setBorder(blackline);
+		
+		JPanel pnlAvailabilityContent = new JPanel();
+		pnlAvailabilityContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlAvailabilityContent);
+		pnlAvailabilityContent.setLayout(null);
+		
+		JLabel lblAvailability_1 = new JLabel("Availability");
+		lblAvailability_1.setBounds(0, 0, 846, 62);
+		pnlAvailabilityContent.add(lblAvailability_1);
+		lblAvailability_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblAvailability_1.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel pnlMainMenuContent = new JPanel();
 		pnlMainMenuContent.setBounds(218, 0, 846, 681);
@@ -253,11 +264,6 @@ public class EmployeeDashboard {
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnConfirm.setBounds(267, 606, 214, 50);
 		pnlEditProfileContent.add(btnConfirm);
-		
-		JPanel pnlSchedule = new JPanel();
-		pnlSchedule.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlSchedule);
-		pnlSchedule.setLayout(null);
 		pnlLogOut.setBorder(blackline);
 		
 		pnlEditProfileContent.setVisible(false);
@@ -274,11 +280,13 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(true);
 				pnlViewAppContent.setVisible(false);
 				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.activeCaption);
 				pnlMainMenu.setBackground(SystemColor.textHighlight);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
 			}
 		});
 		
@@ -294,11 +302,13 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
 				pnlMakeAppContent.setVisible(true);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.activeCaption);
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.textHighlight);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
 			}
 		});
 
@@ -313,11 +323,13 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(true);
 				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.activeCaption);
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.textHighlight);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
 			}
 		});
 		
@@ -332,11 +344,34 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
 				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.textHighlight);
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
+			}
+		});
+		
+		/****************************
+		 * THIS IS FOR AVAILABILITY *
+		 ****************************/
+
+		lblAvailability.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				pnlEditProfileContent.setVisible(false);
+				pnlMainMenuContent.setVisible(false);
+				pnlViewAppContent.setVisible(false);
+				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(true);
+				
+				pnlEditProfile.setBackground(SystemColor.activeCaption);
+				pnlMainMenu.setBackground(SystemColor.activeCaption);
+				pnlViewApp.setBackground(SystemColor.activeCaption);
+				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.textHighlight);
 			}
 		});
 		

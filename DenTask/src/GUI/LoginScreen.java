@@ -87,7 +87,7 @@ public class LoginScreen extends JFrame{
 					frame.dispose();
 					AdminDashboard adash = new AdminDashboard();
 					adash.setVisible(true);
-				} else if (myPass == "emp" && txtUsername.getText() == "emp") {
+				} else if (myPass.equals("emp") && txtUsername.getText().equals("emp")) {
 					System.out.println("EMP DASH");
 					frame.dispose();
 					EmployeeDashboard edash = new EmployeeDashboard();
