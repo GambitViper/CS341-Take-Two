@@ -19,6 +19,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 
 public class EmployeeDashboard {
 
@@ -107,7 +109,7 @@ public class EmployeeDashboard {
 		
 		JPanel pnlEditProfile = new JPanel();
 		pnlEditProfile.setBackground(SystemColor.activeCaption);
-		pnlEditProfile.setBounds(0, 337, 220, 60);
+		pnlEditProfile.setBounds(0, 395, 220, 60);
 		pnlEditProfile.setBorder(blackline);
 		panel.add(pnlEditProfile);
 		pnlEditProfile.setLayout(null);
@@ -125,28 +127,89 @@ public class EmployeeDashboard {
 		panel.add(pnlLogOut);
 		pnlLogOut.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Log Out");
-		lblNewLabel.setBackground(SystemColor.inactiveCaption);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 0, 220, 60);
-		pnlLogOut.add(lblNewLabel);
+		JLabel lblLogOut = new JLabel("Log Out");
+		lblLogOut.setBackground(SystemColor.inactiveCaption);
+		lblLogOut.setFont(new Font("Tahoma", Font.BOLD, 25));
+		lblLogOut.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogOut.setBounds(0, 0, 220, 60);
+		pnlLogOut.add(lblLogOut);
+		
+		JPanel pnlAvailability = new JPanel();
+		pnlAvailability.setBorder(new LineBorder(new Color(0, 0, 0)));
+		pnlAvailability.setBounds(0, 337, 220, 60);
+		panel.add(pnlAvailability);
+		pnlAvailability.setLayout(null);
+		pnlAvailability.setBackground(SystemColor.activeCaption);
+		
+		JLabel lblAvailability = new JLabel("Availability");
+		lblAvailability.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAvailability.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblAvailability.setBounds(0, 0, 220, 60);
+		pnlAvailability.add(lblAvailability);
 		
 		JLabel lblCreatedBy = new JLabel("Created By:");
 		lblCreatedBy.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblCreatedBy.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCreatedBy.setBounds(0, 466, 220, 28);
+		lblCreatedBy.setBounds(0, 516, 220, 28);
 		panel.add(lblCreatedBy);
 		
 		JLabel lblMattMilosTom = new JLabel("Matt Milos, Tom Jensen, Zach Baklund");
 		lblMattMilosTom.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMattMilosTom.setBounds(0, 495, 220, 28);
+		lblMattMilosTom.setBounds(0, 540, 220, 28);
 		panel.add(lblMattMilosTom);
 		
 		JLabel lbldentask = new JLabel("\u00A9 DenTask 2019");
 		lbldentask.setHorizontalAlignment(SwingConstants.CENTER);
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
+		pnlLogOut.setBorder(blackline);
+		
+		JPanel pnlAvailabilityContent = new JPanel();
+		pnlAvailabilityContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlAvailabilityContent);
+		pnlAvailabilityContent.setLayout(null);
+		
+		JLabel lblAvailability_1 = new JLabel("Availability");
+		lblAvailability_1.setBounds(0, 0, 846, 62);
+		pnlAvailabilityContent.add(lblAvailability_1);
+		lblAvailability_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblAvailability_1.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+		
+		JLabel lblMainMenu_1 = new JLabel("Main Menu");
+		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenu_1.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenu_1);
+		pnlMainMenuContent.setVisible(true);
+		
+		JPanel pnlMakeAppContent = new JPanel();
+		pnlMakeAppContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMakeAppContent);
+		pnlMakeAppContent.setLayout(null);
+		
+		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
+		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
+		pnlMakeAppContent.add(lblMakeAppointment_1);
+		pnlMakeAppContent.setVisible(false);
+		
+		JPanel pnlViewAppContent = new JPanel();
+		pnlViewAppContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlViewAppContent);
+		pnlViewAppContent.setLayout(null);
+		
+		JLabel lblViewAppointments_1 = new JLabel("View Appointments");
+		lblViewAppointments_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblViewAppointments_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblViewAppointments_1.setBounds(0, 0, 846, 96);
+		pnlViewAppContent.add(lblViewAppointments_1);
+		pnlViewAppContent.setVisible(false);
 		
 		JPanel pnlEditProfileContent = new JPanel();
 		pnlEditProfileContent.setBounds(218, 0, 846, 681);
@@ -201,44 +264,9 @@ public class EmployeeDashboard {
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnConfirm.setBounds(267, 606, 214, 50);
 		pnlEditProfileContent.add(btnConfirm);
+		pnlLogOut.setBorder(blackline);
 		
-				pnlEditProfileContent.setVisible(false);
-		
-		JPanel pnlMakeAppContent = new JPanel();
-		pnlMakeAppContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMakeAppContent);
-		pnlMakeAppContent.setLayout(null);
-		
-		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
-		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
-		pnlMakeAppContent.add(lblMakeAppointment_1);
-		pnlMakeAppContent.setVisible(false);
-		
-		JPanel pnlViewAppContent = new JPanel();
-		pnlViewAppContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlViewAppContent);
-		pnlViewAppContent.setLayout(null);
-		
-		JLabel lblViewAppointments_1 = new JLabel("View Appointments");
-		lblViewAppointments_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblViewAppointments_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblViewAppointments_1.setBounds(0, 0, 846, 96);
-		pnlViewAppContent.add(lblViewAppointments_1);
-		pnlViewAppContent.setVisible(false);
-		
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-		
-		JLabel lblMainMenu_1 = new JLabel("Main Menu");
-		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenu_1.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenu_1);
-		pnlMainMenuContent.setVisible(true);
+		pnlEditProfileContent.setVisible(false);
 		
 
 		/***************************
@@ -252,11 +280,13 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(true);
 				pnlViewAppContent.setVisible(false);
 				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.activeCaption);
 				pnlMainMenu.setBackground(SystemColor.textHighlight);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
 			}
 		});
 		
@@ -272,11 +302,13 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
 				pnlMakeAppContent.setVisible(true);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.activeCaption);
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.textHighlight);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
 			}
 		});
 
@@ -291,11 +323,13 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(true);
 				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.activeCaption);
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.textHighlight);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
 			}
 		});
 		
@@ -310,11 +344,34 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
 				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.textHighlight);
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
+			}
+		});
+		
+		/****************************
+		 * THIS IS FOR AVAILABILITY *
+		 ****************************/
+
+		lblAvailability.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				pnlEditProfileContent.setVisible(false);
+				pnlMainMenuContent.setVisible(false);
+				pnlViewAppContent.setVisible(false);
+				pnlMakeAppContent.setVisible(false);
+				pnlAvailabilityContent.setVisible(true);
+				
+				pnlEditProfile.setBackground(SystemColor.activeCaption);
+				pnlMainMenu.setBackground(SystemColor.activeCaption);
+				pnlViewApp.setBackground(SystemColor.activeCaption);
+				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				pnlAvailability.setBackground(SystemColor.textHighlight);
 			}
 		});
 		
@@ -322,7 +379,7 @@ public class EmployeeDashboard {
 		 * THIS IS FOR LOGOUT *
 		 **********************/
 
-		lblNewLabel.addMouseListener(new MouseAdapter() {
+		lblLogOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				frame.dispose();
@@ -344,5 +401,4 @@ public class EmployeeDashboard {
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
-
 }

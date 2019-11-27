@@ -86,11 +86,11 @@ public class AdminDashboard {
 		panel.add(pnlMakeApp);
 		pnlMakeApp.setLayout(null);
 		
-		JLabel lblMakeAppointment = new JLabel("Make Appointment");
-		lblMakeAppointment.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMakeAppointment.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblMakeAppointment.setBounds(0, 0, 220, 60);
-		pnlMakeApp.add(lblMakeAppointment);
+		JLabel lblViewAppointment = new JLabel("View Appointments");
+		lblViewAppointment.setHorizontalAlignment(SwingConstants.CENTER);
+		lblViewAppointment.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblViewAppointment.setBounds(0, 0, 220, 60);
+		pnlMakeApp.add(lblViewAppointment);
 		
 		JPanel pnlViewApp = new JPanel();
 		pnlViewApp.setBackground(SystemColor.activeCaption);
@@ -99,11 +99,11 @@ public class AdminDashboard {
 		panel.add(pnlViewApp);
 		pnlViewApp.setLayout(null);
 		
-		JLabel lblViewAppointments = new JLabel("View Appointments");
-		lblViewAppointments.setHorizontalAlignment(SwingConstants.CENTER);
-		lblViewAppointments.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblViewAppointments.setBounds(0, 0, 220, 60);
-		pnlViewApp.add(lblViewAppointments);
+		JLabel lblMakeProfiles = new JLabel("Make Profiles");
+		lblMakeProfiles.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMakeProfiles.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblMakeProfiles.setBounds(0, 0, 220, 60);
+		pnlViewApp.add(lblMakeProfiles);
 		
 		JPanel pnlEditProfile = new JPanel();
 		pnlEditProfile.setBackground(SystemColor.activeCaption);
@@ -112,11 +112,11 @@ public class AdminDashboard {
 		panel.add(pnlEditProfile);
 		pnlEditProfile.setLayout(null);
 		
-		JLabel lblEditProfile = new JLabel("Edit Profile");
-		lblEditProfile.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEditProfile.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblEditProfile.setBounds(0, 0, 220, 60);
-		pnlEditProfile.add(lblEditProfile);
+		JLabel lblDeleteProfiles = new JLabel("Delete Profiles");
+		lblDeleteProfiles.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDeleteProfiles.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblDeleteProfiles.setBounds(0, 0, 220, 60);
+		pnlEditProfile.add(lblDeleteProfiles);
 		
 		JPanel pnlLogOut = new JPanel();
 		pnlLogOut.setBackground(SystemColor.activeCaption);
@@ -265,7 +265,7 @@ public class AdminDashboard {
 		 * THIS IS FOR MAKE APPOINTMENT *
 		 ********************************/
 
-		lblMakeAppointment.addMouseListener(new MouseAdapter() {
+		lblViewAppointment.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				pnlEditProfileContent.setVisible(false);
@@ -284,7 +284,7 @@ public class AdminDashboard {
 		 * THIS IS FOR VIEW APPOINTMENT *
 		 ********************************/
 
-		lblViewAppointments.addMouseListener(new MouseAdapter() {
+		lblMakeProfiles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				pnlEditProfileContent.setVisible(false);
@@ -303,7 +303,7 @@ public class AdminDashboard {
 		 * THIS IS FOR EDIT PROFILE *
 		 ****************************/
 
-		lblEditProfile.addMouseListener(new MouseAdapter() {
+		lblDeleteProfiles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				pnlEditProfileContent.setVisible(true);

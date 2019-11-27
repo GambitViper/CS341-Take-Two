@@ -78,5 +78,16 @@ public class Appointment {
 		this.time = time;
 		return this;
 	}
+	
+	public String toString() {
+		StringBuilder printStr = new StringBuilder();
+		printStr.append("Patient: " + this.getPatient() + "\n");
+		printStr.append("Employee: " + this.getEmployee() + "\n");
+		printStr.append("AppType: " + this.getAppType() + "\n");
+		printStr.append("AppDetail: " + this.getAppDetail() + "\n");
+		printStr.append("Date: " + this.getDate().toString() + "\n");
+		printStr.append("Time: " + this.getTime() + "\n");
+		return printStr.toString();
+	}
 
 }
