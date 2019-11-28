@@ -7,7 +7,7 @@ abstract class User {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private int phoneNum;
+	private String phoneNum;
 	private String createDate;
 	private boolean isDeleted;
 	
@@ -38,7 +38,7 @@ abstract class User {
 	}
 	
 	//Gets Phone Number
-	public int getPhoneNum() {
+	public String getPhoneNum() {
 		return phoneNum;
 	}
 	
@@ -84,7 +84,7 @@ abstract class User {
 	}
 	
 	//Sets Phone Number
-	public User setPhoneNum(int phoneN) {
+	public User setPhoneNum(String phoneN) {
 		this.phoneNum = phoneN;
 		return this;
 	}
