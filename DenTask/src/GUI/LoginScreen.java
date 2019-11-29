@@ -88,18 +88,28 @@ public class LoginScreen extends JFrame{
 				String confirmation = "didnt return";
 				System.out.println(myPass);
 				System.out.println(txtUsername.getText());
-				String uType = "";
+				int uType = 3;
 				
 				
 				try {
 					System.out.println("RUNNING LOGIN FROM DASHBOARD LOGIN SCREEN");
 					confirmation = Login.loginUser(txtUsername.getText(), myPass);
-					uType = 
-					if(confirmation.equals("1")) {
+					uType = Login.getUserType(txtUsername.getText());
+					if(confirmation.equals("1") && uType == 3) {
 						System.out.println("PATIENT DASH");
 						frame.dispose();
 						Dashboard dash = new Dashboard();
 						dash.setVisible(true);
+					} else if(confirmation.equals("1") && (uType == 2 || uType == 1)) {
+						System.out.println("EMP DASH");
+						frame.dispose();
+						EmployeeDashboard edash = new EmployeeDashboard();
+						edash.setVisible(true);
+					} else if(confirmation.equals("1") && (uType == 0)) {
+						System.out.println("ADMIN DASH");
+						frame.dispose();
+						AdminDashboard adash = new AdminDashboard();
+						adash.setVisible(true);	
 					}
 					
 				} catch (SQLException e1) {

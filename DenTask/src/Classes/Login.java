@@ -84,7 +84,7 @@ public class Login {
 		return "1";
 	}
 	
-	public static String getUserType(String username) {
+	public static int getUserType(String username) {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
@@ -94,7 +94,7 @@ public class Login {
 		newUser = dataConnector.getUser(username);
 		
 		System.out.println(newUser.getUserType());
-		return null;
+		return newUser.getUserType();
 	}
 	
 	public static User findUserByUsername(String username) throws SQLException {
