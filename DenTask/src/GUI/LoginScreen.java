@@ -97,9 +97,10 @@ public class LoginScreen extends JFrame{
 					uType = Login.getUserType(txtUsername.getText());
 					if(confirmation.equals("1") && uType == 3) {
 						System.out.println("PATIENT DASH");
-						frame.dispose();
 						Dashboard dash = new Dashboard();
 						dash.setVisible(true);
+						dash.setUser(txtUsername.getText());
+						frame.dispose();
 					} else if(confirmation.equals("1") && (uType == 2 || uType == 1)) {
 						System.out.println("EMP DASH");
 						frame.dispose();
@@ -116,23 +117,6 @@ public class LoginScreen extends JFrame{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				/*if(myPass.equals("admin") && txtUsername.getText().equals("admin")) {
-					System.out.println("ADMIN DASH");
-					frame.dispose();
-					AdminDashboard adash = new AdminDashboard();
-					adash.setVisible(true);
-				} else if (myPass.equals("emp") && txtUsername.getText().equals("emp")) {
-					System.out.println("EMP DASH");
-					frame.dispose();
-					EmployeeDashboard edash = new EmployeeDashboard();
-					edash.setVisible(true);
-				} else {
-					System.out.println("PATIENT DASH");
-					frame.dispose();
-					Dashboard dash = new Dashboard();
-					dash.setVisible(true);
-				}*/
 			}
 		});
 		

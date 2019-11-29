@@ -35,6 +35,7 @@ public class Dashboard {
 	private JPasswordField txtNewPass;
 	private JPasswordField txtConfirmedPass;
 
+	private String userUsername;
 	/**
 	 * Launch the application.
 	 */
@@ -51,6 +52,10 @@ public class Dashboard {
 		});
 	}
 
+	public void setUser(String username) {
+		userUsername = username;
+		System.out.println(username);
+	}
 	/**
 	 * Create the application.
 	 */
@@ -160,6 +165,21 @@ public class Dashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+		
+		System.out.println("ayoo");
+		System.out.println(userUsername);
+		
+		JLabel lblMainMenuWelcome = new JLabel("Welcome " + userUsername);
+		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenuWelcome);
+		pnlMainMenuContent.setVisible(true);
+		
 		JPanel pnlEditProfileContent = new JPanel();
 		pnlEditProfileContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlEditProfileContent);
@@ -168,82 +188,82 @@ public class Dashboard {
 		JLabel lblEditProfile_1 = new JLabel("Edit Profile");
 		lblEditProfile_1.setFont(new Font("Tahoma", Font.BOLD, 40));
 		lblEditProfile_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEditProfile_1.setBounds(84, 68, 557, 88);
+		lblEditProfile_1.setBounds(0, 0, 846, 86);
 		pnlEditProfileContent.add(lblEditProfile_1);
 		
 		JLabel lblFirstName = new JLabel("First Name");
 		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblFirstName.setBounds(84, 190, 140, 27);
+		lblFirstName.setBounds(30, 126, 140, 27);
 		pnlEditProfileContent.add(lblFirstName);
 		
 		JLabel lblLastName = new JLabel("Last Name");
 		lblLastName.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblLastName.setBounds(427, 190, 140, 27);
+		lblLastName.setBounds(333, 126, 140, 27);
 		pnlEditProfileContent.add(lblLastName);
 		
 		JLabel lblCurrentPassword = new JLabel("Current Password");
 		lblCurrentPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCurrentPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCurrentPassword.setBounds(84, 438, 140, 34);
+		lblCurrentPassword.setBounds(30, 390, 140, 34);
 		pnlEditProfileContent.add(lblCurrentPassword);
 		
 		JLabel lblNewPassword = new JLabel("New Password");
 		lblNewPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewPassword.setBounds(84, 489, 140, 34);
+		lblNewPassword.setBounds(333, 390, 140, 34);
 		pnlEditProfileContent.add(lblNewPassword);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password");
 		lblConfirmPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		lblConfirmPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblConfirmPassword.setBounds(84, 541, 140, 33);
+		lblConfirmPassword.setBounds(612, 391, 140, 33);
 		pnlEditProfileContent.add(lblConfirmPassword);
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblEmail.setBounds(84, 295, 140, 27);
+		lblEmail.setBounds(30, 237, 140, 27);
 		pnlEditProfileContent.add(lblEmail);
 		
 		JLabel lblPhoneNumber = new JLabel("Phone Number");
 		lblPhoneNumber.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblPhoneNumber.setBounds(427, 295, 140, 27);
+		lblPhoneNumber.setBounds(612, 126, 140, 27);
 		pnlEditProfileContent.add(lblPhoneNumber);
 		
 		txtFirstName = new JTextField();
-		txtFirstName.setBounds(84, 235, 214, 36);
+		txtFirstName.setBounds(30, 166, 214, 36);
 		pnlEditProfileContent.add(txtFirstName);
 		txtFirstName.setColumns(10);
 		
 		txtLastName = new JTextField();
 		txtLastName.setColumns(10);
-		txtLastName.setBounds(427, 235, 214, 36);
+		txtLastName.setBounds(333, 166, 214, 36);
 		pnlEditProfileContent.add(txtLastName);
 		
 		txtEmail = new JTextField();
 		txtEmail.setColumns(10);
-		txtEmail.setBounds(84, 333, 214, 36);
+		txtEmail.setBounds(30, 288, 214, 36);
 		pnlEditProfileContent.add(txtEmail);
 		
 		txtPhoneNumber = new JTextField();
 		txtPhoneNumber.setColumns(10);
-		txtPhoneNumber.setBounds(427, 333, 214, 36);
+		txtPhoneNumber.setBounds(612, 166, 214, 36);
 		pnlEditProfileContent.add(txtPhoneNumber);
 		
 		txtCurrentPass = new JPasswordField();
-		txtCurrentPass.setBounds(267, 438, 214, 34);
+		txtCurrentPass.setBounds(30, 437, 214, 34);
 		pnlEditProfileContent.add(txtCurrentPass);
 		
 		txtNewPass = new JPasswordField();
-		txtNewPass.setBounds(267, 491, 214, 34);
+		txtNewPass.setBounds(343, 437, 214, 34);
 		pnlEditProfileContent.add(txtNewPass);
 		
 		txtConfirmedPass = new JPasswordField();
-		txtConfirmedPass.setBounds(267, 541, 214, 34);
+		txtConfirmedPass.setBounds(612, 437, 214, 34);
 		pnlEditProfileContent.add(txtConfirmedPass);
 		
 		JButton btnConfirm = new JButton("Save Changes");
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnConfirm.setBounds(267, 606, 214, 50);
+		btnConfirm.setBounds(30, 551, 796, 70);
 		pnlEditProfileContent.add(btnConfirm);
 		
 				pnlEditProfileContent.setVisible(false);
@@ -271,18 +291,6 @@ public class Dashboard {
 		lblViewAppointments_1.setBounds(0, 0, 846, 96);
 		pnlViewAppContent.add(lblViewAppointments_1);
 		pnlViewAppContent.setVisible(false);
-		
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-		
-		JLabel lblMainMenu_1 = new JLabel("Main Menu");
-		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenu_1.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenu_1);
-		pnlMainMenuContent.setVisible(true);
 		
 
 		/***************************
@@ -350,6 +358,9 @@ public class Dashboard {
 		lblEditProfile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				
+				
+				
 				pnlEditProfileContent.setVisible(true);
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
@@ -359,6 +370,7 @@ public class Dashboard {
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				
 			}
 		});
 		
