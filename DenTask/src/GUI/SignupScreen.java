@@ -54,7 +54,16 @@ public class SignupScreen {
 		});
 	}
 
-	
+	/*
+	 * Creates account based on feilds on the signup screen
+	 * 
+	 * Conditions
+	 *  - Checks if Passwords are equal
+	 *  - Checks if username is taken
+	 *  
+	 *  Returns errors if either of the conditions are failed
+	 *  
+	 */
 	private boolean login() {
 		
 		String pass1 = String.valueOf(txtPassword.getPassword());
@@ -114,6 +123,9 @@ public class SignupScreen {
 
 		JLabel btnBack = new JLabel("<");
 		
+		/*
+		 * Back button trigger
+		 */
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -220,7 +232,9 @@ public class SignupScreen {
 		frame.setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-
+		/*
+		 * New Account Trigger
+		 */
 		btnNewAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(login()) {

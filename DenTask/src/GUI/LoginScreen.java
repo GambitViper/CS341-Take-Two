@@ -32,6 +32,7 @@ public class LoginScreen extends JFrame{
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -89,6 +90,9 @@ public class LoginScreen extends JFrame{
 		btnLogin.setBounds(376, 202, 185, 30);
 		frame.getContentPane().add(btnLogin);
 		
+		/*
+		 * LOGIN BUTTON TRIGGER
+		 */
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -127,6 +131,7 @@ public class LoginScreen extends JFrame{
 				}
 			}
 		});
+		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblUsername.setBounds(265, 63, 101, 35);
@@ -142,6 +147,9 @@ public class LoginScreen extends JFrame{
 		closeButton.setBounds(10, 254, 40, 44);
 		frame.getContentPane().add(closeButton);
 
+		/*
+		 * CLOSE BUTTON TRIGGER
+		 */
 		closeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -157,6 +165,9 @@ public class LoginScreen extends JFrame{
 		lblClickToCreate.setBounds(376, 254, 185, 31);
 		frame.getContentPane().add(lblClickToCreate);
 
+		/*
+		 * CREATE ACCOUNT TRIGGER
+		 */
 		lblClickToCreate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -182,6 +193,9 @@ public class LoginScreen extends JFrame{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	/*
+	 * Sets frame to visible
+	 */
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
