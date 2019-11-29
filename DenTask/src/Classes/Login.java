@@ -16,12 +16,17 @@ public class Login {
 	
 	
 	public static void main(String[] args) throws SQLException {
+		/*
 		String username = "matt";
 		String password = "1234";
 		
 		System.out.println(loginUser("matty", "1234"));
 		System.out.println(loginUser("matt", "12345"));
 		System.out.println(loginUser("matt", "1234"));
+		*/
+		
+		System.out.println(getUserType("matt"));
+		
 	}
 	
 	public static User registerUser(User newUser, String username, String password) {
@@ -77,6 +82,19 @@ public class Login {
 		if(loginUser.getIsDeleted()) return "This user has been removed";
 		
 		return "1";
+	}
+	
+	public static String getUserType(String username) {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		
+		User newUser = null;
+
+		System.out.print(dataConnector.getUser(username));
+		newUser = dataConnector.getUser(username);
+		
+		System.out.println(newUser.getUserType());
+		return null;
 	}
 	
 	public static User findUserByUsername(String username) throws SQLException {

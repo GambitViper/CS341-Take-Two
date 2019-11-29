@@ -88,11 +88,13 @@ public class LoginScreen extends JFrame{
 				String confirmation = "didnt return";
 				System.out.println(myPass);
 				System.out.println(txtUsername.getText());
+				String uType = "";
+				
 				
 				try {
 					System.out.println("RUNNING LOGIN FROM DASHBOARD LOGIN SCREEN");
 					confirmation = Login.loginUser(txtUsername.getText(), myPass);
-					
+					uType = 
 					if(confirmation.equals("1")) {
 						System.out.println("PATIENT DASH");
 						frame.dispose();
