@@ -149,6 +149,20 @@ public class Database {
 		}
 		return u;
 	}
+	
+	public User getUser(int userType) {
+		User u = null;
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ?");
+			stmt.setInt(1, userType);
+			ResultSet r = stmt.executeQuery();
+
+			u = resultSetToUser(r);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return u;
+	}
 
 	public LinkedList<User> getAllUsers() {
 		LinkedList<User> users = new LinkedList<>();
