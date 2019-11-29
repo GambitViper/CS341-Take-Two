@@ -8,10 +8,15 @@ import java.awt.Dimension;
 
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+
+import Classes.Login;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -62,6 +67,8 @@ public class LoginScreen extends JFrame{
 		frame.isResizable();
 		
 
+		
+		
 		txtUsername = new JTextField();
 		txtUsername.setColumns(10);
 		txtUsername.setBounds(376, 63, 185, 35);
@@ -78,11 +85,27 @@ public class LoginScreen extends JFrame{
 			public void mouseReleased(MouseEvent e) {
 				
 				String myPass=String.valueOf(txtPassword.getPassword());
-				
+				String confirmation = "didnt return";
 				System.out.println(myPass);
 				System.out.println(txtUsername.getText());
 				
-				if(myPass.equals("admin") && txtUsername.getText().equals("admin")) {
+				try {
+					System.out.println("RUNNING LOGIN FROM DASHBOARD LOGIN SCREEN");
+					confirmation = Login.loginUser(txtUsername.getText(), myPass);
+					
+					if(confirmation.equals("1")) {
+						System.out.println("PATIENT DASH");
+						frame.dispose();
+						Dashboard dash = new Dashboard();
+						dash.setVisible(true);
+					}
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				/*if(myPass.equals("admin") && txtUsername.getText().equals("admin")) {
 					System.out.println("ADMIN DASH");
 					frame.dispose();
 					AdminDashboard adash = new AdminDashboard();
@@ -97,7 +120,7 @@ public class LoginScreen extends JFrame{
 					frame.dispose();
 					Dashboard dash = new Dashboard();
 					dash.setVisible(true);
-				}
+				}*/
 			}
 		});
 		
@@ -153,6 +176,8 @@ public class LoginScreen extends JFrame{
 		frame.getContentPane().add(lblWelcome);
 		frame.setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+
 	}
 
 	/**
