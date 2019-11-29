@@ -81,8 +81,11 @@ public class Database {
 
 	public User updateUser(User u) {
 		try {
+			
+			System.out.println("Attempting Update");
+			System.out.println(u);
 			PreparedStatement stmt = connection.prepareStatement(
-					"UPDATE User Password = ?, FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ? WHERE Username = ?;");
+					"UPDATE User SET Password = ?, FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ? WHERE Username = ?;");
 			stmt.setString(1, u.getPassword());
 			stmt.setString(2, u.getFirstName());
 			stmt.setString(3, u.getLastName());
@@ -97,6 +100,7 @@ public class Database {
 				System.out.format("Could not update %s\n", u.getUsername());
 			}
 		} catch (SQLException e) {
+			System.out.println("here bitch");
 			System.out.println(e.getMessage());
 		}
 		return u;

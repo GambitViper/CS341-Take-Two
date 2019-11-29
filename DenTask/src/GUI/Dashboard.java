@@ -17,12 +17,20 @@ import javax.swing.border.Border;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
 import javax.swing.JLayeredPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JTable;
+
+import Classes.Database;
+import Classes.Login;
+import Classes.User;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Dashboard {
 
@@ -34,8 +42,12 @@ public class Dashboard {
 	private JPasswordField txtCurrentPass;
 	private JPasswordField txtNewPass;
 	private JPasswordField txtConfirmedPass;
-
+	
+	private JLabel lblError;
+	private JLabel lblMainMenuWelcome;
+	
 	private String userUsername;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -53,18 +65,44 @@ public class Dashboard {
 	}
 
 	public void setUser(String username) {
-		userUsername = username;
-		System.out.println(username);
+		userUsername = username.toLowerCase();
+		lblMainMenuWelcome.setText("Welcome " + userUsername);
 	}
+	
+	public void profileFiller() {
+		Database connector = new Database();
+		connector.connect();
+		
+		User dummy = connector.getUser(userUsername); 
+		txtFirstName.setText(dummy.getFirstName());
+		txtLastName.setText(dummy.getLastName());
+		txtEmail.setText(dummy.getEmail());
+		txtPhoneNumber.setText(dummy.getPhoneNum());
+		
+		connector.disconnect();
+	}
+	
 	/**
 	 * Create the application.
 	 */
 	public Dashboard() {
 		
 		initialize();
+		
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(0, 51, 255));
+		frame.setBounds(100, 100, 1080, 720);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		/***************************
 		 * THIS IS FOR BURGER MENU *
-		 ***************************/
+		 ***************************/ 
 		Border blackline = BorderFactory.createLineBorder(Color.black);
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -165,21 +203,6 @@ public class Dashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-		
-		System.out.println("ayoo");
-		System.out.println(userUsername);
-		
-		JLabel lblMainMenuWelcome = new JLabel("Welcome " + userUsername);
-		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenuWelcome);
-		pnlMainMenuContent.setVisible(true);
-		
 		JPanel pnlEditProfileContent = new JPanel();
 		pnlEditProfileContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlEditProfileContent);
@@ -262,11 +285,65 @@ public class Dashboard {
 		pnlEditProfileContent.add(txtConfirmedPass);
 		
 		JButton btnConfirm = new JButton("Save Changes");
+		
+		btnConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String currentPass = String.valueOf(txtCurrentPass.getPassword());
+				String newPass = String.valueOf(txtNewPass.getPassword());
+				String conPass = String.valueOf(txtConfirmedPass.getPassword());
+				
+				System.out.println(currentPass + " " + newPass + " " + conPass);
+				
+				if(!currentPass.isEmpty() && !newPass.isEmpty() && !conPass.isEmpty()) {
+					try {
+						if(!Login.loginUser(userUsername, currentPass).equals("1")) {
+							lblError.setText("Current Password is incorrect");
+							return;
+						} else if(!newPass.equals(conPass)) {
+							lblError.setText("New Passwords do not match");
+							return;
+						} else if(currentPass.equals(newPass)) {
+							lblError.setText("Current Password and New Password can't be the same");
+							return;
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+				
+				if(currentPass.isEmpty()) {
+					Login.updateUser(userUsername, null, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+				} else {
+					Login.updateUser(userUsername, conPass, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+				}
+			}
+		});
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnConfirm.setBounds(30, 551, 796, 70);
 		pnlEditProfileContent.add(btnConfirm);
 		
+		lblError = new JLabel("");
+		lblError.setForeground(Color.RED);
+		lblError.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblError.setHorizontalAlignment(SwingConstants.CENTER);
+		lblError.setBounds(0, 484, 846, 54);
+		pnlEditProfileContent.add(lblError);
+		
 				pnlEditProfileContent.setVisible(false);
+		
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+		
+		lblMainMenuWelcome = new JLabel("Welcome " + userUsername);
+		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenuWelcome);
+		pnlMainMenuContent.setVisible(true);
 		
 		JPanel pnlMakeAppContent = new JPanel();
 		pnlMakeAppContent.setBounds(218, 0, 846, 681);
@@ -358,9 +435,7 @@ public class Dashboard {
 		lblEditProfile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				
-				
-				
+				profileFiller();
 				pnlEditProfileContent.setVisible(true);
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
@@ -370,6 +445,7 @@ public class Dashboard {
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				
 				
 			}
 		});
@@ -386,16 +462,6 @@ public class Dashboard {
 				login.setVisible(true);
 			}
 		});
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(0, 51, 255));
-		frame.setBounds(100, 100, 1080, 720);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public void setVisible(boolean b) {

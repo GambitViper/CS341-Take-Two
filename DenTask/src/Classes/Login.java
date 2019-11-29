@@ -14,18 +14,7 @@ public class Login {
 	 * 
 	 */
 	
-	
 	public static void main(String[] args) throws SQLException {
-		/*
-		String username = "matt";
-		String password = "1234";
-		
-		System.out.println(loginUser("matty", "1234"));
-		System.out.println(loginUser("matt", "12345"));
-		System.out.println(loginUser("matt", "1234"));
-		*/
-		
-		System.out.println(getUserType("matt"));
 		
 	}
 	
@@ -37,7 +26,6 @@ public class Login {
 		newUser.setCreateDate(createDate);
 
 		String hash = md5(password, createDate);
-		System.out.println("Password: " + password + " >>> " + hash);
 		
 		newUser.setPassword(hash);
 		newUser.setIsDeleted(false);
@@ -50,18 +38,43 @@ public class Login {
 		dataConnector.connect();
 		
 		if( findUserByUsername(username) != null) {
-			System.out.println("Username Exists");
 			return;
 		}
 		
-
 		String createDate = LocalDate.now().toString();
 		String hash = md5(password, createDate);
-		System.out.println("Password: " + password + " >>> " + hash);
 
 		dataConnector.insertUser(username, hash, firstName, lastName, email, phoneNumber, createDate, 3);
-		System.out.println("Matts Test Case");
+		dataConnector.disconnect();
 		return;
+	}
+	
+	public static void updateUser(String username, String password, String firstName, String lastName, String email, String phoneNumber) {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		
+		User tmp = null;
+		try {
+			tmp = findUserByUsername(username);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println(tmp);
+		
+		tmp.setFirstName(firstName);
+		tmp.setLastName(lastName);
+		tmp.setEmail(email);
+		tmp.setPhoneNum(phoneNumber);
+		if(password == null) {
+			dataConnector.updateUser(tmp);
+		} else {
+			tmp.setPassword(md5(password, tmp.getCreateDate()));
+			dataConnector.updateUser(tmp);
+		}
+		
+		dataConnector.disconnect();
 	}
 	
 	public static String loginUser(String username, String password) throws SQLException {
@@ -69,17 +82,15 @@ public class Login {
 		User loginUser = findUserByUsername(username);
 		
 		if (loginUser == null) return "Could not find a user with " + username + " in our system";
+
+		if(loginUser.getIsDeleted()) return "This user has been removed";
 		
-		System.out.println("...logging in with " + password);
-		System.out.println(">>> " + md5(password, loginUser.getCreateDate()));
-		System.out.println("<<< " + loginUser.getPassword());
 		if(!md5(password, loginUser.getCreateDate()).equals(loginUser.getPassword())) {
 			//Password doesn't match
 			
 			return "Incorrect password";
 		}
 		
-		if(loginUser.getIsDeleted()) return "This user has been removed";
 		
 		return "1";
 	}
@@ -88,13 +99,18 @@ public class Login {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		User newUser = null;
+		User newUser;
 
 		System.out.print(dataConnector.getUser(username));
 		newUser = dataConnector.getUser(username);
 		
-		System.out.println(newUser.getUserType());
-		return newUser.getUserType();
+		if(newUser == null) {
+			dataConnector.disconnect();
+			return -1;
+		} else {
+			dataConnector.disconnect();
+			return newUser.getUserType();
+		}
 	}
 	
 	public static User findUserByUsername(String username) throws SQLException {
@@ -114,7 +130,6 @@ public class Login {
 		} else 
 			dataConnector.disconnect();
 			return null;
-		
 	}
 	
 	private static String md5(String input, String salt) {
