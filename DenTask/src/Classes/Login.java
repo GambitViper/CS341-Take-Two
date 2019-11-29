@@ -3,6 +3,7 @@ package Classes;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class Login {
@@ -12,13 +13,11 @@ public class Login {
 	 * Check User/Pass (After Hash) with databases
 	 * 
 	 */
-	public static void main(String[] args) {
+	
+	
+	public static void main(String[] args) throws SQLException {
 		String username = "matt";
 		String password = "1234";
-		
-		User matt = registerUser(new Patient(), username, password);
-		
-		System.out.println(matt);
 		
 		System.out.println(loginUser("matty", "1234"));
 		System.out.println(loginUser("matt", "12345"));
@@ -26,11 +25,12 @@ public class Login {
 	}
 	
 	public static User registerUser(User newUser, String username, String password) {
+		
 		String createDate = LocalDate.now().toString();
 		
 		newUser.setUserName(username);
 		newUser.setCreateDate(createDate);
-		
+
 		String hash = md5(password, createDate);
 		System.out.println("Password: " + password + " >>> " + hash);
 		
@@ -40,7 +40,26 @@ public class Login {
 		return newUser;
 	}
 	
-	public static String loginUser(String username, String password) {
+	public static void createUser(String username, String password, String firstName, String lastName, String email, String phoneNumber) throws SQLException {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		
+		if( findUserByUsername(username) != null) {
+			System.out.println("Username Exists");
+			return;
+		}
+		
+
+		String createDate = LocalDate.now().toString();
+		String hash = md5(password, createDate);
+		System.out.println("Password: " + password + " >>> " + hash);
+
+		dataConnector.insertUser(username, hash, firstName, lastName, email, phoneNumber, createDate, 3);
+		System.out.println("Matts Test Case");
+		return;
+	}
+	
+	public static String loginUser(String username, String password) throws SQLException {
 		// TODO replace with database search
 		User loginUser = findUserByUsername(username);
 		
@@ -51,22 +70,33 @@ public class Login {
 		System.out.println("<<< " + loginUser.getPassword());
 		if(!md5(password, loginUser.getCreateDate()).equals(loginUser.getPassword())) {
 			//Password doesn't match
+			
 			return "Incorrect password";
 		}
 		
 		if(loginUser.getIsDeleted()) return "This user has been removed";
 		
-		return "Success";
+		return "1";
 	}
 	
-	public static User findUserByUsername(String username) {
-		if (username == "matt") {
-			return new Patient().setUserName("matt")
-					.setPassword(md5("1234", LocalDate.now().toString()))
-					.setCreateDate(LocalDate.now().toString())
-					.setIsDeleted(false);
-		}
-		return null;
+	public static User findUserByUsername(String username) throws SQLException {
+
+		Database dataConnector = new Database();
+	
+		User newUser = null;
+		dataConnector.connect();
+		System.out.println("1");
+		System.out.print(dataConnector.getUser(username));
+		System.out.println("2");
+		newUser = dataConnector.getUser(username);
+		
+		if(newUser != null) {
+			dataConnector.disconnect();
+			return newUser;
+		} else 
+			dataConnector.disconnect();
+			return null;
+		
 	}
 	
 	private static String md5(String input, String salt) {

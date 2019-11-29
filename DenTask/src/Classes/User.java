@@ -4,6 +4,7 @@ abstract class User {
 	
 	private String username;
 	private String password;
+	private int userType;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -20,6 +21,16 @@ abstract class User {
 	//Gets Password
 	public String getPassword() {
 		return password;
+	}
+
+	//Gets User Type
+	public int getUserType() {
+		return userType;
+	}
+	
+	//Sets User Type
+	public void setUserType(int type) {
+		this.userType = type;
 	}
 	
 	//Gets First Name
@@ -99,6 +110,20 @@ abstract class User {
 	public User setIsDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 		return this;
+	}
+	
+	public String toString() {
+		StringBuilder printStr = new StringBuilder();
+		printStr.append("User: " + this.getUsername() + "\n");
+		printStr.append("Password: " + this.getPassword() + "\n");
+		printStr.append("UserType: " + this.getUserType() + "\n");
+		printStr.append("FirstName: " + this.getFirstName() + "\n");
+		printStr.append("LastName: " + this.getLastName() + "\n");
+		printStr.append("Email: " + this.getEmail() + "\n");
+		printStr.append("PhoneNum: " + this.getPhoneNum() + "\n");
+		printStr.append("CreateDate: " + this.getCreateDate() + "\n");
+		printStr.append("DeleteDate: " + this.getIsDeleted() + "\n");
+		return printStr.toString();
 	}
 	
 }
