@@ -150,18 +150,20 @@ public class Database {
 		return u;
 	}
 	
-	public User getUser(int userType) {
-		User u = null;
+	public LinkedList<User> getUser(int userType) {
+		LinkedList<User> users = new LinkedList<>();
 		try {
 			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ?");
 			stmt.setInt(1, userType);
 			ResultSet r = stmt.executeQuery();
 
-			u = resultSetToUser(r);
+			while (r.next())	{
+				users.add(resultSetToUser(r));
+			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return u;
+		return users;
 	}
 
 	public LinkedList<User> getAllUsers() {
