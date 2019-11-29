@@ -4,7 +4,7 @@ abstract class User {
 	
 	private String username;
 	private String password;
-	private int userType;
+	private String userType;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -24,12 +24,12 @@ abstract class User {
 	}
 
 	//Gets User Type
-	public int getUserType() {
+	public String getUserType() {
 		return userType;
 	}
 	
 	//Sets User Type
-	public void setUserType(int type) {
+	public void setUserType(String type) {
 		this.userType = type;
 	}
 	
