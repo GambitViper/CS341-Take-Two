@@ -29,8 +29,9 @@ abstract class User {
 	}
 	
 	//Sets User Type
-	public void setUserType(int type) {
+	public User setUserType(int type) {
 		this.userType = type;
+		return this;
 	}
 	
 	//Gets First Name

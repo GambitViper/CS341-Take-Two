@@ -149,7 +149,7 @@ public class Database {
 		}
 		return u;
 	}
-	
+
 	public LinkedList<User> getUser(int userType) {
 		LinkedList<User> users = new LinkedList<>();
 		try {
@@ -157,7 +157,7 @@ public class Database {
 			stmt.setInt(1, userType);
 			ResultSet r = stmt.executeQuery();
 
-			while (r.next())	{
+			while (r.next()) {
 				users.add(resultSetToUser(r));
 			}
 		} catch (SQLException e) {
@@ -414,7 +414,7 @@ public class Database {
 	/**
 	 * RequestOff operations
 	 */
-	
+
 	/**
 	 * Helper methods
 	 */
@@ -433,7 +433,7 @@ public class Database {
 			u = new Patient();
 		}
 
-		u.setUserName(r.getString("Username")).setPassword(r.getString("Password"))
+		u.setUserName(r.getString("Username")).setPassword(r.getString("Password")).setUserType(r.getInt("UserType"))
 				.setFirstName(r.getString("FirstName")).setLastName(r.getString("LastName"))
 				.setEmail(r.getString("Email")).setPhoneNum(r.getString("PhoneNumber"))
 				.setCreateDate(r.getString("CreateDate"));
