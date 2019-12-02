@@ -23,22 +23,22 @@ import java.awt.Toolkit;
 
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class LoginScreen extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
-	private JLabel lblError;
 
 	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -55,7 +55,7 @@ public class LoginScreen extends JFrame{
 				}
 			}
 		});
-		
+
 	}
 
 	/**
@@ -118,8 +118,6 @@ public class LoginScreen extends JFrame{
 			}
 		});
 		
-		
-		
 		JLabel lblClickToCreate = new JLabel("Click to create new account");
 		lblClickToCreate.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblClickToCreate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -136,7 +134,6 @@ public class LoginScreen extends JFrame{
 		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblWelcome.setBounds(376, 17, 185, 35);
-		
 		
 		frame.getContentPane().add(lblWelcome);
 		

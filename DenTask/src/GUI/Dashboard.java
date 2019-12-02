@@ -19,12 +19,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
-import javax.swing.JLayeredPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
-import javax.swing.JTable;
 
 import Classes.Database;
 import Classes.Login;
@@ -42,10 +39,10 @@ public class Dashboard {
 	private JPasswordField txtCurrentPass;
 	private JPasswordField txtNewPass;
 	private JPasswordField txtConfirmedPass;
-	
+
 	private JLabel lblError;
 	private JLabel lblMainMenuWelcome;
-	
+
 	private String userUsername;
 	
 	/**
@@ -82,18 +79,6 @@ public class Dashboard {
 		connector.disconnect();
 	}
 	
-	public void burger() {
-
-		pnlEditProfileContent.setVisible(false);
-		pnlMainMenuContent.setVisible(true);
-		pnlViewAppContent.setVisible(false);
-		pnlMakeAppContent.setVisible(false);
-		
-		pnlEditProfile.setBackground(SystemColor.activeCaption);
-		pnlMainMenu.setBackground(SystemColor.textHighlight);
-		pnlViewApp.setBackground(SystemColor.activeCaption);
-		pnlMakeApp.setBackground(SystemColor.activeCaption);
-	}
 	
 	/**
 	 * Create the application.
@@ -216,6 +201,18 @@ public class Dashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
+		JPanel pnlViewAppContent = new JPanel();
+		pnlViewAppContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlViewAppContent);
+		pnlViewAppContent.setLayout(null);
+		
+		JLabel lblViewAppointments_1 = new JLabel("View Appointments");
+		lblViewAppointments_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblViewAppointments_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblViewAppointments_1.setBounds(0, 0, 846, 96);
+		pnlViewAppContent.add(lblViewAppointments_1);
+		pnlViewAppContent.setVisible(false);
+		
 		JPanel pnlEditProfileContent = new JPanel();
 		pnlEditProfileContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlEditProfileContent);
@@ -299,53 +296,6 @@ public class Dashboard {
 		
 		JButton btnConfirm = new JButton("Save Changes");
 		
-		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				String currentPass = String.valueOf(txtCurrentPass.getPassword());
-				String newPass = String.valueOf(txtNewPass.getPassword());
-				String conPass = String.valueOf(txtConfirmedPass.getPassword());
-				
-				System.out.println(currentPass + " " + newPass + " " + conPass);
-				
-				if(currentPass.equals("")) {
-					lblError.setText("Fill in current password to save changes");
-					return;
-				}
-				try {
-					if(!Login.loginUser(userUsername, currentPass).equals("1")) {
-						lblError.setText("Current password doesn't match database");
-						return;
-					}
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-					return;
-				}
-				
-				if(newPass.equals("") && conPass.equals("")) {
-					Login.updateUser(userUsername, null, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
-					return;
-				}
-				
-				if(!newPass.equals(conPass)) {
-					lblError.setText("New Passwords do not match");
-					return;
-				}
-				
-				if(currentPass.equals(newPass)) {
-					lblError.setText("New password can not be the same as old password");
-					return;
-				}
-				
-				if(newPass.equals(conPass)) {
-					Login.updateUser(userUsername, conPass, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
-					return;
-				}
-				
-				lblError.setText("idk what u did bro");
-				
-			}
-		});
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnConfirm.setBounds(30, 551, 796, 70);
 		pnlEditProfileContent.add(btnConfirm);
@@ -382,18 +332,6 @@ public class Dashboard {
 		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
 		pnlMakeAppContent.add(lblMakeAppointment_1);
 		pnlMakeAppContent.setVisible(false);
-		
-		JPanel pnlViewAppContent = new JPanel();
-		pnlViewAppContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlViewAppContent);
-		pnlViewAppContent.setLayout(null);
-		
-		JLabel lblViewAppointments_1 = new JLabel("View Appointments");
-		lblViewAppointments_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblViewAppointments_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblViewAppointments_1.setBounds(0, 0, 846, 96);
-		pnlViewAppContent.add(lblViewAppointments_1);
-		pnlViewAppContent.setVisible(false);
 		
 
 		/***************************
@@ -486,6 +424,86 @@ public class Dashboard {
 				frame.dispose();
 				LoginScreen login = new LoginScreen();
 				login.setVisible(true);
+			}
+		});
+
+		/*****************************************
+		 * THIS IS FOR EDIT PROFILE CONFIRMATION *
+		 *****************************************/
+
+		btnConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String currentPass = String.valueOf(txtCurrentPass.getPassword());
+				String newPass = String.valueOf(txtNewPass.getPassword());
+				String conPass = String.valueOf(txtConfirmedPass.getPassword());
+				
+				System.out.println(currentPass + " " + newPass + " " + conPass);
+				
+				if(currentPass.equals("")) {
+					lblError.setText("Fill in current password to save changes");
+					return;
+				}
+				try {
+					if(!Login.loginUser(userUsername, currentPass).equals("1")) {
+						lblError.setText("Current password doesn't match database");
+						return;
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					return;
+				}
+				
+				if(newPass.equals("") && conPass.equals("")) {
+					Login.updateUser(userUsername, null, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+					txtCurrentPass.setText(null);
+					txtNewPass.setText(null);
+					txtConfirmedPass.setText(null);
+					lblError.setText("");
+					
+					pnlEditProfileContent.setVisible(false);
+					pnlMainMenuContent.setVisible(true);
+					pnlViewAppContent.setVisible(false);
+					pnlMakeAppContent.setVisible(false);
+					
+					pnlEditProfile.setBackground(SystemColor.activeCaption);
+					pnlMainMenu.setBackground(SystemColor.textHighlight);
+					pnlViewApp.setBackground(SystemColor.activeCaption);
+					pnlMakeApp.setBackground(SystemColor.activeCaption);
+					return;
+				}
+				
+				if(!newPass.equals(conPass)) {
+					lblError.setText("New Passwords do not match");
+					return;
+				}
+				
+				if(currentPass.equals(newPass)) {
+					lblError.setText("New password can not be the same as old password");
+					return;
+				}
+				
+				if(newPass.equals(conPass)) {
+					Login.updateUser(userUsername, conPass, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+					txtCurrentPass.setText(null);
+					txtNewPass.setText(null);
+					txtConfirmedPass.setText(null);
+					lblError.setText("");
+					
+					pnlEditProfileContent.setVisible(false);
+					pnlMainMenuContent.setVisible(true);
+					pnlViewAppContent.setVisible(false);
+					pnlMakeAppContent.setVisible(false);
+					
+					pnlEditProfile.setBackground(SystemColor.activeCaption);
+					pnlMainMenu.setBackground(SystemColor.textHighlight);
+					pnlViewApp.setBackground(SystemColor.activeCaption);
+					pnlMakeApp.setBackground(SystemColor.activeCaption);
+					return;
+				}
+				
+				lblError.setText("idk what u did bro");
+				
 			}
 		});
 	}

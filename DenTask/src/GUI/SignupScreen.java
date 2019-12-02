@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import Classes.Database;
 import Classes.Login;
 import Classes.User;
 
