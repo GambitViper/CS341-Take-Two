@@ -31,6 +31,7 @@ public class LoginScreen extends JFrame{
 	private JFrame frame;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
+	private JLabel lblError;
 
 	
 	/**
@@ -90,47 +91,7 @@ public class LoginScreen extends JFrame{
 		btnLogin.setBounds(376, 202, 185, 30);
 		frame.getContentPane().add(btnLogin);
 		
-		/*
-		 * LOGIN BUTTON TRIGGER
-		 */
-		btnLogin.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-				String myPass = String.valueOf(txtPassword.getPassword());
-				String confirmation = "didnt return";
-				System.out.println(myPass);
-				System.out.println(txtUsername.getText());
-				int uType = 3;
-				
-				
-				try {
-					confirmation = Login.loginUser(txtUsername.getText().toLowerCase(), myPass);
-					uType = Login.getUserType(txtUsername.getText().toLowerCase());
-					
-					if(confirmation.equals("1") && uType == 3) {
-						System.out.println("PATIENT DASH");
-						Dashboard dash = new Dashboard();
-						dash.setUser(txtUsername.getText());
-						dash.setVisible(true);
-						frame.dispose();
-					} else if(confirmation.equals("1") && (uType == 2 || uType == 1)) {
-						System.out.println("EMP DASH");
-						frame.dispose();
-						EmployeeDashboard edash = new EmployeeDashboard();
-						edash.setVisible(true);
-					} else if(confirmation.equals("1") && (uType == 0)) {
-						System.out.println("ADMIN DASH");
-						frame.dispose();
-						AdminDashboard adash = new AdminDashboard();
-						adash.setVisible(true);	
-					}
-					
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
+		
 		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 22));
@@ -162,20 +123,9 @@ public class LoginScreen extends JFrame{
 		JLabel lblClickToCreate = new JLabel("Click to create new account");
 		lblClickToCreate.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblClickToCreate.setHorizontalAlignment(SwingConstants.CENTER);
-		lblClickToCreate.setBounds(376, 254, 185, 31);
+		lblClickToCreate.setBounds(376, 267, 185, 31);
 		frame.getContentPane().add(lblClickToCreate);
 
-		/*
-		 * CREATE ACCOUNT TRIGGER
-		 */
-		lblClickToCreate.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				frame.dispose();
-				SignupScreen signup = new SignupScreen();
-				signup.setVisible(true);
-			}
-		});
 		
 		JLabel Logo = new JLabel("");
 		Logo.setBounds(25, 49, 230, 194);
@@ -189,8 +139,72 @@ public class LoginScreen extends JFrame{
 		
 		
 		frame.getContentPane().add(lblWelcome);
+		
+		JLabel lblError = new JLabel("");
+		lblError.setForeground(Color.RED);
+		lblError.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblError.setHorizontalAlignment(SwingConstants.CENTER);
+		lblError.setBounds(337, 239, 264, 22);
+		frame.getContentPane().add(lblError);
 		frame.setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		/*
+		 * LOGIN BUTTON TRIGGER
+		 */
+		btnLogin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				
+				String myPass = String.valueOf(txtPassword.getPassword());
+				String confirmation = "didnt return";
+				System.out.println(myPass);
+				System.out.println(txtUsername.getText());
+				int uType = 3;
+				
+				
+				try {
+					confirmation = Login.loginUser(txtUsername.getText().toLowerCase(), myPass);
+					uType = Login.getUserType(txtUsername.getText().toLowerCase());
+					
+					if(confirmation.equals("1") && uType == 3) {
+						Dashboard dash = new Dashboard();
+						dash.setUser(txtUsername.getText());
+						dash.setVisible(true);
+						frame.dispose();
+						return;
+					} else if(confirmation.equals("1") && (uType == 2 || uType == 1)) {
+						frame.dispose();
+						EmployeeDashboard edash = new EmployeeDashboard();
+						edash.setVisible(true);
+						return;
+					} else if(confirmation.equals("1") && (uType == 0)) {
+						frame.dispose();
+						AdminDashboard adash = new AdminDashboard();
+						adash.setVisible(true);	
+						return;
+					}
+					
+					lblError.setText("Username or Password Invalid!");
+					
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		/*
+		 * CREATE ACCOUNT TRIGGER
+		 */
+		lblClickToCreate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				frame.dispose();
+				SignupScreen signup = new SignupScreen();
+				signup.setVisible(true);
+			}
+		});
+		
 	}
 
 	/*

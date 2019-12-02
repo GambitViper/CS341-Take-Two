@@ -82,6 +82,19 @@ public class Dashboard {
 		connector.disconnect();
 	}
 	
+	public void burger() {
+
+		pnlEditProfileContent.setVisible(false);
+		pnlMainMenuContent.setVisible(true);
+		pnlViewAppContent.setVisible(false);
+		pnlMakeAppContent.setVisible(false);
+		
+		pnlEditProfile.setBackground(SystemColor.activeCaption);
+		pnlMainMenu.setBackground(SystemColor.textHighlight);
+		pnlViewApp.setBackground(SystemColor.activeCaption);
+		pnlMakeApp.setBackground(SystemColor.activeCaption);
+	}
+	
 	/**
 	 * Create the application.
 	 */
@@ -295,29 +308,42 @@ public class Dashboard {
 				
 				System.out.println(currentPass + " " + newPass + " " + conPass);
 				
-				if(!currentPass.isEmpty() && !newPass.isEmpty() && !conPass.isEmpty()) {
-					try {
-						if(!Login.loginUser(userUsername, currentPass).equals("1")) {
-							lblError.setText("Current Password is incorrect");
-							return;
-						} else if(!newPass.equals(conPass)) {
-							lblError.setText("New Passwords do not match");
-							return;
-						} else if(currentPass.equals(newPass)) {
-							lblError.setText("Current Password and New Password can't be the same");
-							return;
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
+				if(currentPass.equals("")) {
+					lblError.setText("Fill in current password to save changes");
+					return;
+				}
+				try {
+					if(!Login.loginUser(userUsername, currentPass).equals("1")) {
+						lblError.setText("Current password doesn't match database");
 						return;
 					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					return;
 				}
 				
-				if(currentPass.isEmpty()) {
+				if(newPass.equals("") && conPass.equals("")) {
 					Login.updateUser(userUsername, null, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
-				} else {
-					Login.updateUser(userUsername, conPass, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+					return;
 				}
+				
+				if(!newPass.equals(conPass)) {
+					lblError.setText("New Passwords do not match");
+					return;
+				}
+				
+				if(currentPass.equals(newPass)) {
+					lblError.setText("New password can not be the same as old password");
+					return;
+				}
+				
+				if(newPass.equals(conPass)) {
+					Login.updateUser(userUsername, conPass, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+					return;
+				}
+				
+				lblError.setText("idk what u did bro");
+				
 			}
 		});
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -328,7 +354,7 @@ public class Dashboard {
 		lblError.setForeground(Color.RED);
 		lblError.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
-		lblError.setBounds(0, 484, 846, 54);
+		lblError.setBounds(12, 484, 822, 54);
 		pnlEditProfileContent.add(lblError);
 		
 				pnlEditProfileContent.setVisible(false);

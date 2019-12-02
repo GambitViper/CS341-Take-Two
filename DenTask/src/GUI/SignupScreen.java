@@ -106,7 +106,6 @@ public class SignupScreen {
 	 */
 	public SignupScreen() {
 		initialize();
-		
 	}
 
 	/**
