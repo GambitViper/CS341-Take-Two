@@ -44,7 +44,7 @@ public class Login {
 		String createDate = LocalDate.now().toString();
 		String hash = md5(password, createDate);
 
-		dataConnector.insertUser(username, hash, firstName, lastName, email, phoneNumber, createDate, 3);
+		dataConnector.insertUser(username, hash, firstName, lastName, email, phoneNumber, 3);
 		dataConnector.disconnect();
 		return;
 	}
