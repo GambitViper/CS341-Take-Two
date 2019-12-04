@@ -400,6 +400,12 @@ public class Dashboard {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				profileFiller();
+				
+				txtCurrentPass.setText(null);
+				txtNewPass.setText(null);
+				txtConfirmedPass.setText(null);
+				lblError.setText("");
+				
 				pnlEditProfileContent.setVisible(true);
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
