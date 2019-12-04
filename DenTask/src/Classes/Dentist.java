@@ -12,6 +12,11 @@ public class Dentist extends User {
 		return this.availability;
 	}
 	
+	public boolean isAvailable(String day, int time) {
+		HashMap<String, int[]> avail = getAvailability();
+		return avail.get(day)[time - 8] == 1;
+	}
+	
 	public Dentist setDayAvailability(String day, int[] times) {
 		HashMap<String, int[]> newAvailability = this.getAvailability();
 		if(newAvailability.containsKey(day)) {
