@@ -232,8 +232,8 @@ public class Database {
 	 * @param userType - integer value of the desired user type
 	 * @return - a LinkedList of Users of the specified type
 	 */
-	public LinkedList<User> getUser(int userType) {
-		LinkedList<User> users = new LinkedList<>();
+	public <T extends User> LinkedList<T> getUser(int userType) {
+		LinkedList<T> users = new LinkedList<>();
 		try {
 			// Use the connection to prepare query statement using the specified user type
 			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ?");
@@ -534,8 +534,6 @@ public class Database {
 	/**
 	 * Method to insert the weekly Availability for the entire week for an Employee
 	 * 
-	 * --NEEDS TO BE UPDATED TO USE THE insertDailyAvailability METHOD--
-	 * 
 	 * @param username     - username of the Employee User
 	 * @param availability - HashMap relating day of week to its availability bitmap
 	 * @return - return the HashMap representation of the User's Availability (Taken
@@ -557,9 +555,19 @@ public class Database {
 		return avail;
 	}
 
+	/**
+	 * Method to update an Employee's Availability for a specific day of the week
+	 * 
+	 * @param username - username of the Employee
+	 * @param dayOfWeek - day of the week
+	 * @param startTime - time the Employee's shift starts
+	 * @param endTime - time the Employee's shift ends
+	 * @return - returns the bitmap representation of the Employee's shift
+	 */
 	public int[] updateDailyAvailability(String username, String dayOfWeek, String startTime, String endTime) {
 		int[] hours = {};
 		try {
+			//Use the connection to prepare the query string using the input parameters
 			PreparedStatement stmt = connection.prepareStatement(
 					"UPDATE Availability SET StartTime = ?, EndTime = ? WHERE UserID = ? AND DayOfWeek = ?;");
 			stmt.setString(1, startTime);
@@ -592,7 +600,7 @@ public class Database {
 	 * @param availability - HashMap representation of the Employee's availability
 	 * @return - the updated HashMap representation of the Employee's availability
 	 */
-	public HashMap<String, int[]> updateAvailability(String username, HashMap<String, int[]> availability) {
+	public HashMap<String, int[]> updateFullAvailability(String username, HashMap<String, int[]> availability) {
 		HashMap<String, int[]> newAvail = new HashMap<>();
 
 		// for each day of the week, update the database based on the input parameters
@@ -684,34 +692,35 @@ public class Database {
 	 * @return - the User object that was generated
 	 * @throws SQLException - if there was an error reading the ResultSet
 	 */
-	private User resultSetToUser(ResultSet r) throws SQLException {
-		User u = null;
+	@SuppressWarnings("unchecked")
+	private <T extends User> T resultSetToUser(ResultSet r) throws SQLException {
+		T user = null;
 		int type = r.getInt("UserType");
 
 		// Create a different inherited User object based on user type
 		if (type == 0) {
-			u = new Admin();
+			user = (T) new Admin();
 		} else if (type == 1) {
-			u = new Dentist();
+			user = (T) new Dentist();
 		} else if (type == 2) {
-			u = new Hygienist();
+			user = (T) new Hygienist();
 		} else {
-			u = new Patient();
+			user = (T) new Patient();
 		}
 
 		// Set user attributes
-		u.setUserName(r.getString("Username")).setPassword(r.getString("Password")).setUserType(r.getInt("UserType"))
+		user.setUserName(r.getString("Username")).setPassword(r.getString("Password")).setUserType(r.getInt("UserType"))
 				.setFirstName(r.getString("FirstName")).setLastName(r.getString("LastName"))
 				.setEmail(r.getString("Email")).setPhoneNum(r.getString("PhoneNumber"))
 				.setCreateDate(r.getString("CreateDate"));
 		if (r.getString("DeleteDate") == null) {
-			u.setIsDeleted(false);
+			user.setIsDeleted(false);
 		} else {
-			u.setIsDeleted(true);
+			user.setIsDeleted(true);
 		}
 
 		// Return the User object
-		return u;
+		return user;
 	}
 
 	/**
