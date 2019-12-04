@@ -1,7 +1,5 @@
 package Classes;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -67,7 +65,7 @@ public class AppointmentCalendar {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<Dentist> dentists = dataConnector.getUser(1); //Dentist == 1
+		LinkedList<Dentist> dentists = dataConnector.getUser(1, true); //Dentist == 1
 		
 		dentistsDB = dentists;
 		
@@ -80,33 +78,13 @@ public class AppointmentCalendar {
 		}
 		
 		dataConnector.disconnect();
-		
-<<<<<<< HEAD
-	}
-
-	public static void fillDentists() {
-		Database dataConnector = new Database();
-		dataConnector.connect();
-		
-		LinkedList<User> dentists = dataConnector.getUser(1, true); //Dentist == 1
-		
-		System.out.println(dentists.toString());
-		dentistsDB = dentists;
-		dataConnector.disconnect();
-=======
-		System.out.println(dentistsDB);
->>>>>>> 74e3a85e0b93fa9dfc4261c3c3dbbee142b1bb8d
 	}
 	
 	public static void fillHygienists() {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-<<<<<<< HEAD
-		LinkedList<User> hygienists = dataConnector.getUser(2, true); //Hygienist == 2
-=======
-		LinkedList<Hygienist> hygienists = dataConnector.getUser(2); //Hygienist == 2
->>>>>>> 74e3a85e0b93fa9dfc4261c3c3dbbee142b1bb8d
+		LinkedList<Hygienist> hygienists = dataConnector.getUser(2, true); //Hygienist == 2
 		
 		hygienistsDB = hygienists;
 		
@@ -130,7 +108,7 @@ public class AppointmentCalendar {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<Appointment> appointmentsDB = dataConnector.getAllAppointments();
+		LinkedList<Appointment> appointmentsDB = dataConnector.getAllAppointments(true);
 		for(Appointment appt : appointmentsDB) {
 			if(newAppointments.containsKey(appt.getDate().toString())) {
 				//Date in calendar already contains some existing appointments
