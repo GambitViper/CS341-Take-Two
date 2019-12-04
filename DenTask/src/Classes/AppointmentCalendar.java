@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author Zach Baklund
@@ -15,14 +16,22 @@ public class AppointmentCalendar {
 
 	private static HashMap<String, ArrayList<Appointment>> appointments = new HashMap<>();
 	
-	private static ArrayList<Dentist> employees = new ArrayList<>();
+	private static LinkedList<User> dentistsDB = new LinkedList<>();
+	private static LinkedList<User> hygienistsDB = new LinkedList<>();
+	
+	private static LinkedList<Dentist> dentists = new LinkedList<>();
+	private static LinkedList<Hygienist> hygienists = new LinkedList<>();
 	
 	public static HashMap<String, ArrayList<Appointment>> getAppointments() {
 		return appointments;
 	}
 	
-	public static ArrayList<Dentist> getEmployees() {
-		return employees;
+	public static LinkedList<User> getDentists() {
+		return dentistsDB;
+	}
+	
+	public static LinkedList<User> getHygienists() {
+		return hygienistsDB;
 	}
 
 	/**
@@ -47,42 +56,13 @@ public class AppointmentCalendar {
 			System.out.println(Arrays.toString(calendarByMonth[i]));
 		}
 
-		ArrayList<Appointment> testApps = new ArrayList<Appointment>();
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
-				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(10));
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
-				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(11));
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
-				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(12));
-		testApps.add(new Appointment().setPatient("testPatient1").setEmployee("dentest").setAppType("testApp1")
-				.setAppDetail("abcdefg").setDate(LocalDate.of(year, month, 24)).setTime(13));
+		fillDentists();
+		fillHygienists();
 		
-		fillAppointments(testApps);
+		fillListWithAvailability();
 		
-		Dentist dentest = new Dentist();
-		dentest = (Dentist) Login.registerUser(dentest, "dentest", "test1234");
-		int[] avail = { 1, 1, 1, 0, 1, 1, 1, 1, 1};
-		dentest.setDayAvailability("Monday", avail)
-		       .setDayAvailability("Tuesday", avail)
-		       .setDayAvailability("Wednesday", avail)
-		       .setDayAvailability("Thursday", avail)
-		       .setDayAvailability("Friday", avail);
-		System.out.println(dentest);
-		
-		addEmployee(dentest);
-		
-		Dentist dentest2 = new Dentist();
-		dentest2 = (Dentist) Login.registerUser(dentest2, "dentest", "test1234");
-		int[] avail2 = { 1, 1, 1, 0, 1, 1, 1, 1, 1};
-		dentest.setDayAvailability("Monday", avail2)
-		       .setDayAvailability("Tuesday", avail2)
-		       .setDayAvailability("Wednesday", avail2)
-		       .setDayAvailability("Thursday", avail2)
-		       .setDayAvailability("Friday", avail2);
-		System.out.println(dentest2);
-		
-		addEmployee(dentest2);
-		
+		System.out.println(dentists);
+		System.out.println(hygienists);
 		printAppointments();
 		
 		
@@ -90,10 +70,71 @@ public class AppointmentCalendar {
 
 	}
 	
-	public static void addEmployee(Dentist emp) {
-		ArrayList<Dentist> newEmps = getEmployees();
-		newEmps.add(emp);
-		employees = newEmps;
+	private static void fillListWithAvailability() {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		
+		for(User dentist: dentistsDB) {
+			HashMap<String, int[]> avail = dataConnector.getAvailability(dentist.getUsername());
+			System.out.println(avail.toString());
+			Dentist newDentist = new Dentist();
+			newDentist.setUserName(dentist.getUsername())
+			          .setPassword(dentist.getPassword())
+			          .setUserType(dentist.getUserType())
+			          .setFirstName(dentist.getFirstName())
+			          .setLastName(dentist.getLastName())
+			          .setEmail(dentist.getEmail())
+			          .setPhoneNum(dentist.getPhoneNum())
+			          .setCreateDate(dentist.getCreateDate());
+			for(String day : avail.keySet()) {
+				newDentist.setDayAvailability(day, avail.get(day));
+			}
+			dentists.add(newDentist);
+		}
+		
+		for(User hygienist: hygienistsDB) {
+			HashMap<String, int[]> avail2 = dataConnector.getAvailability(hygienist.getUsername());
+			System.out.println(avail2.toString());
+			Hygienist newHygienist = new Hygienist();
+			newHygienist.setUserName(hygienist.getUsername())
+			          .setPassword(hygienist.getPassword())
+			          .setUserType(hygienist.getUserType())
+			          .setFirstName(hygienist.getFirstName())
+			          .setLastName(hygienist.getLastName())
+			          .setEmail(hygienist.getEmail())
+			          .setPhoneNum(hygienist.getPhoneNum())
+			          .setCreateDate(hygienist.getCreateDate());
+			for(String day : avail2.keySet()) {
+				newHygienist.setDayAvailability(day, avail2.get(day));
+			}
+			hygienists.add(newHygienist);
+		}
+		
+		dataConnector.disconnect();
+		
+	}
+
+	public static void fillDentists() {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		
+		LinkedList<User> dentists = dataConnector.getUser(1); //Dentist == 1
+		
+		System.out.println(dentists.toString());
+		dentistsDB = dentists;
+		dataConnector.disconnect();
+	}
+	
+	public static void fillHygienists() {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		
+		LinkedList<User> hygienists = dataConnector.getUser(2); //Hygienist == 2
+		
+		System.out.println(hygienists.toString());
+		hygienistsDB = hygienists;
+		dataConnector.disconnect();
+		
 	}
 
 	public static void fillAppointments(ArrayList<Appointment> apps) {

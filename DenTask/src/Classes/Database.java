@@ -402,10 +402,11 @@ public class Database {
 		HashMap<String, int[]> availability = new HashMap<>();
 		try {
 			PreparedStatement stmt = connection
-					.prepareStatement("SELECT DayOfWeek, StartTime, EndTime FROM Availability WHERE Username = ?;");
+					.prepareStatement("SELECT DayOfWeek, StartTime, EndTime FROM Availability WHERE UserID = ?;");
 			stmt.setString(1, username);
 			ResultSet r = stmt.executeQuery();
 			while (r.next()) {
+				System.out.println(Arrays.toString(timesToHours(r.getString("StartTime"), r.getString("EndTime"))));
 				availability.put(r.getString("DayOfWeek"),
 						timesToHours(r.getString("StartTime"), r.getString("EndTime")));
 			}
