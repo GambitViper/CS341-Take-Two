@@ -14,23 +14,20 @@ import java.util.LinkedList;
  */
 public class AppointmentCalendar {
 
-	private static HashMap<String, ArrayList<Appointment>> appointments = new HashMap<>();
+	private static HashMap<String, LinkedList<Appointment>> appointments = new HashMap<>();
 	
-	private static LinkedList<User> dentistsDB = new LinkedList<>();
-	private static LinkedList<User> hygienistsDB = new LinkedList<>();
+	private static LinkedList<Dentist> dentistsDB = new LinkedList<>();
+	private static LinkedList<Hygienist> hygienistsDB = new LinkedList<>();
 	
-	private static LinkedList<Dentist> dentists = new LinkedList<>();
-	private static LinkedList<Hygienist> hygienists = new LinkedList<>();
-	
-	public static HashMap<String, ArrayList<Appointment>> getAppointments() {
+	public static HashMap<String, LinkedList<Appointment>> getAppointments() {
 		return appointments;
 	}
 	
-	public static LinkedList<User> getDentists() {
+	public static LinkedList<Dentist> getDentists() {
 		return dentistsDB;
 	}
 	
-	public static LinkedList<User> getHygienists() {
+	public static LinkedList<Hygienist> getHygienists() {
 		return hygienistsDB;
 	}
 
@@ -59,121 +56,128 @@ public class AppointmentCalendar {
 		fillDentists();
 		fillHygienists();
 		
-		fillListWithAvailability();
-		
-		System.out.println(dentists);
-		System.out.println(hygienists);
+		fillAppointments();
 		printAppointments();
 		
-		
-		
-
-	}
-	
-	private static void fillListWithAvailability() {
-		Database dataConnector = new Database();
-		dataConnector.connect();
-		
-		for(User dentist: dentistsDB) {
-			HashMap<String, int[]> avail = dataConnector.getAvailability(dentist.getUsername());
-			System.out.println(avail.toString());
-			Dentist newDentist = new Dentist();
-			newDentist.setUserName(dentist.getUsername())
-			          .setPassword(dentist.getPassword())
-			          .setUserType(dentist.getUserType())
-			          .setFirstName(dentist.getFirstName())
-			          .setLastName(dentist.getLastName())
-			          .setEmail(dentist.getEmail())
-			          .setPhoneNum(dentist.getPhoneNum())
-			          .setCreateDate(dentist.getCreateDate());
-			for(String day : avail.keySet()) {
-				newDentist.setDayAvailability(day, avail.get(day));
-			}
-			dentists.add(newDentist);
-		}
-		
-		for(User hygienist: hygienistsDB) {
-			HashMap<String, int[]> avail2 = dataConnector.getAvailability(hygienist.getUsername());
-			System.out.println(avail2.toString());
-			Hygienist newHygienist = new Hygienist();
-			newHygienist.setUserName(hygienist.getUsername())
-			          .setPassword(hygienist.getPassword())
-			          .setUserType(hygienist.getUserType())
-			          .setFirstName(hygienist.getFirstName())
-			          .setLastName(hygienist.getLastName())
-			          .setEmail(hygienist.getEmail())
-			          .setPhoneNum(hygienist.getPhoneNum())
-			          .setCreateDate(hygienist.getCreateDate());
-			for(String day : avail2.keySet()) {
-				newHygienist.setDayAvailability(day, avail2.get(day));
-			}
-			hygienists.add(newHygienist);
-		}
-		
-		dataConnector.disconnect();
-		
+		LinkedList<String> selectList = employeeSelectList("Friday", "2019-12-06", 11);
+		System.out.println(selectList);
 	}
 
 	public static void fillDentists() {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<User> dentists = dataConnector.getUser(1); //Dentist == 1
+		LinkedList<Dentist> dentists = dataConnector.getUser(1); //Dentist == 1
 		
-		System.out.println(dentists.toString());
 		dentistsDB = dentists;
+		
+		for(Dentist dentist: dentistsDB) {
+			HashMap<String, int[]> avail = dataConnector.getAvailability(dentist.getUsername());
+			System.out.println(avail.toString());
+			for(String day : avail.keySet()) {
+				dentist.setDayAvailability(day, avail.get(day));
+			}
+		}
+		
 		dataConnector.disconnect();
+		
+		System.out.println(dentistsDB);
 	}
 	
 	public static void fillHygienists() {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<User> hygienists = dataConnector.getUser(2); //Hygienist == 2
+		LinkedList<Hygienist> hygienists = dataConnector.getUser(2); //Hygienist == 2
 		
-		System.out.println(hygienists.toString());
 		hygienistsDB = hygienists;
+		
+		for(Hygienist hygienist: hygienistsDB) {
+			HashMap<String, int[]> avail = dataConnector.getAvailability(hygienist.getUsername());
+			System.out.println(avail.toString());
+			for(String day : avail.keySet()) {
+				hygienist.setDayAvailability(day, avail.get(day));
+			}
+		}
+		
 		dataConnector.disconnect();
+		
+		System.out.println(hygienistsDB);
 		
 	}
 
-	public static void fillAppointments(ArrayList<Appointment> apps) {
-		HashMap<String, ArrayList<Appointment>> newAppointments = getAppointments();
-		for(int i = 0; i < apps.size(); i++) {
-			Appointment newApp = apps.get(i);
-			System.out.println(newApp.getDate().toString() + " " + newApp.getPatient() + " " + newApp.getTime());
-			if(newAppointments.containsKey(newApp.getDate().toString())) {
-				//Date in calendar already contains appointments
-				ArrayList<Appointment> currentApps = newAppointments.get(newApp.getDate().toString());
-				currentApps.add(newApp);
-				newAppointments.put(newApp.getDate().toString(), currentApps);
+	public static void fillAppointments() {
+		HashMap<String, LinkedList<Appointment>> newAppointments = getAppointments();
+		
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		
+		LinkedList<Appointment> appointmentsDB = dataConnector.getAllAppointments();
+		for(Appointment appt : appointmentsDB) {
+			if(newAppointments.containsKey(appt.getDate().toString())) {
+				//Date in calendar already contains some existing appointments
+				LinkedList<Appointment> currentAppts = newAppointments.get(appt.getDate().toString());
+				currentAppts.add(appt);
+				newAppointments.put(appt.getDate().toString(), currentAppts);
 			}else {
 				//Date in calendar does not already contain appointments
-				ArrayList<Appointment> newApps = new ArrayList<>();
-				newApps.add(newApp);
-				newAppointments.put(newApp.getDate().toString(), newApps);
+				LinkedList<Appointment> newAppts = new LinkedList<>();
+				newAppts.add(appt);
+				newAppointments.put(appt.getDate().toString(), newAppts);
 			}
 		}
+
 		appointments = newAppointments;
+		dataConnector.disconnect();
 	}
 	
-//	public static ArrayList<String> employeeSelectList(String date, int time) {
-//		ArrayList<String> selectList = new ArrayList<>();
-//		ArrayList<Dentist> employees = getEmployees();
-//		for(int i = 0; i < employees.size(); i++) {
-//			Dentist employee = employees.get(i);
-//			HashMap<String, int[]> avail = employee.getAvailability();
-//			for(String day : avail.keySet()) {
-//				if(avail.get(day)[time - 8] == 1) {
-//					//Available at day time
-//				}
-//			}
-//		}
-//	}
+	public static boolean notScheduled(String employee, String date, int time) {
+		HashMap<String, LinkedList<Appointment>> appointments = getAppointments();
+		LinkedList<Appointment> apptsOnDate = appointments.get(date);
+		for(Appointment appt : apptsOnDate) {
+			if(appt.getEmployee().equals(employee)) {
+				if(appt.getTime() == time) {
+					//Employee has a scheduled appointment at chosen time
+					return false;
+				}
+			}
+		}	
+		return true;
+	}
+	
+	public static LinkedList<String> employeeSelectList(String dayOfWeek, String date, int time) {
+		LinkedList<String> selectList = new LinkedList<>();
+		LinkedList<Dentist> dentists = getDentists();
+		LinkedList<Hygienist> hygienists = getHygienists();
+		
+		//Add dentists to selectList
+		for(Dentist dentist : dentists) {
+			//Dentist is available during the week at this time
+			if(dentist.isAvailable(dayOfWeek, time)) {
+				//Check if already scheduled appt at that time
+				if(notScheduled(dentist.getUsername(), date, time)) {
+					selectList.add("Dr " + dentist.getFirstName() + " " + dentist.getLastName());
+				}
+			}
+		}
+		
+		//Add hygienists to selectList
+		for(Hygienist hygienist : hygienists) {
+			//Hygienist is available during the week at this time
+			if(hygienist.isAvailable(dayOfWeek, time)) {
+				//Check if already scheduled appt at that time
+				if(notScheduled(hygienist.getUsername(), date, time)) {
+					selectList.add(hygienist.getFirstName() + " " + hygienist.getLastName());
+				}
+			}
+		}
+		
+		return selectList;
+	}
 	
 	private static void printAppointments() {
 		StringBuilder printStr = new StringBuilder();
-		HashMap<String, ArrayList<Appointment>> apps = getAppointments();
+		HashMap<String, LinkedList<Appointment>> apps = getAppointments();
 		printStr.append("Appointments: ");
 		for(String key : apps.keySet()) {
 			printStr.append("\n" + key + apps.get(key));
