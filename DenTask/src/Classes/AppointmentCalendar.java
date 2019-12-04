@@ -118,7 +118,7 @@ public class AppointmentCalendar {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<User> dentists = dataConnector.getUser(1); //Dentist == 1
+		LinkedList<User> dentists = dataConnector.getUser(1, true); //Dentist == 1
 		
 		System.out.println(dentists.toString());
 		dentistsDB = dentists;
@@ -129,7 +129,7 @@ public class AppointmentCalendar {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<User> hygienists = dataConnector.getUser(2); //Hygienist == 2
+		LinkedList<User> hygienists = dataConnector.getUser(2, true); //Hygienist == 2
 		
 		System.out.println(hygienists.toString());
 		hygienistsDB = hygienists;

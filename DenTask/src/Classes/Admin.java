@@ -11,7 +11,7 @@ public class Admin extends User{
 		printStr.append("Email: " + this.getEmail() + "\n");
 		printStr.append("PhoneNum: " + this.getPhoneNum() + "\n");
 		printStr.append("CreateDate: " + this.getCreateDate() + "\n");
-		printStr.append("DeleteDate: " + this.getIsDeleted() + "\n");
+		printStr.append("Active: " + !this.getIsDeleted() + "\n");
 		return printStr.toString();
 	}
 }

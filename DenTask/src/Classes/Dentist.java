@@ -36,7 +36,7 @@ public class Dentist extends User {
 		printStr.append("PhoneNum: " + this.getPhoneNum() + "\n");
 		printStr.append("Availability: {" + this.getAvailabilityString() + "\n}\n");
 		printStr.append("CreateDate: " + this.getCreateDate() + "\n");
-		printStr.append("DeleteDate: " + this.getIsDeleted() + "\n");
+		printStr.append("Active: " + !this.getIsDeleted() + "\n");
 		return printStr.toString();
 	}
 

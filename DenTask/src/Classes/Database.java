@@ -25,7 +25,7 @@ public class Database {
 	public static void main(String args[]) {
 		Database db = new Database();
 		db.connect();
-		
+
 		db.disconnect();
 	}
 
@@ -98,7 +98,7 @@ public class Database {
 			stmt.executeUpdate();
 
 			u = getUser(username);
-			System.out.println("Succesfully created User: " + username);
+			System.out.format("Succesfully created User: %s\n", username);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -115,28 +115,34 @@ public class Database {
 	 */
 	public User updateUser(User u) {
 		try {
-			// Use the connection to prepare the query string using input User's values
-			PreparedStatement stmt = connection.prepareStatement(
-					"UPDATE User SET Password = ?, FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ? WHERE Username = ?;");
-			stmt.setString(1, u.getPassword());
-			stmt.setString(2, u.getFirstName());
-			stmt.setString(3, u.getLastName());
-			stmt.setString(4, u.getEmail());
-			stmt.setString(5, u.getPhoneNum());
-			stmt.setString(6, u.getUsername());
-			// Execute query and record the number of rows affected
-			int rowsAffected = stmt.executeUpdate();
+			// Check to see if the input User's information is different from the
+			// information stored in the database
+			User uDb = getUser(u.getUsername());
+			if (!u.equals(uDb)) {
+				// Use the connection to prepare the query string using input User's values
+				PreparedStatement stmt = connection.prepareStatement(
+						"UPDATE User SET Password = ?, FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ? WHERE Username = ?;");
+				stmt.setString(1, u.getPassword());
+				stmt.setString(2, u.getFirstName());
+				stmt.setString(3, u.getLastName());
+				stmt.setString(4, u.getEmail());
+				stmt.setString(5, u.getPhoneNum());
+				stmt.setString(6, u.getUsername());
+				// Execute query and record the number of rows affected
+				int rowsAffected = stmt.executeUpdate();
 
-			// The User was updated, at least one value was changed
-			if (rowsAffected == 1) {
-				System.out.format("User: %s successfully updated\n", u.getUsername());
-			}
-			// No values were updated, 0 lines affected
-			else {
-				System.out.format("Could not update %s\n", u.getUsername());
+				// The User was updated, at least one value was changed
+				if (rowsAffected == 1) {
+					System.out.format("User: %s successfully updated\n", u.getUsername());
+				}
+				// No values were updated, 0 lines affected
+				else {
+					System.out.format("Could not update %s\n", u.getUsername());
+				}
+			} else {
+				System.out.format("No changes made to User: %s\n", u.getUsername());
 			}
 		} catch (SQLException e) {
-			System.out.println("here bitch");
 			System.out.println(e.getMessage());
 		}
 		// Return the input User object
@@ -163,11 +169,11 @@ public class Database {
 
 			// The DeleteDate of the User was successfully updated in the database
 			if (rowsAffected == 1) {
-				System.out.format("%s was successfully deleted", username);
+				System.out.format("%s was successfully deleted\n", username);
 			}
 			// There were no changes to the database...
 			else {
-				System.out.format("ERROR: %s could not be deleted", username);
+				System.out.format("ERROR: %s could not be deleted\n", username);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -229,14 +235,22 @@ public class Database {
 	/**
 	 * Method to retrieve all Users of a specific type stored in the database
 	 * 
-	 * @param userType - integer value of the desired user type
+	 * @param userType - integer value of the desired user type (0: Admin, 1:
+	 *                 Dentist, 2: Hygienist, 3: Patient)
+	 * @param active   - flag if only active Users are desired (true: only active
+	 *                 Users returned, false: all Users in the system are returned)
 	 * @return - a LinkedList of Users of the specified type
 	 */
-	public <T extends User> LinkedList<T> getUser(int userType) {
+	public <T extends User> LinkedList<T> getUser(int userType, boolean active) {
 		LinkedList<T> users = new LinkedList<>();
 		try {
 			// Use the connection to prepare query statement using the specified user type
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ?");
+			PreparedStatement stmt;
+			if (active) {
+				stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ? AND DeleteDate = NULL;");
+			} else {
+				stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ?;");
+			}
 			stmt.setInt(1, userType);
 			// Execute the query
 			ResultSet r = stmt.executeQuery();
@@ -258,13 +272,20 @@ public class Database {
 	/**
 	 * Method to retrieve all Users stored in the database
 	 * 
+	 * @param active - flag if only active Users are desired (true: only active
+	 *               Users returned, false: all Users in the system are returned)
 	 * @return - a LinkedList of all Users in the system
 	 */
-	public LinkedList<User> getAllUsers() {
+	public LinkedList<User> getAllUsers(boolean active) {
 		LinkedList<User> users = new LinkedList<>();
 		try {
 			// Use the connection to prepare the query
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User;");
+			PreparedStatement stmt;
+			if (active) {
+				stmt = connection.prepareStatement("SELECT * FROM User WHERE DeleteDate = NULL;");
+			} else {
+				stmt = connection.prepareStatement("SELECT * FROM User;");
+			}
 			// Execute the query
 			ResultSet r = stmt.executeQuery();
 
@@ -315,7 +336,8 @@ public class Database {
 			// The query successfully executed and created a new line in the database
 			if (numAffected == 1) {
 				a = getAppointment(patient, employee, date, time);
-				System.out.format("Appointment for %s for %s on %s at %d was created\n", patient, employee, date, time);
+				System.out.format("Appointment for %s with %s on %s at %d was created\n", patient, employee, date,
+						time);
 			}
 			// No changes were made to the database
 			else {
@@ -350,12 +372,12 @@ public class Database {
 
 			// Appointment was successfully updated in the database
 			if (numAffected == 1) {
-				System.out.format("Appointment for %s for %s on %s at %d was successfully deleted", patient, employee,
+				System.out.format("Appointment for %s for %s on %s at %d was successfully deleted\n", patient, employee,
 						date, time);
 			}
 			// No rows affected in the database
 			else {
-				System.out.format("ERROR: could not delete appointment for %s for %s on %s at %d", patient, employee,
+				System.out.format("ERROR: could not delete appointment for %s for %s on %s at %d\n", patient, employee,
 						date, time);
 			}
 		} catch (SQLException e) {
@@ -429,17 +451,27 @@ public class Database {
 	 * Method to retrieve all Appointments scheduled for a specified User
 	 * 
 	 * @param username - username of the desired User
+	 * @param future   - flag if only future appointments are desired (true: returns
+	 *                 only upcomming scheduled Appointments in the future, false:
+	 *                 returns all Appointments in the system including
+	 *                 past/cancelled Appointments)
 	 * @return - a LinkedList of Appointments that are scheduled for the specified
 	 *         User
 	 */
-	public LinkedList<Appointment> getAppointments(String username) {
+	public LinkedList<Appointment> getAppointments(String username, boolean future) {
 		LinkedList<Appointment> appts = new LinkedList<>();
 		try {
 			// Use the connection to prepare the query string using the input parameters
-			PreparedStatement stmt = connection
-					.prepareStatement("SELECT * FROM Appointment WHERE PatientID = ? OR EmployeeID = ?;");
+			PreparedStatement stmt;
+			if (future) {
+				stmt = connection.prepareStatement("SELECT * FROM Appointment WHERE (PatientID = ? OR EmployeeID = ?) AND Result IS NULL;");
+			} else {
+				stmt = connection.prepareStatement(
+						"SELECT * FROM Appointment WHERE PatientID = ? OR EmployeeID = ?;");
+			}
 			stmt.setString(1, username);
 			stmt.setString(2, username);
+
 			// Execute the query
 			ResultSet r = stmt.executeQuery();
 
@@ -460,13 +492,22 @@ public class Database {
 	/**
 	 * Method to retrieve all Appointments currently in the database
 	 * 
+	 * @param future - flag if only future appointments are desired (true: returns
+	 *                 only upcomming scheduled Appointments in the future, false:
+	 *                 returns all Appointments in the system including
+	 *                 past/cancelled Appointments
 	 * @return - a LinkedList of all Appointments in the database
 	 */
-	public LinkedList<Appointment> getAllAppointments() {
+	public LinkedList<Appointment> getAllAppointments(boolean future) {
 		LinkedList<Appointment> appts = new LinkedList<>();
 		try {
 			// Use the connection to prepare the query string
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Appointment;");
+			PreparedStatement stmt;
+			if (future) {
+				stmt = connection.prepareStatement("SELECT * FROM Appointment WHERE Result IS NULL;");
+			} else {
+				stmt = connection.prepareStatement("SELECT * FROM Appointment;");
+			}
 			// Execute the query
 			ResultSet r = stmt.executeQuery();
 
@@ -558,16 +599,16 @@ public class Database {
 	/**
 	 * Method to update an Employee's Availability for a specific day of the week
 	 * 
-	 * @param username - username of the Employee
+	 * @param username  - username of the Employee
 	 * @param dayOfWeek - day of the week
 	 * @param startTime - time the Employee's shift starts
-	 * @param endTime - time the Employee's shift ends
+	 * @param endTime   - time the Employee's shift ends
 	 * @return - returns the bitmap representation of the Employee's shift
 	 */
 	public int[] updateDailyAvailability(String username, String dayOfWeek, String startTime, String endTime) {
 		int[] hours = {};
 		try {
-			//Use the connection to prepare the query string using the input parameters
+			// Use the connection to prepare the query string using the input parameters
 			PreparedStatement stmt = connection.prepareStatement(
 					"UPDATE Availability SET StartTime = ?, EndTime = ? WHERE UserID = ? AND DayOfWeek = ?;");
 			stmt.setString(1, startTime);
@@ -647,39 +688,139 @@ public class Database {
 	}
 
 	/**
-	 * Method to hard remove a daily availability from the database. Should only be used for control and testing. The system should not
-	 * use this method, instead cross reference days the Employee has requested off
+	 * Method to hard remove a daily availability from the database. Should only be
+	 * used for control and testing. The system should not use this method, instead
+	 * cross reference days the Employee has requested off
 	 * 
-	 * @param username - username of the Employee User
+	 * @param username  - username of the Employee User
 	 * @param dayOfWeek - day of the week
 	 */
 	public void deleteAvailability(String username, String dayOfWeek) {
 		try {
-			//Use the connection to prepare the query statement using the input parameters
+			// Use the connection to prepare the query statement using the input parameters
 			PreparedStatement stmt = connection
 					.prepareStatement("DELETE FROM Availability WHERE UserID = ? AND DayOfWeek = ?;");
 			stmt.setString(1, username);
 			stmt.setString(2, dayOfWeek);
 
-			//Execute the query and record the number of rows affected
+			// Execute the query and record the number of rows affected
 			int rowsAffected = stmt.executeUpdate();
 
-			//The row was successfully removed from the database
+			// The row was successfully removed from the database
 			if (rowsAffected == 1) {
 				System.out.format("Availability for %s on %s was removed\n", username, dayOfWeek);
 			}
-			//No rows were updated in the database
+			// No rows were updated in the database
 			else {
 				System.out.format("ERROR: Could not remove availablity for %s on %s\n", username, dayOfWeek);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+
 	}
 
 	/**
 	 * RequestOff operations
 	 */
+
+	public void insertRequestOff(String username, String date) {
+		try {
+			PreparedStatement stmt = connection
+					.prepareStatement("INSERT INTO [RequestOff] ([UserID], [OffDate]) VALUES (? , ?)");
+			stmt.setString(1, username);
+			stmt.setString(2, date);
+
+			int rowsAffected = stmt.executeUpdate();
+
+			if (rowsAffected == 1) {
+				System.out.format("%s successfully requested off for %s\n", username, date);
+			} else {
+				System.out.format("ERROR: could not request off %s for %s\n", date, username);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public void deleteRequestOff(String username, String date) {
+		try {
+			PreparedStatement stmt = connection
+					.prepareStatement("DELETE FROM RequestOff WHERE UserID = ? AND OffDate = ?;");
+			stmt.setString(1, username);
+			stmt.setString(2, date);
+
+			int rowsAffected = stmt.executeUpdate();
+
+			if (rowsAffected == 1) {
+				System.out.format("Successfully removed request off for %s on %s\n", username, date);
+			} else {
+				System.out.format("ERROR: could not remove request off for %s on %s\n", date, username);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public LinkedList<String> getUserRequests(String username) {
+		LinkedList<String> dates = new LinkedList<>();
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT OffDate FROM RequestOff WHERE UserID = ?;");
+			stmt.setString(1, username);
+			ResultSet r = stmt.executeQuery();
+
+			while (r.next()) {
+				dates.add(r.getString("OffDate"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return dates;
+	}
+
+	public LinkedList<String> getDateRequests(String date) {
+		LinkedList<String> employees = new LinkedList<>();
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT UserID FROM RequestOff WHERE OffDate = ?;");
+			stmt.setString(1, date);
+			ResultSet r = stmt.executeQuery();
+
+			while (r.next()) {
+				employees.add(r.getString("UserID"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return employees;
+	}
+
+	public HashMap<String, LinkedList<String>> getAllRequests() {
+		HashMap<String, LinkedList<String>> requests = new HashMap<>();
+		LinkedList<String> dates;
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT UserID FROM RequestOff;");
+			ResultSet r = stmt.executeQuery();
+
+			while (r.next()) {
+				dates = new LinkedList<>();
+				String username = r.getString("UserID");
+
+				PreparedStatement subStmt = connection
+						.prepareStatement("SELECT OffDate FROM RequestOff WHERE UserID = ?;");
+				subStmt.setString(1, username);
+				ResultSet subR = subStmt.executeQuery();
+
+				while (subR.next()) {
+					dates.add(subR.getString("OffDate"));
+				}
+
+				requests.put(username, dates);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return requests;
+	}
 
 	/**
 	 * Helper methods
@@ -771,7 +912,8 @@ public class Database {
 	}
 
 	/**
-	 * Helper method that translates the Availbility bitmap into a start/end times as a string
+	 * Helper method that translates the Availbility bitmap into a start/end times
+	 * as a string
 	 * 
 	 * @param hours - bitmap representation of the Employee's shift
 	 * @return - a string of the start and end times separated with a space
@@ -803,8 +945,8 @@ public class Database {
 	 * @return - a string of the format {1 , ... , 1}
 	 */
 	public String bitmapToString(int[] hours) {
-		//Loop through the array and append the value to the return string
-		StringBuilder ret = new StringBuilder("{");
+		// Loop through the array and append the value to the return string
+		StringBuilder ret = new StringBuilder("{ ");
 		for (int i = 0; i < hours.length; i++) {
 			ret.append(hours[i] + " ");
 		}

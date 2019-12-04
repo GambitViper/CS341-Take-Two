@@ -44,7 +44,7 @@ public class Appointment {
 	}
 	
 	// Get Result
-	public String getresult()	{
+	public String getResult()	{
 		return result;
 	}
 
@@ -98,6 +98,7 @@ public class Appointment {
 		printStr.append("AppDetail: " + this.getAppDetail() + "\n");
 		printStr.append("Date: " + this.getDate().toString() + "\n");
 		printStr.append("Time: " + this.getTime() + "\n");
+		printStr.append("Result: " + this.getResult() + "\n");
 		return printStr.toString();
 	}
 
