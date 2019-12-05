@@ -175,57 +175,6 @@ public class AdminDashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
-		JPanel pnlDeleteProfile = new JPanel();
-		pnlDeleteProfile.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlDeleteProfile);
-		pnlDeleteProfile.setLayout(null);
-		
-		JLabel lblEditProfile_1 = new JLabel("Delete Profile");
-		lblEditProfile_1.setFont(new Font("Tahoma", Font.BOLD, 40));
-		lblEditProfile_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEditProfile_1.setBounds(10, 0, 826, 88);
-		pnlDeleteProfile.add(lblEditProfile_1);
-		
-		JButton btnDeleteUser = new JButton("Delete User");
-		btnDeleteUser.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnDeleteUser.setBounds(10, 610, 826, 60);
-		pnlDeleteProfile.add(btnDeleteUser);
-		
-		cboxUsers = new JComboBox();
-		cboxUsers.setBounds(132, 158, 270, 37);
-		pnlDeleteProfile.add(cboxUsers);
-		
-		JLabel lblSelectUser = new JLabel("Select User");
-		lblSelectUser.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblSelectUser.setBounds(132, 133, 110, 23);
-		pnlDeleteProfile.add(lblSelectUser);
-		
-				pnlDeleteProfile.setVisible(false);
-		
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-		
-		JLabel lblMainMenu_1 = new JLabel("Main Menu");
-		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenu_1.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenu_1);
-		pnlMainMenuContent.setVisible(true);
-		
-		JPanel pnlViewAppointments = new JPanel();
-		pnlViewAppointments.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlViewAppointments);
-		pnlViewAppointments.setLayout(null);
-		
-		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
-		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
-		pnlViewAppointments.add(lblMakeAppointment_1);
-		pnlViewAppointments.setVisible(false);
-		
 		JPanel pnlMakeProfiles = new JPanel();
 		pnlMakeProfiles.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlMakeProfiles);
@@ -330,6 +279,58 @@ public class AdminDashboard {
 		lblError.setBounds(75, 84, 642, 47);
 		pnlMakeProfiles.add(lblError);
 		
+		JPanel pnlDeleteProfile = new JPanel();
+		pnlDeleteProfile.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlDeleteProfile);
+		pnlDeleteProfile.setLayout(null);
+		
+		JLabel lblEditProfile_1 = new JLabel("Delete Profile");
+		lblEditProfile_1.setFont(new Font("Tahoma", Font.BOLD, 40));
+		lblEditProfile_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEditProfile_1.setBounds(10, 0, 826, 88);
+		pnlDeleteProfile.add(lblEditProfile_1);
+		
+		JButton btnDeleteUser = new JButton("Delete User");
+		btnDeleteUser.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnDeleteUser.setBounds(145, 324, 571, 80);
+		pnlDeleteProfile.add(btnDeleteUser);
+		
+		cboxUsers = new JComboBox();
+		cboxUsers.setBounds(262, 223, 320, 60);
+		pnlDeleteProfile.add(cboxUsers);
+		
+		JLabel lblSelectUser = new JLabel("Select User");
+		lblSelectUser.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectUser.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblSelectUser.setBounds(262, 155, 320, 57);
+		pnlDeleteProfile.add(lblSelectUser);
+		
+				pnlDeleteProfile.setVisible(false);
+		
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+		
+		JLabel lblMainMenu_1 = new JLabel("Main Menu");
+		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenu_1.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenu_1);
+		pnlMainMenuContent.setVisible(true);
+		
+		JPanel pnlViewAppointments = new JPanel();
+		pnlViewAppointments.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlViewAppointments);
+		pnlViewAppointments.setLayout(null);
+		
+		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
+		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
+		pnlViewAppointments.add(lblMakeAppointment_1);
+		pnlViewAppointments.setVisible(false);
+		
 
 		/***************************
 		 * THIS IS FOR MAIN MENU *
@@ -377,6 +378,16 @@ public class AdminDashboard {
 		lblMakeProfiles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				txtFirstName.setText(null);
+				txtLastName.setText(null);
+				txtEmail.setText(null);
+				txtPhoneNumber.setText(null);
+				txtPassword.setText(null);
+				txtPasswordConfirmed.setText(null);
+				txtUsername.setText(null);
+				radDentist.setSelected(false);
+				radHygienist.setSelected(false);
+				
 				pnlDeleteProfile.setVisible(false);
 				pnlMainMenuContent.setVisible(false);
 				pnlMakeProfiles.setVisible(true);
@@ -399,6 +410,8 @@ public class AdminDashboard {
 				LinkedList<User> userList;
 				
 				userList = popUsers();
+
+				cboxUsers.removeAllItems();
 				
 				for( int i = 0; i < userList.size(); i++) {
 					
@@ -440,6 +453,8 @@ public class AdminDashboard {
 				db.disconnect();
 				
 				userList = popUsers();
+				System.out.println(userList);
+				cboxUsers.removeAllItems();
 				
 				for( int i = 0; i < userList.size(); i++) {
 					
@@ -472,8 +487,29 @@ public class AdminDashboard {
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				login();
+
+				txtFirstName.setText(null);
+				txtLastName.setText(null);
+				txtEmail.setText(null);
+				txtPhoneNumber.setText(null);
+				txtPassword.setText(null);
+				txtPasswordConfirmed.setText(null);
+				txtUsername.setText(null);
+				radDentist.setSelected(false);
+				radHygienist.setSelected(false);
+				
+				pnlDeleteProfile.setVisible(false);
+				pnlMainMenuContent.setVisible(true);
+				pnlMakeProfiles.setVisible(false);
+				pnlViewAppointments.setVisible(false);
+				
+				pnlEditProfile.setBackground(SystemColor.activeCaption);
+				pnlMainMenu.setBackground(SystemColor.textHighlight);
+				pnlViewApp.setBackground(SystemColor.activeCaption);
+				pnlMakeApp.setBackground(SystemColor.activeCaption);
 			}
 		});
+		
 	}
 
 	/**
