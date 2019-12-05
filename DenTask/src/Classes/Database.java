@@ -282,7 +282,7 @@ public class Database {
 			// Use the connection to prepare the query
 			PreparedStatement stmt;
 			if (active) {
-				stmt = connection.prepareStatement("SELECT * FROM User WHERE DeleteDate = NULL;");
+				stmt = connection.prepareStatement("SELECT * FROM User WHERE DeleteDate IS NULL;");
 			} else {
 				stmt = connection.prepareStatement("SELECT * FROM User;");
 			}
@@ -301,7 +301,7 @@ public class Database {
 		// in the system
 		return users;
 	}
-
+	
 	/**
 	 * Appointment operations
 	 */

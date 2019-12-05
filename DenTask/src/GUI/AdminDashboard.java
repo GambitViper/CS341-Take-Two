@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import Classes.ComboItem;
 import Classes.Database;
 import Classes.Login;
 import Classes.User;
@@ -33,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 
 public class AdminDashboard {
 
@@ -47,6 +49,7 @@ public class AdminDashboard {
 	private JPasswordField txtPasswordConfirmed;
 	private JLabel lblError;
 	private JRadioButton radDentist, radHygienist;
+	private JComboBox cboxUsers;
 
 	/**
 	 * Launch the application.
@@ -188,6 +191,15 @@ public class AdminDashboard {
 		btnDeleteUser.setBounds(10, 610, 826, 60);
 		pnlDeleteProfile.add(btnDeleteUser);
 		
+		cboxUsers = new JComboBox();
+		cboxUsers.setBounds(132, 158, 270, 37);
+		pnlDeleteProfile.add(cboxUsers);
+		
+		JLabel lblSelectUser = new JLabel("Select User");
+		lblSelectUser.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSelectUser.setBounds(132, 133, 110, 23);
+		pnlDeleteProfile.add(lblSelectUser);
+		
 				pnlDeleteProfile.setVisible(false);
 		
 		JPanel pnlMainMenuContent = new JPanel();
@@ -318,12 +330,6 @@ public class AdminDashboard {
 		lblError.setBounds(75, 84, 642, 47);
 		pnlMakeProfiles.add(lblError);
 		
-				btnCreateAccount.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						login();
-					}
-				});
-		
 
 		/***************************
 		 * THIS IS FOR MAIN MENU *
@@ -383,14 +389,26 @@ public class AdminDashboard {
 			}
 		});
 		
-		/******************************
-		 * THIS IS FOR DELETE PROFILE *
-		 ******************************/
+		/***********************************
+		 * THIS IS FOR DELETE PROFILE MENU *
+		 ***********************************/
 
 		lblDeleteProfiles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				popUsers();
+				LinkedList<User> userList;
+				
+				userList = popUsers();
+				
+				for( int i = 0; i < userList.size(); i++) {
+					
+					String name = (userList.get(i).getFirstName() + " " + userList.get(i).getLastName());
+					String username = userList.get(i).getUsername();
+					System.out.println(userList.get(i).getUsername());
+					if(!username.equals("admin")) {
+						cboxUsers.addItem(new ComboItem(name, username));
+					}
+				}
 				pnlDeleteProfile.setVisible(true);
 				pnlMainMenuContent.setVisible(false);
 				pnlMakeProfiles.setVisible(false);
@@ -402,7 +420,38 @@ public class AdminDashboard {
 				pnlMakeApp.setBackground(SystemColor.activeCaption);
 			}
 		});
+
+		/******************************
+		 * THIS IS FOR DELETE PROFILE *
+		 ******************************/
 		
+		btnDeleteUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Object item = cboxUsers.getSelectedItem();
+				String val = ((ComboItem)item).getValue();
+				LinkedList<User> userList;
+				
+				Database db = new Database();
+				db.connect();
+				
+				db.deleteUser(val);
+				
+				db.disconnect();
+				
+				userList = popUsers();
+				
+				for( int i = 0; i < userList.size(); i++) {
+					
+					String name = (userList.get(i).getFirstName() + " " + userList.get(i).getLastName());
+					String username = userList.get(i).getUsername();
+					System.out.println(userList.get(i).getUsername());
+					if(!username.equals("admin")) {
+						cboxUsers.addItem(new ComboItem(name, username));
+					}
+				}
+			}
+		});
 		/**********************
 		 * THIS IS FOR LOGOUT *
 		 **********************/
@@ -419,6 +468,12 @@ public class AdminDashboard {
 		/************************************
 		 * THIS IS FOR CREATING NEW ACCOUNT *
 		 ************************************/
+
+		btnCreateAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				login();
+			}
+		});
 	}
 
 	/**
@@ -430,15 +485,16 @@ public class AdminDashboard {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	private void popUsers() {
+	private LinkedList<User> popUsers() {
 		Database db = new Database();
 		db.connect();
 		
 		LinkedList<User> users = new LinkedList<User>();
-		
-		users = db.getAllUsers(true);
-		
+
 		System.out.println(db.getAllUsers(true).toString());
+		
+		return db.getAllUsers(true);
+		
 	}
 	
 	private boolean login() {

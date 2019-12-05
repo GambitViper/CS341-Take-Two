@@ -208,7 +208,10 @@ public class LoginScreen extends JFrame{
 				try {
 					confirmation = Login.loginUser(txtUsername.getText().toLowerCase(), myPass);
 					uType = Login.getUserType(txtUsername.getText().toLowerCase());
-					
+					if(confirmation.equals("This user has been removed")) {
+						lblError.setText("User was deleted");
+						return;
+					}
 					if(confirmation.equals("1") && uType == 3) {
 						Dashboard dash = new Dashboard();
 						dash.setUser(txtUsername.getText());

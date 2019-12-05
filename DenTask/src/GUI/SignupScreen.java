@@ -23,6 +23,8 @@ import Classes.User;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class SignupScreen {
 
@@ -135,6 +137,54 @@ public class SignupScreen {
 		});
 		
 		frame.getContentPane().setLayout(null);
+		
+		txtFirstName = new JTextField();
+		txtFirstName.setColumns(10);
+		txtFirstName.setBounds(315, 47, 114, 28);
+		frame.getContentPane().add(txtFirstName);
+		
+		txtLastName = new JTextField();
+		txtLastName.setColumns(10);
+		txtLastName.setBounds(489, 47, 114, 28);
+		frame.getContentPane().add(txtLastName);
+		
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(315, 104, 114, 28);
+		frame.getContentPane().add(txtEmail);
+		
+		txtPhoneNumber = new JTextField();
+		txtPhoneNumber.setColumns(10);
+		txtPhoneNumber.setBounds(489, 104, 114, 28);
+		frame.getContentPane().add(txtPhoneNumber);
+		
+		txtUsername = new JTextField();
+		txtUsername.setColumns(10);
+		txtUsername.setBounds(315, 161, 114, 28);
+		frame.getContentPane().add(txtUsername);
+		
+		txtPassword = new JPasswordField();
+		txtPassword.setBounds(489, 161, 114, 28);
+		frame.getContentPane().add(txtPassword);
+		
+		txtPassConfirm = new JPasswordField();
+		txtPassConfirm.setBounds(315, 212, 114, 28);
+		frame.getContentPane().add(txtPassConfirm);
+		
+		JButton btnNewAccount = new JButton("Create Account");
+		btnNewAccount.setBounds(475, 202, 142, 39);
+		frame.getContentPane().add(btnNewAccount);
+		btnNewAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(txtFirstName.equals("") || txtLastName.equals("") || txtEmail.equals("") || txtPhoneNumber.equals("") || txtUsername.equals("") || txtPassword.equals("") || txtPassConfirm.equals("")) {
+					lblError.setText("DO NOT LEAVE ANYTHING BLANK");
+				}else if(login()) {
+					frame.dispose();
+					LoginScreen login = new LoginScreen();
+					login.setVisible(true);
+				}
+			}
+		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 50));
 		btnBack.setBounds(10, 252, 41, 46);
 		frame.getContentPane().add(btnBack);
@@ -150,72 +200,35 @@ public class SignupScreen {
 		lblCreateANew.setBounds(0, 13, 288, 28);
 		frame.getContentPane().add(lblCreateANew);
 		
-		JButton btnNewAccount = new JButton("Create Account");
-		btnNewAccount.setBounds(475, 202, 142, 39);
-		frame.getContentPane().add(btnNewAccount);
-		
 		JLabel lblFirstName = new JLabel("First Name");
 		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblFirstName.setBounds(315, 14, 86, 28);
 		frame.getContentPane().add(lblFirstName);
-		
-		txtFirstName = new JTextField();
-		txtFirstName.setColumns(10);
-		txtFirstName.setBounds(315, 47, 114, 28);
-		frame.getContentPane().add(txtFirstName);
 		
 		JLabel lblLastName = new JLabel("Last Name");
 		lblLastName.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblLastName.setBounds(489, 14, 86, 28);
 		frame.getContentPane().add(lblLastName);
 		
-		txtLastName = new JTextField();
-		txtLastName.setColumns(10);
-		txtLastName.setBounds(489, 47, 114, 28);
-		frame.getContentPane().add(txtLastName);
-		
 		JLabel lblUsername = new JLabel("Email");
 		lblUsername.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblUsername.setBounds(315, 76, 86, 28);
 		frame.getContentPane().add(lblUsername);
-		
-		txtEmail = new JTextField();
-		txtEmail.setColumns(10);
-		txtEmail.setBounds(315, 104, 114, 28);
-		frame.getContentPane().add(txtEmail);
 		
 		JLabel lblPassword = new JLabel("Phone Number");
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblPassword.setBounds(489, 77, 114, 28);
 		frame.getContentPane().add(lblPassword);
 		
-		txtPhoneNumber = new JTextField();
-		txtPhoneNumber.setColumns(10);
-		txtPhoneNumber.setBounds(489, 104, 114, 28);
-		frame.getContentPane().add(txtPhoneNumber);
-		
 		JLabel label_1 = new JLabel("Username");
 		label_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		label_1.setBounds(315, 133, 86, 28);
 		frame.getContentPane().add(label_1);
 		
-		txtUsername = new JTextField();
-		txtUsername.setColumns(10);
-		txtUsername.setBounds(315, 161, 114, 28);
-		frame.getContentPane().add(txtUsername);
-		
 		JLabel lblPassword_1 = new JLabel("Password");
 		lblPassword_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblPassword_1.setBounds(489, 133, 86, 28);
 		frame.getContentPane().add(lblPassword_1);
-		
-		txtPassword = new JPasswordField();
-		txtPassword.setBounds(489, 161, 114, 28);
-		frame.getContentPane().add(txtPassword);
-		
-		txtPassConfirm = new JPasswordField();
-		txtPassConfirm.setBounds(315, 212, 114, 28);
-		frame.getContentPane().add(txtPassConfirm);
 		
 		JLabel lblConfirm = new JLabel("Confirm");
 		lblConfirm.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -234,15 +247,6 @@ public class SignupScreen {
 		/*
 		 * New Account Trigger
 		 */
-		btnNewAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(login()) {
-					frame.dispose();
-					LoginScreen login = new LoginScreen();
-					login.setVisible(true);
-				}
-			}
-		});
 	}
 
 	public void setVisible(boolean b) {
