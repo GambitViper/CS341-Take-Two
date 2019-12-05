@@ -46,7 +46,7 @@ public class Dashboard {
 	private JLabel lblMainMenuWelcome;
 
 	private String userUsername;
-	private JTextField textField;
+	private JTextField apptDate_field;
 	
 	/**
 	 * Launch the application.
@@ -218,51 +218,51 @@ public class Dashboard {
 		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
 		pnlMakeAppContent.add(lblMakeAppointment_1);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(308, 200, 220, 20);
-		pnlMakeAppContent.add(comboBox);
-		
 		JLabel lblAppointmentDate = new JLabel("Appointment Date");
 		lblAppointmentDate.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblAppointmentDate.setBounds(345, 87, 149, 30);
 		pnlMakeAppContent.add(lblAppointmentDate);
 		
-		textField = new JTextField();
-		textField.setBounds(308, 128, 220, 20);
-		pnlMakeAppContent.add(textField);
-		textField.setColumns(10);
+		apptDate_field = new JTextField();
+		apptDate_field.setBounds(308, 128, 220, 20);
+		pnlMakeAppContent.add(apptDate_field);
+		apptDate_field.setColumns(10);
 		
 		JLabel lblAppointmentTime = new JLabel("Appointment Time");
 		lblAppointmentTime.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblAppointmentTime.setBounds(345, 159, 149, 30);
 		pnlMakeAppContent.add(lblAppointmentTime);
 		
+		JComboBox apptTime_cb = new JComboBox();
+		apptTime_cb.setBounds(308, 200, 220, 20);
+		pnlMakeAppContent.add(apptTime_cb);
+		
 		JLabel lblDentistHygienist = new JLabel("Dentist / Hygienist");
 		lblDentistHygienist.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblDentistHygienist.setBounds(345, 231, 149, 30);
 		pnlMakeAppContent.add(lblDentistHygienist);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(308, 272, 220, 20);
-		pnlMakeAppContent.add(comboBox_1);
+		JComboBox emplSelect_cb = new JComboBox();
+		emplSelect_cb.setBounds(308, 272, 220, 20);
+		pnlMakeAppContent.add(emplSelect_cb);
 		
 		JLabel lblAppointmentType = new JLabel("Appointment Type");
 		lblAppointmentType.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblAppointmentType.setBounds(345, 303, 149, 30);
 		pnlMakeAppContent.add(lblAppointmentType);
 		
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setBounds(308, 344, 220, 20);
-		pnlMakeAppContent.add(comboBox_2);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(260, 416, 314, 93);
-		pnlMakeAppContent.add(textArea);
+		JComboBox apptType_cb = new JComboBox();
+		apptType_cb.setBounds(308, 344, 220, 20);
+		pnlMakeAppContent.add(apptType_cb);
 		
 		JLabel lblAppointmentDetails = new JLabel("Appointment Details");
 		lblAppointmentDetails.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblAppointmentDetails.setBounds(340, 375, 164, 30);
 		pnlMakeAppContent.add(lblAppointmentDetails);
+		
+		JTextArea apptDetail_txt = new JTextArea();
+		apptDetail_txt.setBounds(260, 416, 314, 93);
+		pnlMakeAppContent.add(apptDetail_txt);
 		
 		JButton btnMakeAppointment = new JButton("Make Appointment");
 		btnMakeAppointment.setFont(new Font("Tahoma", Font.PLAIN, 16));
