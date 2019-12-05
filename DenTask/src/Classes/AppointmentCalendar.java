@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * @author Zach Baklund
- *
+ * Class responsible for representing the calendar for the Dental Scheduler
+ * along with associated methods used for creating appointments and checking availability
+ * 
+ * @author Zach Baklund Last Updated: 12/5/2019
  */
 public class AppointmentCalendar {
 
@@ -61,6 +63,9 @@ public class AppointmentCalendar {
 		System.out.println(selectList);
 	}
 
+	/**
+	 * Fills the internal representation for the Dentists in the Database
+	 */
 	public static void fillDentists() {
 		Database dataConnector = new Database();
 		dataConnector.connect();
@@ -80,6 +85,9 @@ public class AppointmentCalendar {
 		dataConnector.disconnect();
 	}
 	
+	/**
+	 * Fills the internal representation for the Hygienists in the Database
+	 */
 	public static void fillHygienists() {
 		Database dataConnector = new Database();
 		dataConnector.connect();
@@ -102,6 +110,9 @@ public class AppointmentCalendar {
 		
 	}
 
+	/**
+	 * Fills the internal representation of appointments for the AppointmentCalendar class
+	 */
 	public static void fillAppointments() {
 		HashMap<String, LinkedList<Appointment>> newAppointments = getAppointments();
 		
@@ -127,6 +138,14 @@ public class AppointmentCalendar {
 		dataConnector.disconnect();
 	}
 	
+	/**
+	 * Method checks to see if a given employee is not scheduled
+	 * 
+	 * @param employee - Employee to check
+	 * @param date - Date of possible appointment time
+	 * @param time - Time of chosen appointment
+	 * @return - Boolean whether or not the employee is scheduled
+	 */
 	public static boolean notScheduled(String employee, String date, int time) {
 		HashMap<String, LinkedList<Appointment>> appointments = getAppointments();
 		LinkedList<Appointment> apptsOnDate = appointments.get(date);
@@ -141,6 +160,14 @@ public class AppointmentCalendar {
 		return true;
 	}
 	
+	/**
+	 * Method to retrieve a list of users available at the desired time and date
+	 * 
+	 * @param dayOfWeek - Mo, Tu, We, Th, Fr
+	 * @param date - Date of the appointment
+	 * @param time - Time desired for the appointment
+	 * @return - a LinkedList of Employees for which the desired patient appointment time would be available
+	 */
 	public static LinkedList<String> employeeSelectList(String dayOfWeek, String date, int time) {
 		LinkedList<String> selectList = new LinkedList<>();
 		LinkedList<Dentist> dentists = getDentists();
@@ -171,6 +198,9 @@ public class AppointmentCalendar {
 		return selectList;
 	}
 	
+	/**
+	 * Internal print method to see appointments properly
+	 */
 	private static void printAppointments() {
 		StringBuilder printStr = new StringBuilder();
 		HashMap<String, LinkedList<Appointment>> apps = getAppointments();
@@ -181,6 +211,12 @@ public class AppointmentCalendar {
 		System.out.println(printStr.toString());
 	}
 	
+	/**
+	 * Method to print internal calendar
+	 * 
+	 * @param year - Chosen year for calendar
+	 * @param month - Chosen month for calendar
+	 */
 	public static void printCalendar(int year, int month) {
 		int dayOfWeek = 1;
 		String space = "   ";
@@ -239,6 +275,13 @@ public class AppointmentCalendar {
 
 	}
 
+	/**
+	 * Fills an array with calendar information
+	 * 
+	 * @param year - Chosen year for calendar
+	 * @param month - Chosen month for calendar
+	 * @return - integer array with dates in proper places for the parameters of the calendar
+	 */
 	public static int[][] fillArrayByMonth(int year, int month) {
 		int dayOfWeek = 1;
 		int[][] calendarByMonth = new int[5][7];
