@@ -28,6 +28,8 @@ import Classes.Login;
 import Classes.User;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.JTextArea;
 
 public class Dashboard {
 
@@ -44,6 +46,7 @@ public class Dashboard {
 	private JLabel lblMainMenuWelcome;
 
 	private String userUsername;
+	private JTextField textField;
 	
 	/**
 	 * Launch the application.
@@ -201,6 +204,77 @@ public class Dashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
+		JPanel pnlMakeAppContent = new JPanel();
+		pnlMakeAppContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMakeAppContent);
+		pnlMakeAppContent.setLayout(null);
+		
+		/*****************************************
+		 * THIS IS FOR MAIN APPOINTMENT CONTENTS *
+		 *****************************************/
+		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
+		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
+		pnlMakeAppContent.add(lblMakeAppointment_1);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(308, 200, 220, 20);
+		pnlMakeAppContent.add(comboBox);
+		
+		JLabel lblAppointmentDate = new JLabel("Appointment Date");
+		lblAppointmentDate.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAppointmentDate.setBounds(345, 87, 149, 30);
+		pnlMakeAppContent.add(lblAppointmentDate);
+		
+		textField = new JTextField();
+		textField.setBounds(308, 128, 220, 20);
+		pnlMakeAppContent.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblAppointmentTime = new JLabel("Appointment Time");
+		lblAppointmentTime.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAppointmentTime.setBounds(345, 159, 149, 30);
+		pnlMakeAppContent.add(lblAppointmentTime);
+		
+		JLabel lblDentistHygienist = new JLabel("Dentist / Hygienist");
+		lblDentistHygienist.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblDentistHygienist.setBounds(345, 231, 149, 30);
+		pnlMakeAppContent.add(lblDentistHygienist);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setBounds(308, 272, 220, 20);
+		pnlMakeAppContent.add(comboBox_1);
+		
+		JLabel lblAppointmentType = new JLabel("Appointment Type");
+		lblAppointmentType.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAppointmentType.setBounds(345, 303, 149, 30);
+		pnlMakeAppContent.add(lblAppointmentType);
+		
+		JComboBox comboBox_2 = new JComboBox();
+		comboBox_2.setBounds(308, 344, 220, 20);
+		pnlMakeAppContent.add(comboBox_2);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(260, 416, 314, 93);
+		pnlMakeAppContent.add(textArea);
+		
+		JLabel lblAppointmentDetails = new JLabel("Appointment Details");
+		lblAppointmentDetails.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAppointmentDetails.setBounds(340, 375, 164, 30);
+		pnlMakeAppContent.add(lblAppointmentDetails);
+		
+		JButton btnMakeAppointment = new JButton("Make Appointment");
+		btnMakeAppointment.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnMakeAppointment.setBounds(324, 533, 183, 40);
+		pnlMakeAppContent.add(btnMakeAppointment);
+		pnlMakeAppContent.setVisible(false);
+		/*****************************************
+		 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ *
+		 * THIS IS FOR MAIN APPOINTMENT CONTENTS *
+		 *****************************************/
+		
+		
 		JPanel pnlViewAppContent = new JPanel();
 		pnlViewAppContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlViewAppContent);
@@ -320,18 +394,6 @@ public class Dashboard {
 		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
 		pnlMainMenuContent.add(lblMainMenuWelcome);
 		pnlMainMenuContent.setVisible(true);
-		
-		JPanel pnlMakeAppContent = new JPanel();
-		pnlMakeAppContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMakeAppContent);
-		pnlMakeAppContent.setLayout(null);
-		
-		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
-		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
-		pnlMakeAppContent.add(lblMakeAppointment_1);
-		pnlMakeAppContent.setVisible(false);
 		
 
 		/***************************
