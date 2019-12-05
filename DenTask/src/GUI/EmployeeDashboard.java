@@ -8,6 +8,7 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,9 +20,30 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import Classes.Database;
+import Classes.Login;
+import Classes.User;
+
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class EmployeeDashboard {
 
 	private JFrame frame;
+	private JTextField txtFirstName;
+	private JTextField txtLastName;
+	private JTextField txtEmail;
+	private JTextField txtPhoneNumber;
+	private JPasswordField txtCurrentPassword;
+	private JPasswordField txtNewPassword;
+	private JPasswordField txtConfirmedPassword;
+	
+	private JLabel lblError;
+	private JLabel lblMainMenuWelcome;
+	
+	private String userUsername;
 
 	/**
 	 * Launch the application.
@@ -38,12 +60,41 @@ public class EmployeeDashboard {
 			}
 		});
 	}
+	
+	public void setUser(String username) {
+		userUsername = username.toLowerCase();
+		lblMainMenuWelcome.setText("Welcome " + userUsername);
+	}
+	
+	public void profileFiller() {
+		Database connector = new Database();
+		connector.connect();
+		
+		User dummy = connector.getUser(userUsername); 
+		txtFirstName.setText(dummy.getFirstName());
+		txtLastName.setText(dummy.getLastName());
+		txtEmail.setText(dummy.getEmail());
+		txtPhoneNumber.setText(dummy.getPhoneNum());
+		
+		connector.disconnect();
+	}
 
 	/**
 	 * Create the application.
 	 */
 	public EmployeeDashboard() {
 		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		
 		/***************************
 		 * THIS IS FOR BURGER MENU *
 		 ***************************/
@@ -161,27 +212,16 @@ public class EmployeeDashboard {
 		panel.add(lbldentask);
 		pnlLogOut.setBorder(blackline);
 		
-		JPanel pnlAvailabilityContent = new JPanel();
-		pnlAvailabilityContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlAvailabilityContent);
-		pnlAvailabilityContent.setLayout(null);
-		
-		JLabel lblAvailability_1 = new JLabel("Availability");
-		lblAvailability_1.setBounds(0, 0, 846, 62);
-		pnlAvailabilityContent.add(lblAvailability_1);
-		lblAvailability_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblAvailability_1.setHorizontalAlignment(SwingConstants.CENTER);
-		
 		JPanel pnlMainMenuContent = new JPanel();
 		pnlMainMenuContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlMainMenuContent);
 		pnlMainMenuContent.setLayout(null);
 		
-		JLabel lblMainMenu_1 = new JLabel("Main Menu");
-		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenu_1.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenu_1);
+		lblMainMenuWelcome = new JLabel("Main Menu");
+		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenuWelcome);
 		pnlMainMenuContent.setVisible(true);
 		
 		JPanel pnlMakeAppContent = new JPanel();
@@ -208,6 +248,17 @@ public class EmployeeDashboard {
 		pnlViewAppContent.add(lblViewAppointments_1);
 		pnlViewAppContent.setVisible(false);
 		
+		JPanel pnlAvailabilityContent = new JPanel();
+		pnlAvailabilityContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlAvailabilityContent);
+		pnlAvailabilityContent.setLayout(null);
+		
+		JLabel lblAvailability_1 = new JLabel("Availability");
+		lblAvailability_1.setBounds(0, 0, 846, 62);
+		pnlAvailabilityContent.add(lblAvailability_1);
+		lblAvailability_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblAvailability_1.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		JPanel pnlEditProfileContent = new JPanel();
 		pnlEditProfileContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlEditProfileContent);
@@ -216,7 +267,7 @@ public class EmployeeDashboard {
 		JLabel lblEditProfile_1 = new JLabel("Edit Profile");
 		lblEditProfile_1.setFont(new Font("Tahoma", Font.BOLD, 40));
 		lblEditProfile_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEditProfile_1.setBounds(84, 68, 557, 88);
+		lblEditProfile_1.setBounds(10, 0, 826, 88);
 		pnlEditProfileContent.add(lblEditProfile_1);
 		
 		JLabel lblFirstName = new JLabel("First Name");
@@ -232,19 +283,19 @@ public class EmployeeDashboard {
 		JLabel lblCurrentPassword = new JLabel("Current Password");
 		lblCurrentPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCurrentPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCurrentPassword.setBounds(84, 438, 140, 34);
+		lblCurrentPassword.setBounds(84, 421, 140, 36);
 		pnlEditProfileContent.add(lblCurrentPassword);
 		
 		JLabel lblNewPassword = new JLabel("New Password");
 		lblNewPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewPassword.setBounds(84, 489, 140, 34);
+		lblNewPassword.setBounds(84, 480, 140, 34);
 		pnlEditProfileContent.add(lblNewPassword);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password");
 		lblConfirmPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		lblConfirmPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblConfirmPassword.setBounds(84, 541, 140, 33);
+		lblConfirmPassword.setBounds(84, 536, 140, 34);
 		pnlEditProfileContent.add(lblConfirmPassword);
 		
 		JLabel lblEmail = new JLabel("Email");
@@ -261,9 +312,48 @@ public class EmployeeDashboard {
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnConfirm.setBounds(267, 606, 214, 50);
 		pnlEditProfileContent.add(btnConfirm);
-		pnlLogOut.setBorder(blackline);
+		
+		txtFirstName = new JTextField();
+		txtFirstName.setBounds(84, 229, 214, 36);
+		pnlEditProfileContent.add(txtFirstName);
+		txtFirstName.setColumns(10);
+		
+		txtLastName = new JTextField();
+		txtLastName.setColumns(10);
+		txtLastName.setBounds(427, 228, 214, 36);
+		pnlEditProfileContent.add(txtLastName);
+		
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(84, 333, 214, 36);
+		pnlEditProfileContent.add(txtEmail);
+		
+		txtPhoneNumber = new JTextField();
+		txtPhoneNumber.setColumns(10);
+		txtPhoneNumber.setBounds(427, 333, 214, 36);
+		pnlEditProfileContent.add(txtPhoneNumber);
+		
+		txtCurrentPassword = new JPasswordField();
+		txtCurrentPassword.setBounds(267, 423, 214, 36);
+		pnlEditProfileContent.add(txtCurrentPassword);
+		
+		txtNewPassword = new JPasswordField();
+		txtNewPassword.setBounds(267, 480, 214, 36);
+		pnlEditProfileContent.add(txtNewPassword);
+		
+		txtConfirmedPassword = new JPasswordField();
+		txtConfirmedPassword.setBounds(267, 534, 214, 36);
+		pnlEditProfileContent.add(txtConfirmedPassword);
+		
+		lblError = new JLabel("");
+		lblError.setHorizontalAlignment(SwingConstants.CENTER);
+		lblError.setForeground(Color.RED);
+		lblError.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblError.setBounds(20, 88, 816, 65);
+		pnlEditProfileContent.add(lblError);
 		
 		pnlEditProfileContent.setVisible(false);
+		pnlLogOut.setBorder(blackline);
 		
 
 		/***************************
@@ -337,6 +427,7 @@ public class EmployeeDashboard {
 		lblEditProfile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				profileFiller();
 				pnlEditProfileContent.setVisible(true);
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
@@ -384,15 +475,86 @@ public class EmployeeDashboard {
 				login.setVisible(true);
 			}
 		});
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		/****************************
+		 * THIS IS FOR SAVE PROFILE *
+		 ****************************/
+		
+		btnConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+				String currentPass = String.valueOf(txtCurrentPassword.getPassword());
+				String newPass = String.valueOf(txtNewPassword.getPassword());
+				String conPass = String.valueOf(txtConfirmedPassword.getPassword());
+				
+				System.out.println(currentPass + " " + newPass + " " + conPass);
+				
+				if(currentPass.equals("")) {
+					lblError.setText("Fill in current password to save changes");
+					return;
+				}
+				try {
+					if(!Login.loginUser(userUsername, currentPass).equals("1")) {
+						lblError.setText("Current password doesn't match database");
+						return;
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					return;
+				}
+				
+				if(newPass.equals("") && conPass.equals("")) {
+					Login.updateUser(userUsername, null, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+					txtCurrentPassword.setText(null);
+					txtNewPassword.setText(null);
+					txtConfirmedPassword.setText(null);
+					lblError.setText("");
+					
+					pnlEditProfileContent.setVisible(false);
+					pnlMainMenuContent.setVisible(true);
+					pnlViewAppContent.setVisible(false);
+					pnlMakeAppContent.setVisible(false);
+					
+					pnlEditProfile.setBackground(SystemColor.activeCaption);
+					pnlMainMenu.setBackground(SystemColor.textHighlight);
+					pnlViewApp.setBackground(SystemColor.activeCaption);
+					pnlMakeApp.setBackground(SystemColor.activeCaption);
+					return;
+				}
+				
+				if(!newPass.equals(conPass)) {
+					lblError.setText("New Passwords do not match");
+					return;
+				}
+				
+				if(currentPass.equals(newPass)) {
+					lblError.setText("New password can not be the same as old password");
+					return;
+				}
+				
+				if(newPass.equals(conPass)) {
+					Login.updateUser(userUsername, conPass, txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText());
+					txtCurrentPassword.setText(null);
+					txtNewPassword.setText(null);
+					txtConfirmedPassword.setText(null);
+					lblError.setText("");
+					
+					pnlEditProfileContent.setVisible(false);
+					pnlMainMenuContent.setVisible(true);
+					pnlViewAppContent.setVisible(false);
+					pnlMakeAppContent.setVisible(false);
+					
+					pnlEditProfile.setBackground(SystemColor.activeCaption);
+					pnlMainMenu.setBackground(SystemColor.textHighlight);
+					pnlViewApp.setBackground(SystemColor.activeCaption);
+					pnlMakeApp.setBackground(SystemColor.activeCaption);
+					return;
+				}
+				
+				lblError.setText("idk what u did bro");
+			
+			}
+		});
 	}
 	
 	public void setVisible(boolean b) {

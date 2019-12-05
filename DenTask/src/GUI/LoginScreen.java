@@ -23,6 +23,8 @@ import java.awt.Toolkit;
 
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginScreen extends JFrame{
 
@@ -33,6 +35,7 @@ public class LoginScreen extends JFrame{
 	private JFrame frame;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
+	private JLabel lblError;
 
 	
 	/**
@@ -84,6 +87,48 @@ public class LoginScreen extends JFrame{
 		frame.getContentPane().add(txtUsername);
 		
 		txtPassword = new JPasswordField();
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent evt) {
+				if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+					String myPass = String.valueOf(txtPassword.getPassword());
+					String confirmation = "didnt return";
+					System.out.println(myPass);
+					System.out.println(txtUsername.getText());
+					int uType = 3;
+					
+					
+					try {
+						confirmation = Login.loginUser(txtUsername.getText().toLowerCase(), myPass);
+						uType = Login.getUserType(txtUsername.getText().toLowerCase());
+						
+						if(confirmation.equals("1") && uType == 3) {
+							Dashboard dash = new Dashboard();
+							dash.setUser(txtUsername.getText());
+							dash.setVisible(true);
+							frame.dispose();
+							return;
+						} else if(confirmation.equals("1") && (uType == 2 || uType == 1)) {
+							EmployeeDashboard edash = new EmployeeDashboard();
+							edash.setUser(txtUsername.getText());
+							edash.setVisible(true);
+							frame.dispose();
+							return;
+						} else if(confirmation.equals("1") && (uType == 0)) {
+							AdminDashboard adash = new AdminDashboard();
+							adash.setVisible(true);	
+							frame.dispose();
+							return;
+						}
+						
+						lblError.setText("Username or Password Invalid!");
+						
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 		txtPassword.setBounds(376, 133, 185, 33);
 		frame.getContentPane().add(txtPassword);
 		
@@ -137,7 +182,7 @@ public class LoginScreen extends JFrame{
 		
 		frame.getContentPane().add(lblWelcome);
 		
-		JLabel lblError = new JLabel("");
+		lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
 		lblError.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);

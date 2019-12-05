@@ -33,7 +33,7 @@ public class Login {
 		return newUser;
 	}
 	
-	public static void createUser(String username, String password, String firstName, String lastName, String email, String phoneNumber) throws SQLException {
+	public static void createUser(String username, String password, String firstName, String lastName, String email, String phoneNumber, int accType) throws SQLException {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
@@ -44,7 +44,7 @@ public class Login {
 		String createDate = LocalDate.now().toString();
 		String hash = md5(password, createDate);
 
-		dataConnector.insertUser(username, hash, firstName, lastName, email, phoneNumber, 3);
+		dataConnector.insertUser(username, hash, firstName, lastName, email, phoneNumber, accType);
 		dataConnector.disconnect();
 		return;
 	}

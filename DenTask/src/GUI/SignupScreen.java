@@ -91,7 +91,8 @@ public class SignupScreen {
 							txtFirstName.getText(),
 							txtLastName.getText(),
 							txtEmail.getText(),
-							txtPhoneNumber.getText());
+							txtPhoneNumber.getText(),
+							3);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
