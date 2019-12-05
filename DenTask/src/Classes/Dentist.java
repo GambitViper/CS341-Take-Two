@@ -14,7 +14,10 @@ public class Dentist extends User {
 	
 	public boolean isAvailable(String day, int time) {
 		HashMap<String, int[]> avail = getAvailability();
-		return avail.get(day)[time - 8] == 1;
+		if(avail.containsKey(day)) {
+			return avail.get(day)[time - 8] == 1;
+		}
+		return false;
 	}
 	
 	public Dentist setDayAvailability(String day, int[] times) {

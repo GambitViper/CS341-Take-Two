@@ -59,8 +59,11 @@ public class AppointmentCalendar {
 		fillAppointments();
 		printAppointments();
 		
-		LinkedList<String> selectList = employeeSelectList("Friday", "2019-12-06", 11);
-		System.out.println(selectList);
+//		LinkedList<User> selectList = employeeSelectList("Friday", "2019-12-06", 11);
+//		System.out.println(selectList);
+//		
+//		String result = makeAppointment("matt", "djohn", "checkup", "checkup database check", "2019-12-06", 11);
+//		System.out.println(result);
 	}
 
 	/**
@@ -70,7 +73,7 @@ public class AppointmentCalendar {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<Dentist> dentists = dataConnector.getUser(1, true); //Dentist == 1
+		LinkedList<Dentist> dentists = dataConnector.getUser(1, false); //Dentist == 1
 		
 		dentistsDB = dentists;
 		
@@ -82,6 +85,8 @@ public class AppointmentCalendar {
 			}
 		}
 		
+		System.out.println(dentistsDB);
+		
 		dataConnector.disconnect();
 	}
 	
@@ -92,7 +97,7 @@ public class AppointmentCalendar {
 		Database dataConnector = new Database();
 		dataConnector.connect();
 		
-		LinkedList<Hygienist> hygienists = dataConnector.getUser(2, true); //Hygienist == 2
+		LinkedList<Hygienist> hygienists = dataConnector.getUser(2, false); //Hygienist == 2
 		
 		hygienistsDB = hygienists;
 		
@@ -104,10 +109,9 @@ public class AppointmentCalendar {
 			}
 		}
 		
-		dataConnector.disconnect();
-		
 		System.out.println(hygienistsDB);
 		
+		dataConnector.disconnect();		
 	}
 
 	/**
@@ -148,6 +152,11 @@ public class AppointmentCalendar {
 	 */
 	public static boolean notScheduled(String employee, String date, int time) {
 		HashMap<String, LinkedList<Appointment>> appointments = getAppointments();
+		//Check for no appointments list
+		if(appointments == null) return false;
+		//Check if no appointments are yet scheduled on chosen date
+		if(!appointments.containsKey(date)) return true;
+		//Verify chosen employee does not have prior appointment
 		LinkedList<Appointment> apptsOnDate = appointments.get(date);
 		for(Appointment appt : apptsOnDate) {
 			if(appt.getEmployee().equals(employee)) {
@@ -168,8 +177,8 @@ public class AppointmentCalendar {
 	 * @param time - Time desired for the appointment
 	 * @return - a LinkedList of Employees for which the desired patient appointment time would be available
 	 */
-	public static LinkedList<String> employeeSelectList(String dayOfWeek, String date, int time) {
-		LinkedList<String> selectList = new LinkedList<>();
+	public static LinkedList<User> employeeSelectList(String dayOfWeek, String date, int time) {
+		LinkedList<User> selectList = new LinkedList<>();
 		LinkedList<Dentist> dentists = getDentists();
 		LinkedList<Hygienist> hygienists = getHygienists();
 		
@@ -179,7 +188,7 @@ public class AppointmentCalendar {
 			if(dentist.isAvailable(dayOfWeek, time)) {
 				//Check if already scheduled appt at that time
 				if(notScheduled(dentist.getUsername(), date, time)) {
-					selectList.add("Dr " + dentist.getFirstName() + " " + dentist.getLastName());
+					selectList.add(dentist);
 				}
 			}
 		}
@@ -190,12 +199,33 @@ public class AppointmentCalendar {
 			if(hygienist.isAvailable(dayOfWeek, time)) {
 				//Check if already scheduled appt at that time
 				if(notScheduled(hygienist.getUsername(), date, time)) {
-					selectList.add(hygienist.getFirstName() + " " + hygienist.getLastName());
+					selectList.add(hygienist);
 				}
 			}
 		}
 		
 		return selectList;
+	}
+	
+	/**
+	 * Method to create an appointment into the appointment table in the database
+	 * 
+	 * @param patient - patient username to assign to appointment
+	 * @param employee - employee username to assign to appointment
+	 * @param type - appointment type
+	 * @param detail - appointment detail
+	 * @param date - appointment date
+	 * @param time - appointment time
+	 * @return status message whether or not the appointment was created
+	 */
+	public static String makeAppointment(String patient, String employee, String type, String detail, String date, int time) {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		Appointment newAppt = dataConnector.insertAppointment(patient, employee, type, detail, date, time);
+		dataConnector.disconnect();
+		
+		if(newAppt == null) return "Error creating appointment";
+		return "Successfully created";
 	}
 	
 	/**
