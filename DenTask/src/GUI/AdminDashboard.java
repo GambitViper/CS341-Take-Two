@@ -422,6 +422,7 @@ public class AdminDashboard {
 						cboxUsers.addItem(new ComboItem(name, username));
 					}
 				}
+				
 				pnlDeleteProfile.setVisible(true);
 				pnlMainMenuContent.setVisible(false);
 				pnlMakeProfiles.setVisible(false);
@@ -443,13 +444,12 @@ public class AdminDashboard {
 				
 				Object item = cboxUsers.getSelectedItem();
 				String val = ((ComboItem)item).getValue();
+				
 				LinkedList<User> userList;
 				
 				Database db = new Database();
 				db.connect();
-				
 				db.deleteUser(val);
-				
 				db.disconnect();
 				
 				userList = popUsers();
