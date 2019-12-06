@@ -175,6 +175,30 @@ public class AdminDashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+		
+		JLabel lblMainMenu_1 = new JLabel("Main Menu");
+		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenu_1.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenu_1);
+		pnlMainMenuContent.setVisible(true);
+		
+		JPanel pnlViewAppointments = new JPanel();
+		pnlViewAppointments.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlViewAppointments);
+		pnlViewAppointments.setLayout(null);
+		
+		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
+		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
+		pnlViewAppointments.add(lblMakeAppointment_1);
+		pnlViewAppointments.setVisible(false);
+		
 		JPanel pnlMakeProfiles = new JPanel();
 		pnlMakeProfiles.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlMakeProfiles);
@@ -306,30 +330,6 @@ public class AdminDashboard {
 		pnlDeleteProfile.add(lblSelectUser);
 		
 				pnlDeleteProfile.setVisible(false);
-		
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-		
-		JLabel lblMainMenu_1 = new JLabel("Main Menu");
-		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenu_1.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenu_1);
-		pnlMainMenuContent.setVisible(true);
-		
-		JPanel pnlViewAppointments = new JPanel();
-		pnlViewAppointments.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlViewAppointments);
-		pnlViewAppointments.setLayout(null);
-		
-		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
-		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
-		pnlViewAppointments.add(lblMakeAppointment_1);
-		pnlViewAppointments.setVisible(false);
 		
 
 		/***************************

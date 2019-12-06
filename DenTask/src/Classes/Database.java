@@ -247,7 +247,7 @@ public class Database {
 			// Use the connection to prepare query statement using the specified user type
 			PreparedStatement stmt;
 			if (active) {
-				stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ? AND DeleteDate = NULL;");
+				stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ? AND DeleteDate IS NULL;");
 			} else {
 				stmt = connection.prepareStatement("SELECT * FROM User WHERE UserType = ?;");
 			}
