@@ -55,6 +55,11 @@ public class AdminDashboard {
 	private JRadioButton radDentist, radHygienist;
 	private JComboBox cboxUsers;
 	private JComboBox cboxAppAppointment;
+	
+	private JPanel pnlDeleteProfile;
+	private JPanel pnlMakeProfiles;
+	private JPanel pnlViewAppointments;
+	private JPanel pnlMainMenuContent;
 
 	/**
 	 * Launch the application.
@@ -204,7 +209,31 @@ public class AdminDashboard {
 										pnlMainMenuContent.add(lblSelectAnyOf);
 										pnlMainMenuContent.setVisible(true);
 
-		JPanel pnlViewAppointments = new JPanel();
+		pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+
+		JLabel lblMainMenu_1 = new JLabel("Main Menu");
+		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenu_1.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenu_1);
+
+		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask");
+		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcomeToDentask.setBounds(85, 140, 677, 123);
+		pnlMainMenuContent.add(lblWelcomeToDentask);
+
+		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
+		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectAnyOf.setBounds(85, 314, 677, 85);
+		pnlMainMenuContent.add(lblSelectAnyOf);
+		pnlMainMenuContent.setVisible(true);
+
+		pnlViewAppointments = new JPanel();
 		pnlViewAppointments.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlViewAppointments);
 		pnlViewAppointments.setLayout(null);
@@ -381,7 +410,7 @@ public class AdminDashboard {
 			}
 		});
 
-		JPanel pnlMakeProfiles = new JPanel();
+		pnlMakeProfiles = new JPanel();
 		pnlMakeProfiles.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlMakeProfiles);
 		pnlMakeProfiles.setLayout(null);
@@ -485,7 +514,7 @@ public class AdminDashboard {
 		lblError.setBounds(75, 84, 642, 47);
 		pnlMakeProfiles.add(lblError);
 
-		JPanel pnlDeleteProfile = new JPanel();
+		pnlDeleteProfile = new JPanel();
 		pnlDeleteProfile.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlDeleteProfile);
 		pnlDeleteProfile.setLayout(null);
@@ -546,7 +575,7 @@ public class AdminDashboard {
 				denList = popDen();
 				hygList = popHyg();
 
-				cboxUsers.removeAllItems();
+				cboxAppDenHyg.removeAllItems();
 
 				for (int i = 0; i < denList.size(); i++) {
 
@@ -727,6 +756,16 @@ public class AdminDashboard {
 		 * Trigger to clear Appointment Details *
 		 ****************************************/
 
+		pnlDeleteProfile.setVisible(false);
+		pnlMainMenuContent.setVisible(true);
+		pnlMakeProfiles.setVisible(false);
+		pnlViewAppointments.setVisible(false);
+
+		pnlEditProfile.setBackground(SystemColor.activeCaption);
+		pnlMainMenu.setBackground(SystemColor.textHighlight);
+		pnlViewApp.setBackground(SystemColor.activeCaption);
+		pnlMakeApp.setBackground(SystemColor.activeCaption);
+		
 	}
 
 	private LinkedList<User> popDen() {
