@@ -196,7 +196,7 @@ public class Dashboard {
 		
 		JPanel pnlLogOut = new JPanel();
 		pnlLogOut.setBackground(SystemColor.activeCaption);
-		pnlLogOut.setBounds(0, 621, 220, 60);
+		pnlLogOut.setBounds(0, 621, 220, 72);
 		pnlLogOut.setBorder(blackline);
 		panel.add(pnlLogOut);
 		pnlLogOut.setLayout(null);
@@ -205,7 +205,7 @@ public class Dashboard {
 		lblNewLabel.setBackground(SystemColor.inactiveCaption);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 0, 220, 60);
+		lblNewLabel.setBounds(0, 0, 220, 74);
 		pnlLogOut.add(lblNewLabel);
 		
 		JLabel lblCreatedBy = new JLabel("Created By:");
@@ -226,7 +226,7 @@ public class Dashboard {
 		
 		
 		JPanel pnlViewAppContent = new JPanel();
-		pnlViewAppContent.setBounds(218, 0, 846, 681);
+		pnlViewAppContent.setBounds(218, 0, 856, 685);
 		frame.getContentPane().add(pnlViewAppContent);
 		pnlViewAppContent.setLayout(null);
 		
