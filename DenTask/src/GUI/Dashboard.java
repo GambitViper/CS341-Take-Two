@@ -661,6 +661,17 @@ public class Dashboard {
 //				makeAppointment(String patient, String employee, String type, String detail, String date, int time)
 				if(selectedMonth != null && selectedDay != null && selectedYear != null && selectedTime != null && selectedEmployee != null) {
 					AppointmentCalendar.makeAppointment(userUsername, selectedEmployee.getValue(), apptType_field.getText(), apptDetail_txt.getText(), apptDate.toString(), Integer.parseInt(selectedTime.getValue()));
+					
+					pnlEditProfileContent.setVisible(false);
+					pnlMainMenuContent.setVisible(true);
+					pnlViewAppContent.setVisible(false);
+					pnlMakeAppContent.setVisible(false);
+					
+					pnlEditProfile.setBackground(SystemColor.activeCaption);
+					pnlMainMenu.setBackground(SystemColor.textHighlight);
+					pnlViewApp.setBackground(SystemColor.activeCaption);
+					pnlMakeApp.setBackground(SystemColor.activeCaption);
+					return;
 				}
 				
 			}
