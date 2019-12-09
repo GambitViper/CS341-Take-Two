@@ -672,6 +672,7 @@ public class Dashboard {
 						pnlViewApp.setBackground(SystemColor.activeCaption);
 						pnlMakeApp.setBackground(SystemColor.activeCaption);
 					}
+					return;
 				}
 				
 			}
