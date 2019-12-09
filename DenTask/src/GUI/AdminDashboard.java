@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -184,30 +185,6 @@ public class AdminDashboard {
 		lbldentask.setHorizontalAlignment(SwingConstants.CENTER);
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
-		
-				JPanel pnlMainMenuContent = new JPanel();
-				pnlMainMenuContent.setBounds(218, 0, 846, 681);
-				frame.getContentPane().add(pnlMainMenuContent);
-				pnlMainMenuContent.setLayout(null);
-				
-						JLabel lblMainMenu_1 = new JLabel("Main Menu");
-						lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-						lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-						lblMainMenu_1.setBounds(0, 0, 846, 94);
-						pnlMainMenuContent.add(lblMainMenu_1);
-						
-								JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask");
-								lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
-								lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
-								lblWelcomeToDentask.setBounds(85, 140, 677, 123);
-								pnlMainMenuContent.add(lblWelcomeToDentask);
-								
-										JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
-										lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
-										lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
-										lblSelectAnyOf.setBounds(85, 314, 677, 85);
-										pnlMainMenuContent.add(lblSelectAnyOf);
-										pnlMainMenuContent.setVisible(true);
 
 		pnlMainMenuContent = new JPanel();
 		pnlMainMenuContent.setBounds(218, 0, 846, 681);
@@ -838,12 +815,12 @@ public class AdminDashboard {
 			lblError.setText("USERNAME IS TAKEN");
 			return false;
 		} else {
-
 			if (radDentist.isSelected()) {
 				try {
 					Login.createUser(txtUsername.getText(), String.valueOf(txtPassword.getPassword()),
 							txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText(),
 							1);
+					setDefaultAvailability(txtUsername.getText());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -855,6 +832,7 @@ public class AdminDashboard {
 					Login.createUser(txtUsername.getText(), String.valueOf(txtPassword.getPassword()),
 							txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText(),
 							2);
+					setDefaultAvailability(txtUsername.getText());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -865,6 +843,18 @@ public class AdminDashboard {
 			}
 		}
 		return false;
+	}
+	
+	private void setDefaultAvailability(String username) {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		dataConnector.insertDailyAvailability(username, "Monday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Tuesday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Wednesday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Thursday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Friday", "800", "1700");
+		dataConnector.disconnect();
+		return;
 	}
 
 	public void setVisible(boolean b) {
