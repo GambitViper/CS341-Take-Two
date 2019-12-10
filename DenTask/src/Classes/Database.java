@@ -8,7 +8,7 @@ import java.util.*;
  * The basic database class that provides methods for interacting with the local
  * database
  * 
- * @author Tom Jensen Last Updated: 12/3/2019 12:24
+ * @author Tom Jensen Last Updated: 12/10/2019 16:07
  */
 public class Database {
 

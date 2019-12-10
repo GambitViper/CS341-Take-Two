@@ -2,8 +2,16 @@ package Classes;
 
 import java.time.LocalDate;
 
+/**
+ * Object container for Appointment class
+ * 
+ * @author Zach Baklund Last Updated: 12/10/2019
+ */
 public class Appointment {
 
+	/**
+	 * Appointment data internal attributes
+	 */
 	private String patient;
 	private String employee;
 	private String appType; 
@@ -12,84 +20,137 @@ public class Appointment {
 	private int time;
 	private String result;
 
-	// Getters
-	// Get Patient
+	// ************************ Getters ************************
+	/**
+	 * Get patient
+	 * @return - patient (username)
+	 */
 	public String getPatient() {
 		return patient;
 	}
 
-	// Get Employee
+	/**
+	 * Get employee
+	 * @return - employee (username)
+	 */
 	public String getEmployee() {
 		return employee;
 	}
 
-	// Get Appointment Type
+	/**
+	 * Get appType
+	 * @return - appType
+	 */
 	public String getAppType() {
 		return appType;
 	}
 
-	// Get Appointment Detail
+	/**
+	 * Get appDetail
+	 * @return - appDetail
+	 */
 	public String getAppDetail() {
 		return appDetail;
 	}
 	
-	// Get Date
+	/**
+	 * Get date
+	 * @return - date of appointment
+	 */
 	public LocalDate getDate() {
 		return date;
 	}
 	
-	// Get Time
+	/**
+	 * Get time
+	 * @return - time of appointment
+	 */
 	public int getTime() {
 		return time;
 	}
 	
-	// Get Result
+	/**
+	 * Get result
+	 * @return - result of appointment (cancellation reasons)
+	 */
 	public String getResult()	{
 		return result;
 	}
 
-	//Setters ***Builder Pattern***
-	// Set Patient
+	// ************************ Setters ************************
+	/**
+	 * Sets the patient
+	 * @param patient
+	 * @return - Appointment for set builder pattern
+	 */
 	public Appointment setPatient(String patient) {
 		this.patient = patient;
 		return this;
 	}
 
-	// Set Employee
+	/**
+	 * Sets the employee
+	 * @param employee
+	 * @return - Appointment for set builder pattern
+	 */
 	public Appointment setEmployee(String employee) {
 		this.employee = employee;
 		return this;
 	}
 
-	// Set Appointment Type
+	/**
+	 * Sets the appType
+	 * @param appType
+	 * @return - Appointment for set builder pattern
+	 */
 	public Appointment setAppType(String appType) {
 		this.appType = appType;
 		return this;
 	}
 
-	// Set Appointment Detail
+	/**
+	 * Sets the appDetail
+	 * @param appDetail
+	 * @return - Appointment for set builder pattern
+	 */
 	public Appointment setAppDetail(String appDetail) {
 		this.appDetail = appDetail;
 		return this;
 	}
 	
-	// Set Date
+	/**
+	 * Sets the date
+	 * @param date
+	 * @return - Appointment for set builder pattern
+	 */
 	public Appointment setDate(LocalDate date) {
 		this.date = date;
 		return this;
 	}
 	
-	//Set Time
+	/**
+	 * Sets the time
+	 * @param time
+	 * @return - Appointment for set builder pattern
+	 */
 	public Appointment setTime(int time) {
 		this.time = time;
 		return this;
 	}
 	
+	/**
+	 * Sets the result
+	 * @param result
+	 * @return - Appointment for set builder pattern
+	 */
 	public Appointment setResult(String result)	{
 		this.result = result;
 		return this;
 	}
 	
+	/**
+	 * override for the toString method to display User data
+	 */
 	public String toString() {
 		StringBuilder printStr = new StringBuilder();
 		printStr.append("Patient: " + this.getPatient() + "\n");
