@@ -1,7 +1,6 @@
 package Classes;
 
 import java.sql.*;
-import java.text.AttributedString;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -27,6 +26,8 @@ public class Database {
 		Database db = new Database();
 		db.connect();
 
+		db.insertUser("example", "1234", "Example3", "Dentist", "example3@dentist.com", "6549871234", 1);
+		
 		db.disconnect();
 	}
 
