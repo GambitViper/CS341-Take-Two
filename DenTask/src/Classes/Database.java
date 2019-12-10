@@ -1,6 +1,7 @@
 package Classes;
 
 import java.sql.*;
+import java.text.AttributedString;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -26,27 +27,6 @@ public class Database {
 		Database db = new Database();
 		db.connect();
 
-		User dj = db.getUser("djohn");
-		System.out.println(dj.toString());
-		
-		User tj = db.getUser("tjensen");
-		System.out.println(tj.toString());
-		
-	//	db.insertAppointment(tj.getUsername(), dj.getUsername(), "Cleaning", "", "2019-12-12", 1100);
-		
-		LinkedList<Appointment> appts = db.getAppointments(tj.getUsername(), true);
-		for (Appointment a : appts)	{
-			System.out.println(a.toString());
-		}
-		
-		db.deleteRequestOff(dj.getUsername(), "2019-12-12");
-		db.insertRequestOff(dj.getUsername(), "2019-12-12");
-		
-		appts = db.getAppointments(tj.getUsername(), true);
-		for (Appointment a : appts)	{
-			System.out.println(a.toString());
-		}
-		
 		db.disconnect();
 	}
 
