@@ -40,6 +40,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.ButtonGroup;
 
 public class AdminDashboard {
 
@@ -61,6 +62,7 @@ public class AdminDashboard {
 	private JPanel pnlMakeProfiles;
 	private JPanel pnlViewAppointments;
 	private JPanel pnlMainMenuContent;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -84,7 +86,6 @@ public class AdminDashboard {
 	public AdminDashboard() {
 		initialize();
 	}
-
 
 	/**
 	 * Initialize the contents of the frame.
@@ -248,7 +249,7 @@ public class AdminDashboard {
 
 		JLabel label = new JLabel("");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		label.setBounds(288, 406, 161, 40);
+		label.setBounds(288, 406, 254, 40);
 		pnlViewAppointments.add(label);
 
 		JLabel lblAppDate = new JLabel("");
@@ -280,19 +281,30 @@ public class AdminDashboard {
 
 		JLabel lblChooseAppointment = new JLabel("Choose Appointment");
 		lblChooseAppointment.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblChooseAppointment.setBounds(441, 154, 200, 40);
+		lblChooseAppointment.setBounds(537, 154, 200, 40);
 		pnlViewAppointments.add(lblChooseAppointment);
 
 		JComboBox cboxAppAppointment_1 = new JComboBox();
 
-		cboxAppAppointment_1.setBounds(441, 205, 200, 40);
+		cboxAppAppointment_1.setBounds(537, 205, 200, 40);
 		pnlViewAppointments.add(cboxAppAppointment_1);
+
+		JRadioButton radActive = new JRadioButton("Active");
+		buttonGroup.add(radActive);
+		radActive.setBounds(335, 163, 127, 25);
+		radActive.setSelected(true);
+		pnlViewAppointments.add(radActive);
+
+		JRadioButton radCancelled = new JRadioButton("Cancelled");
+		buttonGroup.add(radCancelled);
+		radCancelled.setBounds(335, 213, 127, 25);
+		pnlViewAppointments.add(radCancelled);
 
 		cboxAppAppointment_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 
-				LinkedList<Appointment> apps;
+				LinkedList<Appointment> updatedApps;
 
 				Object selected = cboxAppDenHyg.getSelectedItem();
 
@@ -306,17 +318,37 @@ public class AdminDashboard {
 
 					String username = ((ComboItem) selected).getValue();
 
-					apps = popApps(username);
+					if (radCancelled.isSelected()) {
 
-					cboxAppAppointment_1.removeAllItems();
+						updatedApps = popAllApps(username);
 
-					for (int i = 0; i < apps.size(); i++) {
-						String name = (apps.get(i).getDate() + " at " + apps.get(i).getTime());
-						Appointment tmp = apps.get(i);
-						System.out.println(tmp.toString());
+						cboxAppAppointment_1.removeAllItems();
 
-						cboxAppAppointment_1.addItem(new ComboItem(name, tmp));
+						for (int i = 0; i < updatedApps.size(); i++) {
+							if (updatedApps.get(i).getResult() != null
+									&& updatedApps.get(i).getResult().contains("Cancelled")) {
+
+								String name = (updatedApps.get(i).getDate() + " at " + updatedApps.get(i).getTime());
+								Appointment tmp = updatedApps.get(i);
+								System.out.println(tmp.toString());
+
+								cboxAppAppointment_1.addItem(new ComboItem(name, tmp));
+							}
+						}
+					} else {
+
+						updatedApps = popApps(username);
+						cboxAppAppointment_1.removeAllItems();
+
+						for (int i = 0; i < updatedApps.size(); i++) {
+							String name = (updatedApps.get(i).getDate() + " at " + updatedApps.get(i).getTime());
+							Appointment tmp = updatedApps.get(i);
+							System.out.println(tmp.toString());
+
+							cboxAppAppointment_1.addItem(new ComboItem(name, tmp));
+						}
 					}
+
 				}
 
 			}
@@ -347,9 +379,17 @@ public class AdminDashboard {
 						e1.printStackTrace();
 						return;
 					}
+					if (pat != null) {
+						lblAppPatient.setText(pat.getFirstName() + " " + pat.getLastName());
+					} else {
+						lblAppPatient.setText("Patient User was deleted");
+					}
+					if (dh != null) {
+						lblAppEmployee.setText(dh.getFirstName() + " " + dh.getLastName());
+					} else {
+						lblAppEmployee.setText("Dentist/Hygienist User was deleted");
+					}
 
-					lblAppPatient.setText(pat.getFirstName() + " " + pat.getLastName());
-					lblAppEmployee.setText(dh.getFirstName() + " " + dh.getLastName());
 					lblAppDate.setText(app.getDate().toString() + " @ " + app.getTime());
 					txtArea.setText(app.getAppDetail());
 					lblAppType.setText(app.getAppType());
@@ -372,7 +412,7 @@ public class AdminDashboard {
 
 			}
 		});
-		
+
 		pnlViewAppointments.setVisible(false);
 
 		pnlMainMenuContent = new JPanel();
@@ -506,7 +546,6 @@ public class AdminDashboard {
 		/***************************
 		 * THIS IS FOR MAIN MENU *
 		 ***************************/
-
 		lblMainMenu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -525,50 +564,27 @@ public class AdminDashboard {
 		/********************************
 		 * THIS IS FOR VIEW APPOINTMENT *
 		 ********************************/
-
 		lblViewAppointment.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 
 				LinkedList<User> denList;
-				LinkedList<User> hygList;
 
 				denList = popUsers();
-				
+
 				for (int i = 0; i < denList.size(); i++) {
-				  
-					if(!(denList.get(i).getUserType() == 0)) {
+
+					if (!(denList.get(i).getUserType() == 0)) {
 						String name = (denList.get(i).getFirstName() + " " + denList.get(i).getLastName());
 						String username = denList.get(i).getUsername();
-						System.out.println(denList.get(i).getUsername() + "USER"); 
-						cboxAppDenHyg.addItem(new ComboItem(name, username)); 
+						System.out.println(denList.get(i).getUsername() + "USER");
+						cboxAppDenHyg.addItem(new ComboItem(name, username));
 					}
 				}
-				
-				/*
-				 * denList = popDen(); hygList = popHyg();
-				 * 
-				 * cboxAppDenHyg.removeAllItems();
-				 * 
-				 * for (int i = 0; i < denList.size(); i++) {
-				 * 
-				 * String name = (denList.get(i).getFirstName() + " " +
-				 * denList.get(i).getLastName()); String username =
-				 * denList.get(i).getUsername(); System.out.println(denList.get(i).getUsername()
-				 * + "THIS IS A DENT"); cboxAppDenHyg.addItem(new ComboItem(name, username));
-				 * 
-				 * }
-				 * 
-				 * for (int i = 0; i < hygList.size(); i++) {
-				 * 
-				 * String name = (hygList.get(i).getFirstName() + " " +
-				 * hygList.get(i).getLastName()); String username =
-				 * hygList.get(i).getUsername(); System.out.println(hygList.get(i).getUsername()
-				 * + "THIS IS A HYG"); cboxAppDenHyg.addItem(new ComboItem(name, username));
-				 * 
-				 * }
-				 */
-								 
+
+				radActive.setSelected(true);
+				radCancelled.setSelected(false);
+
 				pnlDeleteProfile.setVisible(false);
 				pnlMainMenuContent.setVisible(false);
 				pnlMakeProfiles.setVisible(false);
@@ -584,7 +600,6 @@ public class AdminDashboard {
 		/****************************
 		 * THIS IS FOR MAKE PROFILE *
 		 ****************************/
-
 		lblMakeProfiles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -613,7 +628,6 @@ public class AdminDashboard {
 		/***********************************
 		 * THIS IS FOR DELETE PROFILE MENU *
 		 ***********************************/
-
 		lblDeleteProfiles.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -651,7 +665,6 @@ public class AdminDashboard {
 		/**********************
 		 * THIS IS FOR LOGOUT *
 		 **********************/
-
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -664,7 +677,6 @@ public class AdminDashboard {
 		/************************************
 		 * THIS IS FOR CREATING NEW ACCOUNT *
 		 ************************************/
-
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				login();
@@ -788,6 +800,18 @@ public class AdminDashboard {
 		System.out.println(db.getAppointments(username, true).toString());
 
 		return db.getAppointments(username, true);
+
+	}
+
+	/**
+	 * Helper method to fill a LinkedList of appointments of a given user Cancelled
+	 * or Not
+	 */
+	private LinkedList<Appointment> popAllApps(String username) {
+		Database db = new Database();
+		db.connect();
+
+		return db.getAppointments(username, false);
 
 	}
 
