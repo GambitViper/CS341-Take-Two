@@ -442,6 +442,7 @@ public class EmployeeDashboard {
 		pnlAvailabilityContent.setBounds(221, 0, 843, 681);
 		frame.getContentPane().add(pnlAvailabilityContent);
 		pnlAvailabilityContent.setLayout(null);
+		pnlAvailabilityContent.setVisible(false);
 
 		JLabel lblAvailability_1 = new JLabel("Set Availability");
 		lblAvailability_1.setBounds(0, 0, 846, 62);
@@ -693,11 +694,13 @@ public class EmployeeDashboard {
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
 				pnlMakeAppContent.setVisible(true);
+				pnlAvailabilityContent.setVisible(false);
 				
 				pnlEditProfile.setBackground(SystemColor.activeCaption);
 				pnlMainMenu.setBackground(SystemColor.activeCaption);
 				pnlViewApp.setBackground(SystemColor.activeCaption);
 				pnlMakeApp.setBackground(SystemColor.textHighlight);
+				pnlAvailability.setBackground(SystemColor.activeCaption);
 			}
 		});
 		
@@ -1216,6 +1219,7 @@ public class EmployeeDashboard {
 
 			}
 		});
+		
 	}
 	
 	private void fillEmployeeSelect(ComboItem selectedMonth, ComboItem selectedDay, ComboItem selectedYear, ComboItem selectedTime) {
