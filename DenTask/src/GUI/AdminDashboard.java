@@ -83,6 +83,16 @@ public class AdminDashboard {
 	 */
 	public AdminDashboard() {
 		initialize();
+	}
+
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		/***************************
 		 * THIS IS FOR BURGER MENU *
 		 ***************************/
@@ -761,35 +771,6 @@ public class AdminDashboard {
 
 	}
 
-	private LinkedList<User> popDen() {
-
-		Database db = new Database();
-		db.connect();
-
-		System.out.println(db.getUser(1, true));
-
-		return db.getUser(1, true);
-	}
-
-	private LinkedList<User> popHyg() {
-
-		Database db = new Database();
-		db.connect();
-
-		System.out.println(db.getUser(2, true));
-
-		return db.getUser(2, true);
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-
 	private LinkedList<User> popUsers() {
 		Database db = new Database();
 		db.connect();
@@ -810,6 +791,9 @@ public class AdminDashboard {
 
 	}
 
+	/**
+	 * Helper method to check if passwords correct for make profile
+	 */
 	private boolean login() {
 
 		String pass1 = String.valueOf(txtPassword.getPassword());
@@ -820,7 +804,6 @@ public class AdminDashboard {
 		try {
 			dummy = Login.findUserByUsername(txtUsername.getText());
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -850,7 +833,6 @@ public class AdminDashboard {
 							2);
 					setDefaultAvailability(txtUsername.getText());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return true;
@@ -861,6 +843,9 @@ public class AdminDashboard {
 		return false;
 	}
 
+	/**
+	 * Helper method to fill default Availability
+	 */
 	private void setDefaultAvailability(String username) {
 		Database dataConnector = new Database();
 		dataConnector.connect();
@@ -873,6 +858,9 @@ public class AdminDashboard {
 		return;
 	}
 
+	/**
+	 * Set Frame Visible Helper
+	 */
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}

@@ -3,6 +3,7 @@ package Classes;
 import java.util.HashMap;
 
 public class Hygienist extends User {
+	
 	//Assumes integer array is reference to daily hours (value) for each given day (key)
 	// int[] times = { 1, 1, 1, 0, 1, 1, 1, 1, 1 }
 	// >>> available (day) = 8-9, 9-10, 10-11, !(11-12), 12-1, 1-2, 2-3, 3-4, 4-5 

@@ -97,6 +97,9 @@ public class EmployeeDashboard {
 		});
 	}
 
+	/**
+	 * Stores a local version of the Username after login
+	 */
 	public void setUser(String username) {
 		userUsername = username.toLowerCase();
 
@@ -112,6 +115,9 @@ public class EmployeeDashboard {
 		lblMainMenuWelcome.setText("Welcome " + tmp.getFirstName() + " " + tmp.getLastName());
 	}
 
+	/**
+	 * Helper method to fill profile of Edit Profile Screen
+	 */
 	public void profileFiller() {
 		Database connector = new Database();
 		connector.connect();
@@ -432,34 +438,6 @@ public class EmployeeDashboard {
 		pnlViewAppContent.add(btnCancelAppointment);
 		pnlViewAppContent.setVisible(false);
 
-		cboxViewedAppointment.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				Object selected = cboxViewedAppointment.getSelectedItem();
-
-				if (selected != null) {
-
-					viewedApp = ((ComboItem) selected).getApp();
-
-					User pat;
-					try {
-						pat = Login.findUserByUsername(viewedApp.getPatient());
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-						return;
-					}
-
-					lblAppPatient.setText(pat.getFirstName() + " " + pat.getLastName());
-					lblAppDate.setText(viewedApp.getDate().toString() + " @ " + viewedApp.getTime());
-					txtAppDetails.setText(viewedApp.getAppDetail());
-					lblAppType.setText(viewedApp.getAppType());
-					btnCancelAppointment.setEnabled(true);
-
-				}
-
-			}
-		});
-
 		JPanel pnlAvailabilityContent = new JPanel();
 		pnlAvailabilityContent.setBounds(221, 0, 843, 681);
 		frame.getContentPane().add(pnlAvailabilityContent);
@@ -546,9 +524,6 @@ public class EmployeeDashboard {
 		btnUpdateAvailability.setBounds(98, 422, 604, 51);
 		pnlAvailabilityContent.add(btnUpdateAvailability);
 
-		
-
-		
 		pnlLogOut.setBorder(blackline);
 
 		JPanel pnlEditProfileContent = new JPanel();
@@ -1210,6 +1185,37 @@ public class EmployeeDashboard {
 				}
 			}
 		});
+
+		/**
+		 * Fills in appointment details based on selected appointment
+		 */
+		cboxViewedAppointment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				Object selected = cboxViewedAppointment.getSelectedItem();
+
+				if (selected != null) {
+
+					viewedApp = ((ComboItem) selected).getApp();
+
+					User pat;
+					try {
+						pat = Login.findUserByUsername(viewedApp.getPatient());
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						return;
+					}
+
+					lblAppPatient.setText(pat.getFirstName() + " " + pat.getLastName());
+					lblAppDate.setText(viewedApp.getDate().toString() + " @ " + viewedApp.getTime());
+					txtAppDetails.setText(viewedApp.getAppDetail());
+					lblAppType.setText(viewedApp.getAppType());
+					btnCancelAppointment.setEnabled(true);
+
+				}
+
+			}
+		});
 	}
 	
 	private void fillEmployeeSelect(ComboItem selectedMonth, ComboItem selectedDay, ComboItem selectedYear, ComboItem selectedTime) {
@@ -1257,6 +1263,10 @@ public class EmployeeDashboard {
 		}
 	}
 
+	/**
+	 * Helper method to
+	 * fill a LinkedList of appointments of a given user
+	 */
 	private LinkedList<Appointment> popApps() {
 		Database db = new Database();
 		db.connect();
@@ -1267,6 +1277,9 @@ public class EmployeeDashboard {
 
 	}
 
+	/**
+	 * Set Frame Visible Helper
+	 */
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
