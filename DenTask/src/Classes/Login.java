@@ -78,7 +78,6 @@ public class Login {
 	}
 	
 	public static String loginUser(String username, String password) throws SQLException {
-		// TODO replace with database search
 		User loginUser = findUserByUsername(username);
 		
 		if (loginUser == null) return "Could not find a user with " + username + " in our system";
@@ -87,10 +86,8 @@ public class Login {
 		
 		if(!md5(password, loginUser.getCreateDate()).equals(loginUser.getPassword())) {
 			//Password doesn't match
-			
 			return "Incorrect password";
 		}
-		
 		
 		return "1";
 	}

@@ -113,6 +113,7 @@ public abstract class User {
 		return this;
 	}
 
+	// toString method for a User object
 	public String toString() {
 		StringBuilder printStr = new StringBuilder();
 		printStr.append("User: " + this.getUsername() + "\n");
@@ -127,6 +128,7 @@ public abstract class User {
 		return printStr.toString();
 	}
 
+	// Checks if two users are equal
 	public boolean equals(User u) {
 		return (u.getUsername().equals(this.getUsername()) && u.getPassword().equals(this.getPassword())
 				&& u.getUserType() == this.getUserType() && u.getFirstName().equals(this.getFirstName())

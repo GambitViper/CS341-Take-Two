@@ -55,8 +55,8 @@ public class SignupScreen {
 		});
 	}
 
-	/*
-	 * Creates account based on feilds on the signup screen
+	/**
+	 * Creates account based on fields on the signup screen
 	 * 
 	 * Conditions
 	 *  - Checks if Passwords are equal
@@ -123,19 +123,7 @@ public class SignupScreen {
 		frame.setUndecorated(true);
 
 		JLabel btnBack = new JLabel("<");
-		
-		/*
-		 * Back button trigger
-		 */
-		btnBack.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				frame.dispose();
-				LoginScreen login = new LoginScreen();
-				login.setVisible(true);
-			}
-		});
-		
+	
 		frame.getContentPane().setLayout(null);
 		
 		txtFirstName = new JTextField();
@@ -174,17 +162,6 @@ public class SignupScreen {
 		JButton btnNewAccount = new JButton("Create Account");
 		btnNewAccount.setBounds(475, 202, 142, 39);
 		frame.getContentPane().add(btnNewAccount);
-		btnNewAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(txtFirstName.equals("") || txtLastName.equals("") || txtEmail.equals("") || txtPhoneNumber.equals("") || txtUsername.equals("") || txtPassword.equals("") || txtPassConfirm.equals("")) {
-					lblError.setText("DO NOT LEAVE ANYTHING BLANK");
-				}else if(login()) {
-					frame.dispose();
-					LoginScreen login = new LoginScreen();
-					login.setVisible(true);
-				}
-			}
-		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 50));
 		btnBack.setBounds(10, 252, 41, 46);
 		frame.getContentPane().add(btnBack);
@@ -244,12 +221,40 @@ public class SignupScreen {
 		frame.setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		/*
+		/**
 		 * New Account Trigger
 		 */
+		btnNewAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(txtFirstName.equals("") || txtLastName.equals("") || txtEmail.equals("") || txtPhoneNumber.equals("") || txtUsername.equals("") || txtPassword.equals("") || txtPassConfirm.equals("")) {
+					lblError.setText("DO NOT LEAVE ANYTHING BLANK");
+				}else if(login()) {
+					frame.dispose();
+					LoginScreen login = new LoginScreen();
+					login.setVisible(true);
+				}
+			}
+		});
+		
+		/**
+		 * Back button trigger
+		 */
+		btnBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				frame.dispose();
+				LoginScreen login = new LoginScreen();
+				login.setVisible(true);
+			}
+		});
+		
 	}
 
+	/**
+	 * Set Frame Visible Helper
+	 */
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
+	
 }

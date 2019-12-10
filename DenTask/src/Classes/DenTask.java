@@ -1,23 +1,22 @@
 package Classes;
-/********************
- * DenTask Software *
- ********************
+
+import GUI.LoginScreen;
+
+/**
+ * DenTask Software 
  *
  * CS341
  * Authors: Matt Milos, Tom Jensen, Zach Baklund
- */
-
+ * 
+ **/
 
 public class DenTask {
-
 	public static void main(String[] args) {
-		
+		login();
 	}
 
-	String username = "matt";
-	String password = "1234";
 	
-	public void login() {
-		//Do Login Calls Here
+	public static void login() {
+		LoginScreen.main(null);
 	}
 }

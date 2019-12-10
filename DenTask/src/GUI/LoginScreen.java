@@ -30,7 +30,7 @@ import java.awt.event.KeyEvent;
 public class LoginScreen extends JFrame{
 
 	/**
-	 * 
+	 * Local Variables for the Login Screen
 	 */
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
@@ -88,56 +88,12 @@ public class LoginScreen extends JFrame{
 		frame.getContentPane().add(txtUsername);
 		
 		txtPassword = new JPasswordField();
-		txtPassword.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent evt) {
-				if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
-					String myPass = String.valueOf(txtPassword.getPassword());
-					String confirmation = "didnt return";
-					System.out.println(myPass);
-					System.out.println(txtUsername.getText());
-					int uType = 3;
-					
-					
-					try {
-						confirmation = Login.loginUser(txtUsername.getText().toLowerCase(), myPass);
-						uType = Login.getUserType(txtUsername.getText().toLowerCase());
-						
-						if(confirmation.equals("1") && uType == 3) {
-							Dashboard dash = new Dashboard();
-							dash.setUser(txtUsername.getText());
-							dash.setVisible(true);
-							frame.dispose();
-							return;
-						} else if(confirmation.equals("1") && (uType == 2 || uType == 1)) {
-							EmployeeDashboard edash = new EmployeeDashboard();
-							edash.setUser(txtUsername.getText());
-							edash.setVisible(true);
-							frame.dispose();
-							return;
-						} else if(confirmation.equals("1") && (uType == 0)) {
-							AdminDashboard adash = new AdminDashboard();
-							adash.setVisible(true);	
-							frame.dispose();
-							return;
-						}
-						
-						lblError.setText("Username or Password Invalid!");
-						
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
 		txtPassword.setBounds(376, 133, 185, 33);
 		frame.getContentPane().add(txtPassword);
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.setBounds(376, 202, 185, 30);
 		frame.getContentPane().add(btnLogin);
-		
-		
 		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 22));
@@ -153,16 +109,6 @@ public class LoginScreen extends JFrame{
 		closeButton.setFont(new Font("Tahoma", Font.BOLD, 50));
 		closeButton.setBounds(10, 254, 40, 44);
 		frame.getContentPane().add(closeButton);
-
-		/*
-		 * CLOSE BUTTON TRIGGER
-		 */
-		closeButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				frame.dispose();
-			}
-		});
 		
 		JLabel lblClickToCreate = new JLabel("Click to create new account");
 		lblClickToCreate.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -170,7 +116,6 @@ public class LoginScreen extends JFrame{
 		lblClickToCreate.setBounds(376, 267, 185, 31);
 		frame.getContentPane().add(lblClickToCreate);
 
-		
 		JLabel Logo = new JLabel("");
 		Logo.setBounds(25, 49, 230, 194);
 		Logo.setIcon(new ImageIcon("logo.png"));
@@ -180,7 +125,6 @@ public class LoginScreen extends JFrame{
 		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblWelcome.setBounds(376, 17, 185, 35);
-		
 		frame.getContentPane().add(lblWelcome);
 		
 		lblError = new JLabel("");
@@ -192,9 +136,9 @@ public class LoginScreen extends JFrame{
 		frame.setBackground(new Color(255, 255, 255));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		/*
-		 * LOGIN BUTTON TRIGGER
-		 */
+		/************************
+		 * LOGIN BUTTON TRIGGER *
+		 ************************/
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -239,9 +183,9 @@ public class LoginScreen extends JFrame{
 			}
 		});
 		
-		/*
-		 * CREATE ACCOUNT TRIGGER
-		 */
+		/**************************
+		 * CREATE ACCOUNT TRIGGER *
+		 **************************/
 		lblClickToCreate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -250,12 +194,67 @@ public class LoginScreen extends JFrame{
 				signup.setVisible(true);
 			}
 		});
-		
+
+		/*********************
+		 * ENTER KEY TRIGGER *
+		 *********************/
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent evt) {
+				if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+					String myPass = String.valueOf(txtPassword.getPassword());
+					String confirmation = "didnt return";
+					System.out.println(myPass);
+					System.out.println(txtUsername.getText());
+					int uType = 3;
+					
+					
+					try {
+						confirmation = Login.loginUser(txtUsername.getText().toLowerCase(), myPass);
+						uType = Login.getUserType(txtUsername.getText().toLowerCase());
+						
+						if(confirmation.equals("1") && uType == 3) {
+							Dashboard dash = new Dashboard();
+							dash.setUser(txtUsername.getText());
+							dash.setVisible(true);
+							frame.dispose();
+							return;
+						} else if(confirmation.equals("1") && (uType == 2 || uType == 1)) {
+							EmployeeDashboard edash = new EmployeeDashboard();
+							edash.setUser(txtUsername.getText());
+							edash.setVisible(true);
+							frame.dispose();
+							return;
+						} else if(confirmation.equals("1") && (uType == 0)) {
+							AdminDashboard adash = new AdminDashboard();
+							adash.setVisible(true);	
+							frame.dispose();
+							return;
+						}
+						
+						lblError.setText("Username or Password Invalid!");
+						
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+
+		/************************
+		 * CLOSE BUTTON TRIGGER *
+		 ************************/
+		closeButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				frame.dispose();
+			}
+		});
 	}
 
-	/*
-	 * Sets frame to visible
-	 */
+	/*************************
+	 * Sets frame to visible *
+	 *************************/
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}

@@ -2,6 +2,7 @@ package Classes;
 
 public class Patient extends User {
 	
+	// toString method to return a string of a Patient
 	public String toString() {
 		StringBuilder printStr = new StringBuilder();
 		printStr.append("User: " + this.getUsername() + "\n");

@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -55,7 +56,7 @@ public class AdminDashboard {
 	private JRadioButton radDentist, radHygienist;
 	private JComboBox cboxUsers;
 	private JComboBox cboxAppAppointment;
-	
+
 	private JPanel pnlDeleteProfile;
 	private JPanel pnlMakeProfiles;
 	private JPanel pnlViewAppointments;
@@ -82,6 +83,16 @@ public class AdminDashboard {
 	 */
 	public AdminDashboard() {
 		initialize();
+	}
+
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		/***************************
 		 * THIS IS FOR BURGER MENU *
 		 ***************************/
@@ -185,30 +196,6 @@ public class AdminDashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 
-		pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-
-		JLabel lblMainMenu_1 = new JLabel("Main Menu");
-		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenu_1.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenu_1);
-
-		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask");
-		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWelcomeToDentask.setBounds(85, 140, 677, 123);
-		pnlMainMenuContent.add(lblWelcomeToDentask);
-
-		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
-		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSelectAnyOf.setBounds(85, 314, 677, 85);
-		pnlMainMenuContent.add(lblSelectAnyOf);
-		pnlMainMenuContent.setVisible(true);
-
 		pnlViewAppointments = new JPanel();
 		pnlViewAppointments.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlViewAppointments);
@@ -220,7 +207,7 @@ public class AdminDashboard {
 		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
 		pnlViewAppointments.add(lblMakeAppointment_1);
 
-		JLabel lblChooseDentisthygienist = new JLabel("Choose Dentist/Hygienist");
+		JLabel lblChooseDentisthygienist = new JLabel("Choose User");
 		lblChooseDentisthygienist.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblChooseDentisthygienist.setBounds(58, 154, 200, 40);
 		pnlViewAppointments.add(lblChooseDentisthygienist);
@@ -385,6 +372,32 @@ public class AdminDashboard {
 
 			}
 		});
+		
+		pnlViewAppointments.setVisible(false);
+
+		pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+
+		JLabel lblMainMenu_1 = new JLabel("Main Menu");
+		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenu_1.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenu_1);
+
+		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask");
+		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcomeToDentask.setBounds(85, 140, 677, 123);
+		pnlMainMenuContent.add(lblWelcomeToDentask);
+
+		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
+		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectAnyOf.setBounds(85, 314, 677, 85);
+		pnlMainMenuContent.add(lblSelectAnyOf);
+		pnlMainMenuContent.setVisible(true);
 
 		pnlMakeProfiles = new JPanel();
 		pnlMakeProfiles.setBounds(218, 0, 846, 681);
@@ -490,34 +503,6 @@ public class AdminDashboard {
 		lblError.setBounds(75, 84, 642, 47);
 		pnlMakeProfiles.add(lblError);
 
-		pnlDeleteProfile = new JPanel();
-		pnlDeleteProfile.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlDeleteProfile);
-		pnlDeleteProfile.setLayout(null);
-
-		JLabel lblEditProfile_1 = new JLabel("Delete Profile");
-		lblEditProfile_1.setFont(new Font("Tahoma", Font.BOLD, 40));
-		lblEditProfile_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEditProfile_1.setBounds(10, 0, 826, 88);
-		pnlDeleteProfile.add(lblEditProfile_1);
-
-		JButton btnDeleteUser = new JButton("Delete User");
-		btnDeleteUser.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnDeleteUser.setBounds(145, 324, 571, 80);
-		pnlDeleteProfile.add(btnDeleteUser);
-
-		cboxUsers = new JComboBox();
-		cboxUsers.setBounds(262, 223, 320, 60);
-		pnlDeleteProfile.add(cboxUsers);
-
-		JLabel lblSelectUser = new JLabel("Select User");
-		lblSelectUser.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSelectUser.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblSelectUser.setBounds(262, 155, 320, 57);
-		pnlDeleteProfile.add(lblSelectUser);
-
-		pnlDeleteProfile.setVisible(false);
-
 		/***************************
 		 * THIS IS FOR MAIN MENU *
 		 ***************************/
@@ -548,27 +533,42 @@ public class AdminDashboard {
 				LinkedList<User> denList;
 				LinkedList<User> hygList;
 
-				denList = popDen();
-				hygList = popHyg();
-
-				cboxAppDenHyg.removeAllItems();
-
+				denList = popUsers();
+				
 				for (int i = 0; i < denList.size(); i++) {
-
-					String name = (denList.get(i).getFirstName() + " " + denList.get(i).getLastName());
-					String username = denList.get(i).getUsername();
-					System.out.println(denList.get(i).getUsername() + "THIS IS A DENT");
-					cboxAppDenHyg.addItem(new ComboItem(name, username));
+				  
+					if(!(denList.get(i).getUserType() == 0)) {
+						String name = (denList.get(i).getFirstName() + " " + denList.get(i).getLastName());
+						String username = denList.get(i).getUsername();
+						System.out.println(denList.get(i).getUsername() + "USER"); 
+						cboxAppDenHyg.addItem(new ComboItem(name, username)); 
+					}
 				}
-
-				for (int i = 0; i < hygList.size(); i++) {
-
-					String name = (hygList.get(i).getFirstName() + " " + hygList.get(i).getLastName());
-					String username = hygList.get(i).getUsername();
-					System.out.println(hygList.get(i).getUsername() + "THIS IS A HYG");
-					cboxAppDenHyg.addItem(new ComboItem(name, username));
-				}
-
+				
+				/*
+				 * denList = popDen(); hygList = popHyg();
+				 * 
+				 * cboxAppDenHyg.removeAllItems();
+				 * 
+				 * for (int i = 0; i < denList.size(); i++) {
+				 * 
+				 * String name = (denList.get(i).getFirstName() + " " +
+				 * denList.get(i).getLastName()); String username =
+				 * denList.get(i).getUsername(); System.out.println(denList.get(i).getUsername()
+				 * + "THIS IS A DENT"); cboxAppDenHyg.addItem(new ComboItem(name, username));
+				 * 
+				 * }
+				 * 
+				 * for (int i = 0; i < hygList.size(); i++) {
+				 * 
+				 * String name = (hygList.get(i).getFirstName() + " " +
+				 * hygList.get(i).getLastName()); String username =
+				 * hygList.get(i).getUsername(); System.out.println(hygList.get(i).getUsername()
+				 * + "THIS IS A HYG"); cboxAppDenHyg.addItem(new ComboItem(name, username));
+				 * 
+				 * }
+				 */
+								 
 				pnlDeleteProfile.setVisible(false);
 				pnlMainMenuContent.setVisible(false);
 				pnlMakeProfiles.setVisible(false);
@@ -648,35 +648,6 @@ public class AdminDashboard {
 		/******************************
 		 * THIS IS FOR DELETE PROFILE *
 		 ******************************/
-
-		btnDeleteUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				Object item = cboxUsers.getSelectedItem();
-				String val = ((ComboItem) item).getValue();
-
-				LinkedList<User> userList;
-
-				Database db = new Database();
-				db.connect();
-				db.deleteUser(val);
-				db.disconnect();
-
-				userList = popUsers();
-				System.out.println(userList);
-				cboxUsers.removeAllItems();
-
-				for (int i = 0; i < userList.size(); i++) {
-
-					String name = (userList.get(i).getFirstName() + " " + userList.get(i).getLastName());
-					String username = userList.get(i).getUsername();
-					System.out.println(userList.get(i).getUsername());
-					if (!username.equals("admin")) {
-						cboxUsers.addItem(new ComboItem(name, username));
-					}
-				}
-			}
-		});
 		/**********************
 		 * THIS IS FOR LOGOUT *
 		 **********************/
@@ -731,46 +702,73 @@ public class AdminDashboard {
 		/****************************************
 		 * Trigger to clear Appointment Details *
 		 ****************************************/
-
-		pnlDeleteProfile.setVisible(false);
 		pnlMainMenuContent.setVisible(true);
 		pnlMakeProfiles.setVisible(false);
-		pnlViewAppointments.setVisible(false);
 
 		pnlEditProfile.setBackground(SystemColor.activeCaption);
 		pnlMainMenu.setBackground(SystemColor.textHighlight);
 		pnlViewApp.setBackground(SystemColor.activeCaption);
 		pnlMakeApp.setBackground(SystemColor.activeCaption);
-		
-	}
 
-	private LinkedList<User> popDen() {
+		pnlDeleteProfile = new JPanel();
+		pnlDeleteProfile.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlDeleteProfile);
+		pnlDeleteProfile.setLayout(null);
 
-		Database db = new Database();
-		db.connect();
+		JLabel lblEditProfile_1 = new JLabel("Delete Profile");
+		lblEditProfile_1.setFont(new Font("Tahoma", Font.BOLD, 40));
+		lblEditProfile_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEditProfile_1.setBounds(10, 0, 826, 88);
+		pnlDeleteProfile.add(lblEditProfile_1);
 
-		System.out.println(db.getUser(1, true));
+		JButton btnDeleteUser = new JButton("Delete User");
+		btnDeleteUser.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnDeleteUser.setBounds(145, 324, 571, 80);
+		pnlDeleteProfile.add(btnDeleteUser);
 
-		return db.getUser(1, true);
-	}
+		cboxUsers = new JComboBox();
+		cboxUsers.setBounds(262, 223, 320, 60);
+		pnlDeleteProfile.add(cboxUsers);
 
-	private LinkedList<User> popHyg() {
+		JLabel lblSelectUser = new JLabel("Select User");
+		lblSelectUser.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectUser.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblSelectUser.setBounds(262, 155, 320, 57);
+		pnlDeleteProfile.add(lblSelectUser);
 
-		Database db = new Database();
-		db.connect();
+		pnlDeleteProfile.setVisible(false);
 
-		System.out.println(db.getUser(2, true));
+		btnDeleteUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 
-		return db.getUser(2, true);
-	}
+				Object item = cboxUsers.getSelectedItem();
+				String val = ((ComboItem) item).getValue();
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				LinkedList<User> userList;
+
+				Database db = new Database();
+				db.connect();
+				db.deleteUser(val);
+				db.disconnect();
+
+				userList = popUsers();
+				System.out.println(userList);
+				cboxUsers.removeAllItems();
+
+				for (int i = 0; i < userList.size(); i++) {
+
+					String name = (userList.get(i).getFirstName() + " " + userList.get(i).getLastName());
+					String username = userList.get(i).getUsername();
+					System.out.println(userList.get(i).getUsername());
+					if (!username.equals("admin")) {
+						cboxUsers.addItem(new ComboItem(name, username));
+					}
+				}
+			}
+		});
+
+		pnlDeleteProfile.setVisible(false);
+
 	}
 
 	private LinkedList<User> popUsers() {
@@ -793,6 +791,9 @@ public class AdminDashboard {
 
 	}
 
+	/**
+	 * Helper method to check if passwords correct for make profile
+	 */
 	private boolean login() {
 
 		String pass1 = String.valueOf(txtPassword.getPassword());
@@ -803,7 +804,6 @@ public class AdminDashboard {
 		try {
 			dummy = Login.findUserByUsername(txtUsername.getText());
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -814,12 +814,12 @@ public class AdminDashboard {
 			lblError.setText("USERNAME IS TAKEN");
 			return false;
 		} else {
-
 			if (radDentist.isSelected()) {
 				try {
 					Login.createUser(txtUsername.getText(), String.valueOf(txtPassword.getPassword()),
 							txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText(),
 							1);
+					setDefaultAvailability(txtUsername.getText());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -831,8 +831,8 @@ public class AdminDashboard {
 					Login.createUser(txtUsername.getText(), String.valueOf(txtPassword.getPassword()),
 							txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhoneNumber.getText(),
 							2);
+					setDefaultAvailability(txtUsername.getText());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return true;
@@ -843,6 +843,24 @@ public class AdminDashboard {
 		return false;
 	}
 
+	/**
+	 * Helper method to fill default Availability
+	 */
+	private void setDefaultAvailability(String username) {
+		Database dataConnector = new Database();
+		dataConnector.connect();
+		dataConnector.insertDailyAvailability(username, "Monday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Tuesday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Wednesday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Thursday", "800", "1700");
+		dataConnector.insertDailyAvailability(username, "Friday", "800", "1700");
+		dataConnector.disconnect();
+		return;
+	}
+
+	/**
+	 * Set Frame Visible Helper
+	 */
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}

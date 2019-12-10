@@ -26,6 +26,8 @@ public class Database {
 		Database db = new Database();
 		db.connect();
 
+		db.insertUser("example", "1234", "Example3", "Dentist", "example3@dentist.com", "6549871234", 1);
+		
 		db.disconnect();
 	}
 
@@ -175,6 +177,17 @@ public class Database {
 			else {
 				System.out.format("ERROR: %s could not be deleted\n", username);
 			}
+
+			// Update User's Appointments and cancels them (sets their results
+			// accordingly)
+			stmt = connection.prepareStatement("UPDATE Appointment SET Result = ? WHERE PatientID = ?;");
+			stmt.setString(1, "Cancelled due to account deletion.");
+			stmt.setString(2, username);
+
+			rowsAffected = stmt.executeUpdate();
+
+			System.out.println(rowsAffected + " appointments were cancelled.");
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -301,7 +314,7 @@ public class Database {
 		// in the system
 		return users;
 	}
-	
+
 	/**
 	 * Appointment operations
 	 */
@@ -464,10 +477,10 @@ public class Database {
 			// Use the connection to prepare the query string using the input parameters
 			PreparedStatement stmt;
 			if (future) {
-				stmt = connection.prepareStatement("SELECT * FROM Appointment WHERE (PatientID = ? OR EmployeeID = ?) AND Result IS NULL;");
-			} else {
 				stmt = connection.prepareStatement(
-						"SELECT * FROM Appointment WHERE PatientID = ? OR EmployeeID = ?;");
+						"SELECT * FROM Appointment WHERE (PatientID = ? OR EmployeeID = ?) AND Result IS NULL;");
+			} else {
+				stmt = connection.prepareStatement("SELECT * FROM Appointment WHERE PatientID = ? OR EmployeeID = ?;");
 			}
 			stmt.setString(1, username);
 			stmt.setString(2, username);
@@ -493,9 +506,9 @@ public class Database {
 	 * Method to retrieve all Appointments currently in the database
 	 * 
 	 * @param future - flag if only future appointments are desired (true: returns
-	 *                 only upcomming scheduled Appointments in the future, false:
-	 *                 returns all Appointments in the system including
-	 *                 past/cancelled Appointments
+	 *               only upcomming scheduled Appointments in the future, false:
+	 *               returns all Appointments in the system including past/cancelled
+	 *               Appointments
 	 * @return - a LinkedList of all Appointments in the database
 	 */
 	public LinkedList<Appointment> getAllAppointments(boolean future) {
@@ -724,37 +737,72 @@ public class Database {
 	 * RequestOff operations
 	 */
 
+	/**
+	 * Method for an Employee to request off work for a specific date
+	 * 
+	 * @param username - username of the Employee
+	 * @param date     - date of request (YYYY-MM-DD)
+	 */
 	public void insertRequestOff(String username, String date) {
 		try {
+			// Use the connection to prepare the query string using input parameters
 			PreparedStatement stmt = connection
 					.prepareStatement("INSERT INTO [RequestOff] ([UserID], [OffDate]) VALUES (? , ?)");
 			stmt.setString(1, username);
 			stmt.setString(2, date);
 
+			// Execute the query and record number of rows affected
 			int rowsAffected = stmt.executeUpdate();
 
+			// Request was successfully inserted into the database
 			if (rowsAffected == 1) {
 				System.out.format("%s successfully requested off for %s\n", username, date);
-			} else {
+			}
+			// No rows affected in the database
+			else {
 				System.out.format("ERROR: could not request off %s for %s\n", date, username);
 			}
+
+			// Cancel all appointments for this User at this Date
+			// Use the connection to prepare the query string
+			stmt = connection
+					.prepareStatement("UPDATE Appointment SET Result = ? WHERE EmployeeID = ? AND Date LIKE ?;");
+			stmt.setString(1, "Cancelled due to dentist/hygienist being unavailable.");
+			stmt.setString(2, username);
+			stmt.setString(3, date + "%");
+
+			// Execute the query and record the number of rows affected
+			rowsAffected = stmt.executeUpdate();
+			System.out.println(rowsAffected + " appointments were cancelled.");
+
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
+	/**
+	 * Method to remove an request off for a specific date
+	 * 
+	 * @param username - username of the Employee
+	 * @param date     - date of the Request (YYYY-MM-DD)
+	 */
 	public void deleteRequestOff(String username, String date) {
 		try {
+			// Use the connection to prepare the query string
 			PreparedStatement stmt = connection
 					.prepareStatement("DELETE FROM RequestOff WHERE UserID = ? AND OffDate = ?;");
 			stmt.setString(1, username);
 			stmt.setString(2, date);
 
+			// Execute the query and record the number of rows affected
 			int rowsAffected = stmt.executeUpdate();
 
+			// Request was successfully deleted
 			if (rowsAffected == 1) {
 				System.out.format("Successfully removed request off for %s on %s\n", username, date);
-			} else {
+			}
+			// No rows were updated in the database
+			else {
 				System.out.format("ERROR: could not remove request off for %s on %s\n", date, username);
 			}
 		} catch (SQLException e) {
@@ -762,63 +810,100 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Method to retrieve all dates requested off by a specific Employee
+	 * 
+	 * @param username - username of the Employee
+	 * @return - List of all dates currently requested
+	 */
 	public LinkedList<String> getUserRequests(String username) {
 		LinkedList<String> dates = new LinkedList<>();
 		try {
+			// Use the connection to prepare the query string
 			PreparedStatement stmt = connection.prepareStatement("SELECT OffDate FROM RequestOff WHERE UserID = ?;");
 			stmt.setString(1, username);
+			// Execute the query
 			ResultSet r = stmt.executeQuery();
 
+			// Add each offDate to the list of dates
 			while (r.next()) {
 				dates.add(r.getString("OffDate"));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+		// Return list of dates
 		return dates;
 	}
 
+	/**
+	 * Method to retrieve all Employees that have requested off for a specific date
+	 * 
+	 * @param date - (YYYY-MM-DD)
+	 * @return - list of usernames of employees that have requested off for the
+	 *         specific date
+	 */
 	public LinkedList<String> getDateRequests(String date) {
 		LinkedList<String> employees = new LinkedList<>();
 		try {
+			// Use the connection to prepare the query string
 			PreparedStatement stmt = connection.prepareStatement("SELECT UserID FROM RequestOff WHERE OffDate = ?;");
 			stmt.setString(1, date);
+			// Execute the query
 			ResultSet r = stmt.executeQuery();
 
+			// Add each username to the list
 			while (r.next()) {
 				employees.add(r.getString("UserID"));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+		// Return the list of usernames
 		return employees;
 	}
 
+	/**
+	 * Method to retrieve all requests in the system
+	 * The HashMap is structured as follows: The keySet is the dates mapped to a list of Employees who have requested off for that date
+	 * 
+	 * @return - HashMap representing all requests <Date, LinkedList<username>>
+	 */
 	public HashMap<String, LinkedList<String>> getAllRequests() {
 		HashMap<String, LinkedList<String>> requests = new HashMap<>();
-		LinkedList<String> dates;
+		LinkedList<String> employees;
 		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT UserID FROM RequestOff;");
+			//Use the connection to prepare the query string
+			PreparedStatement stmt = connection.prepareStatement("SELECT OffDate FROM RequestOff GROUP BY OffDate;");
+			
+			//Execute the query
 			ResultSet r = stmt.executeQuery();
 
+			//For each date that has requests, query the database to find Employees that have requested off for that day
 			while (r.next()) {
-				dates = new LinkedList<>();
-				String username = r.getString("UserID");
+				//Create a new empty list of employees
+				employees = new LinkedList<>();
+				String date = r.getString("OffDate");
 
-				PreparedStatement subStmt = connection
-						.prepareStatement("SELECT OffDate FROM RequestOff WHERE UserID = ?;");
-				subStmt.setString(1, username);
-				ResultSet subR = subStmt.executeQuery();
+				//Use the connection to prepare the query string
+				stmt = connection
+						.prepareStatement("SELECT UserID FROM RequestOff WHERE OffDate = ?;");
+				stmt.setString(1, date);
+				//Execute the query
+				ResultSet subR = stmt.executeQuery();
 
+				//Add each username to the list of Employees
 				while (subR.next()) {
-					dates.add(subR.getString("OffDate"));
+					employees.add(subR.getString("UserID"));
 				}
 
-				requests.put(username, dates);
+				//Add the date and list of employees to the requests HashMap
+				requests.put(date, employees);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+		//Return the HashMap
 		return requests;
 	}
 
@@ -919,7 +1004,7 @@ public class Database {
 	 * @return - a string of the start and end times separated with a space
 	 */
 	private String hoursToTimes(int[] hours) {
-		String startTime = "", endTime = "";
+		String startTime = "800", endTime = "1700";
 		// Iterate along the bitmap until arriving at the first '1', indicating the
 		// start of the shift
 		for (int i = 0; i < hours.length; i++) {
@@ -932,6 +1017,8 @@ public class Database {
 						endTime = (j - 1 + 8) + "00";
 					}
 				}
+				//If the start of the shift is found, break out of the loop
+				i = hours.length;
 			}
 		}
 		// Return the string of both times separated with a space
