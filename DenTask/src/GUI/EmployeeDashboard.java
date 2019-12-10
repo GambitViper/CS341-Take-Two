@@ -33,6 +33,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class EmployeeDashboard {
 
@@ -44,13 +46,23 @@ public class EmployeeDashboard {
 	private JPasswordField txtCurrentPassword;
 	private JPasswordField txtNewPassword;
 	private JPasswordField txtConfirmedPassword;
-	private JComboBox cboxAppointment;
+	private JComboBox cboxViewedAppointment;
 	private JTextArea txtAppDetails;
-
+	private JComboBox cbMondayS;
+	private JComboBox cbMondayE;
+	private JComboBox cbTuesdayS;
+	private JComboBox cbTuesdayE;
+	private JComboBox cbWednesdayS;
+	private JComboBox cbWednesdayE;
+	private JComboBox cbThursdayS;
+	private JComboBox cbThursdayE;
+	private JComboBox cbFridayS;
+	private JComboBox cbFridayE;
 	private JLabel lblError;
 	private JLabel lblMainMenuWelcome;
 
 	private String userUsername;
+	private Appointment viewedApp;
 
 	/**
 	 * Launch the application.
@@ -132,6 +144,19 @@ public class EmployeeDashboard {
 		panel.add(Logo);
 		Logo.setIcon(new ImageIcon("logo.png"));
 
+		JPanel pnlAvailability = new JPanel();
+		pnlAvailability.setBorder(new LineBorder(new Color(0, 0, 0)));
+		pnlAvailability.setBounds(0, 337, 220, 60);
+		panel.add(pnlAvailability);
+		pnlAvailability.setLayout(null);
+		pnlAvailability.setBackground(SystemColor.activeCaption);
+
+		JLabel lblAvailability = new JLabel("Availability");
+		lblAvailability.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAvailability.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblAvailability.setBounds(0, 0, 220, 60);
+		pnlAvailability.add(lblAvailability);
+
 		JPanel pnlMainMenu = new JPanel();
 		pnlMainMenu.setBackground(SystemColor.textHighlight);
 		pnlMainMenu.setBounds(0, 160, 220, 60);
@@ -198,19 +223,6 @@ public class EmployeeDashboard {
 		lblLogOut.setBounds(0, 0, 220, 60);
 		pnlLogOut.add(lblLogOut);
 
-		JPanel pnlAvailability = new JPanel();
-		pnlAvailability.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlAvailability.setBounds(0, 337, 220, 60);
-		panel.add(pnlAvailability);
-		pnlAvailability.setLayout(null);
-		pnlAvailability.setBackground(SystemColor.activeCaption);
-
-		JLabel lblAvailability = new JLabel("Availability");
-		lblAvailability.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAvailability.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblAvailability.setBounds(0, 0, 220, 60);
-		pnlAvailability.add(lblAvailability);
-
 		JLabel lblCreatedBy = new JLabel("Created By:");
 		lblCreatedBy.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblCreatedBy.setHorizontalAlignment(SwingConstants.CENTER);
@@ -227,6 +239,42 @@ public class EmployeeDashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		pnlLogOut.setBorder(blackline);
+
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+
+		lblMainMenuWelcome = new JLabel("Main Menu");
+		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenuWelcome);
+
+		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask!");
+		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblWelcomeToDentask.setBounds(10, 160, 836, 94);
+		pnlMainMenuContent.add(lblWelcomeToDentask);
+
+		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
+		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectAnyOf.setBounds(10, 296, 826, 60);
+		pnlMainMenuContent.add(lblSelectAnyOf);
+		pnlMainMenuContent.setVisible(true);
+
+		JPanel pnlMakeAppContent = new JPanel();
+		pnlMakeAppContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMakeAppContent);
+		pnlMakeAppContent.setLayout(null);
+
+		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
+		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
+		pnlMakeAppContent.add(lblMakeAppointment_1);
+		pnlMakeAppContent.setVisible(false);
 
 		JPanel pnlViewAppContent = new JPanel();
 		pnlViewAppContent.setBounds(218, 0, 846, 681);
@@ -245,9 +293,9 @@ public class EmployeeDashboard {
 		lblSelectAppoint.setBounds(10, 107, 826, 45);
 		pnlViewAppContent.add(lblSelectAppoint);
 
-		cboxAppointment = new JComboBox();
-		cboxAppointment.setBounds(251, 163, 350, 38);
-		pnlViewAppContent.add(cboxAppointment);
+		cboxViewedAppointment = new JComboBox();
+		cboxViewedAppointment.setBounds(251, 163, 350, 38);
+		pnlViewAppContent.add(cboxViewedAppointment);
 
 		JLabel lblNewLabel = new JLabel("Patient");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -288,54 +336,131 @@ public class EmployeeDashboard {
 		txtAppDetails.setBackground(new Color(240, 240, 240));
 		txtAppDetails.setLineWrap(true);
 		pnlViewAppContent.add(txtAppDetails);
+
+		JButton btnCancelAppointment = new JButton("Cancel Appointment");
+		btnCancelAppointment.setEnabled(false);
+		btnCancelAppointment.setBounds(120, 577, 220, 58);
+		pnlViewAppContent.add(btnCancelAppointment);
 		pnlViewAppContent.setVisible(false);
 
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
+		cboxViewedAppointment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 
-		lblMainMenuWelcome = new JLabel("Main Menu");
-		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenuWelcome);
+				Object selected = cboxViewedAppointment.getSelectedItem();
 
-		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask!");
-		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblWelcomeToDentask.setBounds(10, 160, 836, 94);
-		pnlMainMenuContent.add(lblWelcomeToDentask);
+				if (selected != null) {
 
-		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
-		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSelectAnyOf.setBounds(10, 296, 826, 60);
-		pnlMainMenuContent.add(lblSelectAnyOf);
-		pnlMainMenuContent.setVisible(true);
+					viewedApp = ((ComboItem) selected).getApp();
 
-		JPanel pnlMakeAppContent = new JPanel();
-		pnlMakeAppContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMakeAppContent);
-		pnlMakeAppContent.setLayout(null);
+					User pat;
+					try {
+						pat = Login.findUserByUsername(viewedApp.getPatient());
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						return;
+					}
 
-		JLabel lblMakeAppointment_1 = new JLabel("Make Appointment");
-		lblMakeAppointment_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMakeAppointment_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMakeAppointment_1.setBounds(0, 0, 846, 93);
-		pnlMakeAppContent.add(lblMakeAppointment_1);
-		pnlMakeAppContent.setVisible(false);
+					lblAppPatient.setText(pat.getFirstName() + " " + pat.getLastName());
+					lblAppDate.setText(viewedApp.getDate().toString() + " @ " + viewedApp.getTime());
+					txtAppDetails.setText(viewedApp.getAppDetail());
+					lblAppType.setText(viewedApp.getAppType());
+					btnCancelAppointment.setEnabled(true);
+
+				}
+
+			}
+		});
 
 		JPanel pnlAvailabilityContent = new JPanel();
-		pnlAvailabilityContent.setBounds(218, 0, 846, 681);
+		pnlAvailabilityContent.setBounds(221, 0, 843, 681);
 		frame.getContentPane().add(pnlAvailabilityContent);
 		pnlAvailabilityContent.setLayout(null);
 
-		JLabel lblAvailability_1 = new JLabel("Availability");
+		JLabel lblAvailability_1 = new JLabel("Set Availability");
 		lblAvailability_1.setBounds(0, 0, 846, 62);
 		pnlAvailabilityContent.add(lblAvailability_1);
 		lblAvailability_1.setFont(new Font("Tahoma", Font.BOLD, 35));
 		lblAvailability_1.setHorizontalAlignment(SwingConstants.CENTER);
+
+		JComboBox cbMondayS_1 = new JComboBox();
+		cbMondayS_1.setBounds(97, 213, 90, 33);
+		pnlAvailabilityContent.add(cbMondayS_1);
+
+		JComboBox cbMondayE_1 = new JComboBox();
+		cbMondayE_1.setBounds(97, 291, 90, 33);
+		pnlAvailabilityContent.add(cbMondayE_1);
+
+		JComboBox cbTuesdayS_1 = new JComboBox();
+		cbTuesdayS_1.setBounds(226, 213, 90, 33);
+		pnlAvailabilityContent.add(cbTuesdayS_1);
+
+		JComboBox cbWednesdayS_1 = new JComboBox();
+		cbWednesdayS_1.setBounds(353, 213, 90, 33);
+		pnlAvailabilityContent.add(cbWednesdayS_1);
+
+		JComboBox cbThursdayS_1 = new JComboBox();
+		cbThursdayS_1.setBounds(479, 213, 90, 33);
+		pnlAvailabilityContent.add(cbThursdayS_1);
+
+		JComboBox cbFridayS_1 = new JComboBox();
+		cbFridayS_1.setBounds(612, 213, 90, 33);
+		pnlAvailabilityContent.add(cbFridayS_1);
+
+		JComboBox cbTuesdayE_1 = new JComboBox();
+		cbTuesdayE_1.setBounds(226, 291, 90, 33);
+		pnlAvailabilityContent.add(cbTuesdayE_1);
+
+		JComboBox cbWednesdayE_1 = new JComboBox();
+		cbWednesdayE_1.setBounds(353, 291, 90, 33);
+		pnlAvailabilityContent.add(cbWednesdayE_1);
+
+		JComboBox cbThursdayE_1 = new JComboBox();
+		cbThursdayE_1.setBounds(479, 291, 90, 33);
+		pnlAvailabilityContent.add(cbThursdayE_1);
+
+		JComboBox cbFridayE_1 = new JComboBox();
+		cbFridayE_1.setBounds(612, 291, 90, 33);
+		pnlAvailabilityContent.add(cbFridayE_1);
+
+		JLabel lblMonday = new JLabel("Monday");
+		lblMonday.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblMonday.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMonday.setBounds(97, 173, 90, 29);
+		pnlAvailabilityContent.add(lblMonday);
+
+		JLabel lblTuesday = new JLabel("Tuesday");
+		lblTuesday.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTuesday.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblTuesday.setBounds(226, 173, 90, 29);
+		pnlAvailabilityContent.add(lblTuesday);
+
+		JLabel lblWednesday = new JLabel("Wednesday");
+		lblWednesday.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWednesday.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblWednesday.setBounds(353, 173, 90, 29);
+		pnlAvailabilityContent.add(lblWednesday);
+
+		JLabel lblThursday = new JLabel("Thursday");
+		lblThursday.setHorizontalAlignment(SwingConstants.CENTER);
+		lblThursday.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblThursday.setBounds(479, 173, 90, 29);
+		pnlAvailabilityContent.add(lblThursday);
+
+		JLabel lblFriday = new JLabel("Friday");
+		lblFriday.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFriday.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblFriday.setBounds(612, 173, 90, 29);
+		pnlAvailabilityContent.add(lblFriday);
+
+		JButton btnUpdateAvailability = new JButton("Set/Update Availability");
+		btnUpdateAvailability.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnUpdateAvailability.setBounds(98, 422, 604, 51);
+		pnlAvailabilityContent.add(btnUpdateAvailability);
+
+		
+
+		
+		pnlLogOut.setBorder(blackline);
 
 		JPanel pnlEditProfileContent = new JPanel();
 		pnlEditProfileContent.setBounds(218, 0, 846, 681);
@@ -431,7 +556,6 @@ public class EmployeeDashboard {
 		pnlEditProfileContent.add(lblError);
 
 		pnlEditProfileContent.setVisible(false);
-		pnlLogOut.setBorder(blackline);
 
 		/***************************
 		 * THIS IS FOR MAIN MENU *
@@ -487,7 +611,7 @@ public class EmployeeDashboard {
 
 				apps = popApps();
 
-				cboxAppointment.removeAllItems();
+				cboxViewedAppointment.removeAllItems();
 
 				for (int i = 0; i < apps.size(); i++) {
 
@@ -495,9 +619,10 @@ public class EmployeeDashboard {
 					Appointment tmp = apps.get(i);
 					System.out.println(tmp.toString());
 
-					cboxAppointment.addItem(new ComboItem(name, tmp));
+					cboxViewedAppointment.addItem(new ComboItem(name, tmp));
 				}
 
+				btnCancelAppointment.setEnabled(false);
 				pnlEditProfileContent.setVisible(false);
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(true);
@@ -541,6 +666,40 @@ public class EmployeeDashboard {
 		lblAvailability.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
+
+				String timeFormatted;
+				String timeActual;
+
+				cbMondayS_1.removeAllItems();
+				cbMondayE_1.removeAllItems();
+				cbTuesdayS_1.removeAllItems();
+				cbTuesdayE_1.removeAllItems();
+				cbWednesdayS_1.removeAllItems();
+				cbWednesdayE_1.removeAllItems();
+				cbThursdayS_1.removeAllItems();
+				cbThursdayE_1.removeAllItems();
+				cbFridayS_1.removeAllItems();
+				cbFridayE_1.removeAllItems();
+
+				for (int i = 8; i < 18; i++) {
+
+					if (i < 12) {
+						timeFormatted = (i + ":00 AM");
+					} else if (i == 12) {
+						timeFormatted = (12 + ":00 PM");
+					} else {
+						timeFormatted = ((i - 12) + ":00 PM");
+					}
+
+					timeActual = i + "00";
+
+					cbMondayS_1.addItem(new ComboItem(timeFormatted, timeActual));
+					cbTuesdayS_1.addItem(new ComboItem(timeFormatted, timeActual));
+					cbWednesdayS_1.addItem(new ComboItem(timeFormatted, timeActual));
+					cbThursdayS_1.addItem(new ComboItem(timeFormatted, timeActual));
+					cbFridayS_1.addItem(new ComboItem(timeFormatted, timeActual));
+				}
+
 				pnlEditProfileContent.setVisible(false);
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(false);
@@ -649,35 +808,193 @@ public class EmployeeDashboard {
 
 			}
 		});
+		/**********************************
+		 * THIS IS FOR CANCEL APPOINTMENT *
+		 **********************************/
 
-		/****************************
-		 * THIS IS FOR SAVE PROFILE *
-		 ****************************/
-
-		cboxAppointment.addActionListener(new ActionListener() {
+		btnCancelAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Database db = new Database();
+				db.connect();
 
-				Object selected = cboxAppointment.getSelectedItem();
+				db.deleteAppointment(viewedApp.getPatient(), viewedApp.getEmployee(), viewedApp.getDate().toString(),
+						viewedApp.getTime());
 
-				if (selected != null) {
+				pnlEditProfileContent.setVisible(false);
+				pnlMainMenuContent.setVisible(true);
+				pnlViewAppContent.setVisible(false);
+				pnlMakeAppContent.setVisible(false);
 
-					Appointment app = ((ComboItem) selected).getApp();
+				pnlEditProfile.setBackground(SystemColor.activeCaption);
+				pnlMainMenu.setBackground(SystemColor.textHighlight);
+				pnlViewApp.setBackground(SystemColor.activeCaption);
+				pnlMakeApp.setBackground(SystemColor.activeCaption);
+				return;
+			}
+		});
+		
+		/*********************
+		 * SAVE AVAILABILITY *
+		 *********************/
+		btnUpdateAvailability.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Database tmp = new Database();
+				tmp.connect();
 
-					User pat;
-					try {
-						pat = Login.findUserByUsername(app.getPatient());
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-						return;
+				Object tmp1 = cbMondayS_1.getSelectedItem();
+				String valMS = ((ComboItem) tmp1).getValue();
+
+				Object tmp2 = cbMondayE_1.getSelectedItem();
+				String valME = ((ComboItem) tmp1).getValue();
+
+				tmp.updateDailyAvailability(userUsername, "Monday", valMS, valME);
+
+				Object tmp3 = cbTuesdayS_1.getSelectedItem();
+				String valTS = ((ComboItem) tmp3).getValue();
+
+				Object tmp4 = cbTuesdayE_1.getSelectedItem();
+				String valTE = ((ComboItem) tmp4).getValue();
+
+				tmp.updateDailyAvailability(userUsername, "Tuesday", valTS, valTE);
+
+				Object tmp5 = cbWednesdayS_1.getSelectedItem();
+				String valWS = ((ComboItem) tmp5).getValue();
+
+				Object tmp6 = cbWednesdayE_1.getSelectedItem();
+				String valWE = ((ComboItem) tmp6).getValue();
+
+				tmp.updateDailyAvailability(userUsername, "Wednesday", valWS, valWE);
+
+				Object tmp7 = cbThursdayS_1.getSelectedItem();
+				String valTHS = ((ComboItem) tmp7).getValue();
+
+				Object tmp8 = cbThursdayE_1.getSelectedItem();
+				String valTHE = ((ComboItem) tmp8).getValue();
+
+				tmp.updateDailyAvailability(userUsername, "Thursday", valTHS, valTHE);
+
+				Object tmp9 = cbFridayS_1.getSelectedItem();
+				String valFS = ((ComboItem) tmp9).getValue();
+
+				Object tmp10 = cbFridayE_1.getSelectedItem();
+				String valFE = ((ComboItem) tmp10).getValue();
+
+				tmp.updateDailyAvailability(userUsername, "Friday", valFS, valFE);
+
+			}
+		});
+		/*********************************
+		 * ITEM CHANGED FOR AVAILABILITY *
+		 *********************************/
+		cbMondayS_1.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				String tf;
+				String ta;
+
+				cbMondayE_1.removeAllItems();
+				for (int i = cbMondayS_1.getSelectedIndex() + 9; i < 18; i++) {
+
+					if (i < 12) {
+						tf = (i + ":00 AM");
+					} else if (i == 12) {
+						tf = (12 + ":00 PM");
+					} else {
+						tf = ((i - 12) + ":00 PM");
 					}
 
-					lblAppPatient.setText(pat.getFirstName() + " " + pat.getLastName());
-					lblAppDate.setText(app.getDate().toString() + " @ " + app.getTime());
-					txtAppDetails.setText(app.getAppDetail());
-					lblAppType.setText(app.getAppType());
+					ta = i + "00";
 
+					cbMondayE_1.addItem(new ComboItem(tf, ta));
 				}
 
+			}
+		});
+		cbTuesdayS_1.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				String tf;
+				String ta;
+
+				cbTuesdayE_1.removeAllItems();
+				for (int i = cbTuesdayS_1.getSelectedIndex() + 9; i < 18; i++) {
+
+					if (i < 12) {
+						tf = (i + ":00 AM");
+					} else if (i == 12) {
+						tf = (12 + ":00 PM");
+					} else {
+						tf = ((i - 12) + ":00 PM");
+					}
+
+					ta = i + "00";
+
+					cbTuesdayE_1.addItem(new ComboItem(tf, ta));
+				}
+			}
+		});
+		cbWednesdayS_1.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				String tf;
+				String ta;
+
+				cbWednesdayE_1.removeAllItems();
+				for (int i = cbWednesdayS_1.getSelectedIndex() + 9; i < 18; i++) {
+
+					if (i < 12) {
+						tf = (i + ":00 AM");
+					} else if (i == 12) {
+						tf = (12 + ":00 PM");
+					} else {
+						tf = ((i - 12) + ":00 PM");
+					}
+
+					ta = i + "00";
+
+					cbWednesdayE_1.addItem(new ComboItem(tf, ta));
+				}
+			}
+		});
+		cbThursdayS_1.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				String tf;
+				String ta;
+
+				cbThursdayE_1.removeAllItems();
+				for (int i = cbThursdayS_1.getSelectedIndex() + 9; i < 18; i++) {
+
+					if (i < 12) {
+						tf = (i + ":00 AM");
+					} else if (i == 12) {
+						tf = (12 + ":00 PM");
+					} else {
+						tf = ((i - 12) + ":00 PM");
+					}
+
+					ta = i + "00";
+
+					cbThursdayE_1.addItem(new ComboItem(tf, ta));
+				}
+			}
+		});
+		cbFridayS_1.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				String tf;
+				String ta;
+
+				cbFridayE_1.removeAllItems();
+				for (int i = cbFridayS_1.getSelectedIndex() + 9; i < 18; i++) {
+
+					if (i < 12) {
+						tf = (i + ":00 AM");
+					} else if (i == 12) {
+						tf = (12 + ":00 PM");
+					} else {
+						tf = ((i - 12) + ":00 PM");
+					}
+
+					ta = i + "00";
+
+					cbFridayE_1.addItem(new ComboItem(tf, ta));
+				}
 			}
 		});
 	}

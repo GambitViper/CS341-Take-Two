@@ -72,6 +72,8 @@ public class Dashboard {
 	private JComboBox<ComboItem> apptTime_cb;
 	private JComboBox<ComboItem> emplSelect_cb;
 	private JTextField apptType_field;
+	
+	private Appointment viewedApp;
 
 	
 	/**
@@ -242,6 +244,105 @@ public class Dashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		
+		
+		JPanel pnlViewAppContent = new JPanel();
+		pnlViewAppContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlViewAppContent);
+		pnlViewAppContent.setLayout(null);
+		
+		JLabel lblViewAppointments_1 = new JLabel("View Appointments");
+		lblViewAppointments_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblViewAppointments_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblViewAppointments_1.setBounds(10, 0, 826, 96);
+		pnlViewAppContent.add(lblViewAppointments_1);
+		
+		cboxAppointments = new JComboBox();
+		cboxAppointments.setBounds(154, 167, 578, 49);
+		pnlViewAppContent.add(cboxAppointments);
+		
+		JLabel lblSelectAnAppointment = new JLabel("Select an appointment to view details");
+		lblSelectAnAppointment.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblSelectAnAppointment.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectAnAppointment.setBounds(10, 119, 826, 38);
+		pnlViewAppContent.add(lblSelectAnAppointment);
+		
+		JLabel lblNewLabel_1 = new JLabel("Employee");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_1.setBounds(154, 314, 104, 38);
+		pnlViewAppContent.add(lblNewLabel_1);
+		
+		JLabel lblAppEmployee = new JLabel("");
+		lblAppEmployee.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblAppEmployee.setBounds(154, 363, 137, 38);
+		pnlViewAppContent.add(lblAppEmployee);
+		
+		JLabel lblDate = new JLabel("Date");
+		lblDate.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblDate.setBounds(481, 314, 104, 38);
+		pnlViewAppContent.add(lblDate);
+		
+		JLabel lblAppointmentType_1 = new JLabel("Appointment Type");
+		lblAppointmentType_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblAppointmentType_1.setBounds(154, 446, 197, 38);
+		pnlViewAppContent.add(lblAppointmentType_1);
+		
+		JLabel lblDetails = new JLabel("Details");
+		lblDetails.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblDetails.setBounds(481, 446, 197, 38);
+		pnlViewAppContent.add(lblDetails);
+		
+		lblAppDate = new JLabel("");
+		lblAppDate.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblAppDate.setBounds(481, 363, 137, 38);
+		pnlViewAppContent.add(lblAppDate);
+		
+		JLabel lblAppType = new JLabel("");
+		lblAppType.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblAppType.setBounds(154, 499, 137, 38);
+		pnlViewAppContent.add(lblAppType);
+		
+		txtArea = new JTextArea();
+		txtArea.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		txtArea.setEditable(false);
+		txtArea.setBounds(479, 505, 246, 149);
+		txtArea.setBackground(new Color(240,240,240));
+		txtArea.setLineWrap(true);
+		pnlViewAppContent.add(txtArea);
+		
+		JButton btnCancelAppointment = new JButton("Cancel Appointment");
+		btnCancelAppointment.setEnabled(false);
+		btnCancelAppointment.setBounds(154, 592, 232, 59);
+		pnlViewAppContent.add(btnCancelAppointment);
+		pnlViewAppContent.setVisible(false);
+		cboxAppointments.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				
+				Object selected = cboxAppointments.getSelectedItem();
+
+				if(selected != null) {
+					
+					viewedApp = ((ComboItem)selected).getApp();
+
+					User dh;
+					
+					try {
+						dh = Login.findUserByUsername(viewedApp.getEmployee());
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						return;
+					}
+					
+					lblAppEmployee.setText(dh.getFirstName() + " " + dh.getLastName());
+					lblAppDate.setText(viewedApp.getDate().toString() + " @ " + viewedApp.getTime());
+					txtArea.setText(viewedApp.getAppDetail());
+					lblAppType.setText(viewedApp.getAppType());
+					btnCancelAppointment.setEnabled(true);
+					
+				}
+				
+			}
+		});
+		
 		JPanel pnlMakeAppContent = new JPanel();
 		pnlMakeAppContent.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlMakeAppContent);
@@ -325,72 +426,6 @@ public class Dashboard {
 		btnMakeAppointment.setBounds(324, 533, 183, 40);
 		pnlMakeAppContent.add(btnMakeAppointment);
 		pnlMakeAppContent.setVisible(false);
-		
-		
-		JPanel pnlViewAppContent = new JPanel();
-		pnlViewAppContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlViewAppContent);
-		pnlViewAppContent.setLayout(null);
-		
-		JLabel lblViewAppointments_1 = new JLabel("View Appointments");
-		lblViewAppointments_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblViewAppointments_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblViewAppointments_1.setBounds(10, 0, 826, 96);
-		pnlViewAppContent.add(lblViewAppointments_1);
-		
-		cboxAppointments = new JComboBox();
-		cboxAppointments.setBounds(154, 167, 578, 49);
-		pnlViewAppContent.add(cboxAppointments);
-		
-		JLabel lblSelectAnAppointment = new JLabel("Select an appointment to view details");
-		lblSelectAnAppointment.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblSelectAnAppointment.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSelectAnAppointment.setBounds(10, 119, 826, 38);
-		pnlViewAppContent.add(lblSelectAnAppointment);
-		
-		JLabel lblNewLabel_1 = new JLabel("Employee");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_1.setBounds(154, 314, 104, 38);
-		pnlViewAppContent.add(lblNewLabel_1);
-		
-		JLabel lblAppEmployee = new JLabel("");
-		lblAppEmployee.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAppEmployee.setBounds(154, 363, 137, 38);
-		pnlViewAppContent.add(lblAppEmployee);
-		
-		JLabel lblDate = new JLabel("Date");
-		lblDate.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblDate.setBounds(481, 314, 104, 38);
-		pnlViewAppContent.add(lblDate);
-		
-		JLabel lblAppointmentType_1 = new JLabel("Appointment Type");
-		lblAppointmentType_1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblAppointmentType_1.setBounds(154, 446, 197, 38);
-		pnlViewAppContent.add(lblAppointmentType_1);
-		
-		JLabel lblDetails = new JLabel("Details");
-		lblDetails.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblDetails.setBounds(481, 446, 197, 38);
-		pnlViewAppContent.add(lblDetails);
-		
-		lblAppDate = new JLabel("");
-		lblAppDate.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAppDate.setBounds(481, 363, 137, 38);
-		pnlViewAppContent.add(lblAppDate);
-		
-		JLabel lblAppType = new JLabel("");
-		lblAppType.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAppType.setBounds(154, 499, 137, 38);
-		pnlViewAppContent.add(lblAppType);
-		
-		txtArea = new JTextArea();
-		txtArea.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtArea.setEditable(false);
-		txtArea.setBounds(479, 505, 246, 149);
-		txtArea.setBackground(new Color(240,240,240));
-		txtArea.setLineWrap(true);
-		pnlViewAppContent.add(txtArea);
-		pnlViewAppContent.setVisible(false);
 		
 		JPanel pnlMainMenuContent = new JPanel();
 		pnlMainMenuContent.setBounds(218, 0, 846, 681);
@@ -677,6 +712,7 @@ public class Dashboard {
 				
 			}
 		});
+		
 		/********************************
 		 * THIS IS FOR VIEW APPOINTMENT *
 		 ********************************/
@@ -700,6 +736,7 @@ public class Dashboard {
 					cboxAppointments.addItem(new ComboItem(name, tmp));
 				}
 				
+				btnCancelAppointment.setEnabled(false);
 				pnlEditProfileContent.setVisible(false);
 				pnlMainMenuContent.setVisible(false);
 				pnlViewAppContent.setVisible(true);
@@ -838,36 +875,24 @@ public class Dashboard {
 			}
 		});
 
+		/**********************************
+		 * THIS IS FOR CANCEL APPOINTMENT *
+		 **********************************/
+
+		btnCancelAppointment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Database db = new Database();
+				db.connect();
+				
+				db.deleteAppointment(viewedApp.getPatient(), viewedApp.getEmployee(), viewedApp.getDate().toString(), viewedApp.getTime());
+			
+			}
+		});
+
 		/***************************************
 		 * TRIGGER TO SHOW APPOINTMENT DETAILS *
 		 ***************************************/
-		cboxAppointments.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				
-				Object selected = cboxAppointments.getSelectedItem();
-
-				if(selected != null) {
-					
-					Appointment app = ((ComboItem)selected).getApp();
-
-					User dh;
-					
-					try {
-						dh = Login.findUserByUsername(app.getEmployee());
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-						return;
-					}
-					
-					lblAppEmployee.setText(dh.getFirstName() + " " + dh.getLastName());
-					lblAppDate.setText(app.getDate().toString() + " @ " + app.getTime());
-					txtArea.setText(app.getAppDetail());
-					lblAppType.setText(app.getAppType());
-					
-				}
-				
-			}
-		});
 	}
 	
 	private void fillEmployeeSelect(ComboItem selectedMonth, ComboItem selectedDay, ComboItem selectedYear, ComboItem selectedTime) {
