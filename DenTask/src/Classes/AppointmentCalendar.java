@@ -32,7 +32,9 @@ public class AppointmentCalendar {
 	}
 
 	/**
-	 * @param args
+	 * Main function for appointmentCalendar testing
+	 * 
+	 * @param args N/A
 	 */
 	public static void main(String[] args) {
 
@@ -58,12 +60,6 @@ public class AppointmentCalendar {
 		
 		fillAppointments();
 		printAppointments();
-		
-//		LinkedList<User> selectList = employeeSelectList("Friday", "2019-12-06", 11);
-//		System.out.println(selectList);
-//		
-//		String result = makeAppointment("matt", "djohn", "checkup", "checkup database check", "2019-12-06", 11);
-//		System.out.println(result);
 	}
 
 	/**

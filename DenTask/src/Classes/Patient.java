@@ -1,8 +1,15 @@
 package Classes;
 
+/**
+ * Object container for Patient Usertype -Extends all data attributes from User class
+ * 
+ * @author Zach Baklund Last Updated: 12/10/2019
+ */
 public class Patient extends User {
 	
-	// toString method to return a string of a Patient
+	/**
+	 * override for the toString method to display Patient data
+	 */
 	public String toString() {
 		StringBuilder printStr = new StringBuilder();
 		printStr.append("User: " + this.getUsername() + "\n");

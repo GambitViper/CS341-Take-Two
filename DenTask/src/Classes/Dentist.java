@@ -2,6 +2,11 @@ package Classes;
 
 import java.util.HashMap;
 
+/**
+ * Object container for Dentist Usertype -Extends all data attributes from User class
+ * 
+ * @author Zach Baklund Last Updated: 12/10/2019
+ */
 public class Dentist extends User {
 	
 	//Assumes integer array is reference to daily hours (value) for each given day (key)
@@ -13,6 +18,12 @@ public class Dentist extends User {
 		return this.availability;
 	}
 	
+	/**
+	 * Method to query a specific day of the Dentist to check for availability
+	 * @param day - String of day "Monday", "Tuesday" ...
+	 * @param time - queried time
+	 * @return - True/False of whether or not Dentist is available at given time parameters
+	 */
 	public boolean isAvailable(String day, int time) {
 		HashMap<String, int[]> avail = getAvailability();
 		if(avail.containsKey(day)) {
@@ -21,6 +32,12 @@ public class Dentist extends User {
 		return false;
 	}
 	
+	/**
+	 * Method to change the availability of the dentist in object
+	 * @param day - String of day "Monday", "Tuesday" ...
+	 * @param times - bit array containing daily availability
+	 * @return - The Dentist object for set builder pattern
+	 */
 	public Dentist setDayAvailability(String day, int[] times) {
 		HashMap<String, int[]> newAvailability = this.getAvailability();
 		if(newAvailability.containsKey(day)) {
@@ -35,6 +52,9 @@ public class Dentist extends User {
 		return this;
 	}
 	
+	/**
+	 * override for the toString method to display Dentist data
+	 */
 	public String toString() {
 		StringBuilder printStr = new StringBuilder();
 		printStr.append("User: " + this.getUsername() + "\n");
@@ -49,6 +69,10 @@ public class Dentist extends User {
 		return printStr.toString();
 	}
 
+	/**
+	 * Finds the availability of the Dentist
+	 * @return String displaying the availability data
+	 */
 	public String getAvailabilityString() {
 		StringBuilder printStr = new StringBuilder();
 		HashMap<String, int[]> avail = getAvailability();
@@ -58,7 +82,12 @@ public class Dentist extends User {
 		
 		return printStr.toString();
 	}
-
+	
+	/**
+	 * Print method to convert internal availability times to readable format
+	 * @param times - array of bits for availability information
+	 * @return String containing readable format
+	 */
 	public String convertTimes(int[] times) {
 		StringBuilder printStr = new StringBuilder();
 		printStr.append(" { ");
