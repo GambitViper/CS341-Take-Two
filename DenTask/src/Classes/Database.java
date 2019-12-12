@@ -18,20 +18,6 @@ public class Database {
 	private Connection connection;
 
 	/**
-	 * Main function for database testing
-	 * 
-	 * @param args N/A
-	 */
-	public static void main(String args[]) {
-		Database db = new Database();
-		db.connect();
-
-		db.insertUser("example", "1234", "Example3", "Dentist", "example3@dentist.com", "6549871234", 1);
-		
-		db.disconnect();
-	}
-
-	/**
 	 * Method to initialize the connection between this class and the database file
 	 * Should be called before calling any other methods in this class
 	 */
@@ -40,7 +26,6 @@ public class Database {
 			// Relative address of the database file
 			String url = "jdbc:sqlite:..\\DenTaskDB.db";
 			connection = DriverManager.getConnection(url);
-			System.out.println("Successfully connected to the database...");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -54,7 +39,6 @@ public class Database {
 	public void disconnect() {
 		try {
 			connection.close();
-			System.out.println("Successfully disconnected from the database...");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -100,7 +84,6 @@ public class Database {
 			stmt.executeUpdate();
 
 			u = getUser(username);
-			System.out.format("Succesfully created User: %s\n", username);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -131,19 +114,8 @@ public class Database {
 				stmt.setString(5, u.getPhoneNum());
 				stmt.setString(6, u.getUsername());
 				// Execute query and record the number of rows affected
-				int rowsAffected = stmt.executeUpdate();
-
-				// The User was updated, at least one value was changed
-				if (rowsAffected == 1) {
-					System.out.format("User: %s successfully updated\n", u.getUsername());
-				}
-				// No values were updated, 0 lines affected
-				else {
-					System.out.format("Could not update %s\n", u.getUsername());
-				}
-			} else {
-				System.out.format("No changes made to User: %s\n", u.getUsername());
-			}
+				stmt.executeUpdate();
+			} 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -167,16 +139,7 @@ public class Database {
 			stmt.setString(1, date);
 			stmt.setString(2, username);
 			// Execute the query
-			int rowsAffected = stmt.executeUpdate();
-
-			// The DeleteDate of the User was successfully updated in the database
-			if (rowsAffected == 1) {
-				System.out.format("%s was successfully deleted\n", username);
-			}
-			// There were no changes to the database...
-			else {
-				System.out.format("ERROR: %s could not be deleted\n", username);
-			}
+			stmt.executeUpdate();
 
 			// Update User's Appointments and cancels them (sets their results
 			// accordingly)
@@ -184,10 +147,7 @@ public class Database {
 			stmt.setString(1, "Cancelled due to account deletion.");
 			stmt.setString(2, username);
 
-			rowsAffected = stmt.executeUpdate();
-
-			System.out.println(rowsAffected + " appointments were cancelled.");
-
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -206,16 +166,7 @@ public class Database {
 			PreparedStatement stmt = connection.prepareStatement("DELETE FROM User WHERE Username = ?;");
 			stmt.setString(1, username);
 			// Execute the query
-			int rowsAffected = stmt.executeUpdate();
-
-			// The User was successfully deleted from the database
-			if (rowsAffected == 1) {
-				System.out.println("Sucessfully deleted User: " + username);
-			}
-			// No user was deleted, database is unchanged
-			else {
-				System.out.println("Failed to delete User: " + username);
-			}
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -344,19 +295,7 @@ public class Database {
 			stmt.setString(4, type);
 			stmt.setString(5, detail);
 			// Execute the query and record the number of rows affected
-			int numAffected = stmt.executeUpdate();
-
-			// The query successfully executed and created a new line in the database
-			if (numAffected == 1) {
-				a = getAppointment(patient, employee, date, time);
-				System.out.format("Appointment for %s with %s on %s at %d was created\n", patient, employee, date,
-						time);
-			}
-			// No changes were made to the database
-			else {
-				System.out.format("ERROR: could not create appointment for %s for %s on %s at %d", patient, employee,
-						date, time);
-			}
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -381,18 +320,7 @@ public class Database {
 			stmt.setString(2, employee);
 			stmt.setString(3, date + " " + time);
 			// Execute the query and record the number of rows affected in the database
-			int numAffected = stmt.executeUpdate();
-
-			// Appointment was successfully updated in the database
-			if (numAffected == 1) {
-				System.out.format("Appointment for %s for %s on %s at %d was successfully deleted\n", patient, employee,
-						date, time);
-			}
-			// No rows affected in the database
-			else {
-				System.out.format("ERROR: could not delete appointment for %s for %s on %s at %d\n", patient, employee,
-						date, time);
-			}
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -417,16 +345,7 @@ public class Database {
 			stmt.setString(2, employee);
 			stmt.setString(3, date + " " + time);
 			// Execute the query and record the number of rows affected
-			int rowsAffected = stmt.executeUpdate();
-
-			// Appointment was successfully updated in the database
-			if (rowsAffected == 1) {
-				System.out.format("Successfully deleted Appointment [%s, %s, %s %d]", patient, employee, date, time);
-			}
-			// No changes were made to the database...
-			else {
-				System.out.format("Failed to delete Appointment [%s, %s, %s %d]", patient, employee, date, time);
-			}
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -564,20 +483,11 @@ public class Database {
 			stmt.setString(3, startTime);
 			stmt.setString(4, endTime);
 			// Execute the query and record the number of rows affected
-			int numAffected = stmt.executeUpdate();
+			stmt.executeUpdate();
 
 			// Availability successfully added to the database
-			if (numAffected == 1) {
-				System.out.format("Successfully inserted %s:%s (%s-%s)\n", username, dayOfWeek, startTime, endTime);
-				// Use the helper method to translate the start/end times into bitmap format
-				hours = timesToHours(startTime, endTime);
-			}
-			// No rows affected in the database...
-			else {
-				System.out.format("ERROR: could not insert availability for %s:%s (%s-%s)\n", username, dayOfWeek,
-						startTime, endTime);
-			}
-
+			hours = timesToHours(startTime, endTime);
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -629,17 +539,8 @@ public class Database {
 			stmt.setString(3, username);
 			stmt.setString(4, dayOfWeek);
 			// Execute the query and record the number of rows affected
-			int numAffected = stmt.executeUpdate();
-
-			// Row was successfully updated in the database
-			if (numAffected == 1) {
-				System.out.format("Successfully updated availability for %s:%s (%s-%s)\n", username, dayOfWeek,
-						startTime, endTime);
-			}
-			// No rows were updated in the databse...
-			else {
-				System.out.format("ERROR: could not update availability for %s:%s\n", username, dayOfWeek);
-			}
+			stmt.executeUpdate();
+			
 			hours = timesToHours(startTime, endTime);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -717,16 +618,8 @@ public class Database {
 			stmt.setString(2, dayOfWeek);
 
 			// Execute the query and record the number of rows affected
-			int rowsAffected = stmt.executeUpdate();
+			stmt.executeUpdate();
 
-			// The row was successfully removed from the database
-			if (rowsAffected == 1) {
-				System.out.format("Availability for %s on %s was removed\n", username, dayOfWeek);
-			}
-			// No rows were updated in the database
-			else {
-				System.out.format("ERROR: Could not remove availablity for %s on %s\n", username, dayOfWeek);
-			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -752,16 +645,7 @@ public class Database {
 			stmt.setString(2, date);
 
 			// Execute the query and record number of rows affected
-			int rowsAffected = stmt.executeUpdate();
-
-			// Request was successfully inserted into the database
-			if (rowsAffected == 1) {
-				System.out.format("%s successfully requested off for %s\n", username, date);
-			}
-			// No rows affected in the database
-			else {
-				System.out.format("ERROR: could not request off %s for %s\n", date, username);
-			}
+			stmt.executeUpdate();
 
 			// Cancel all appointments for this User at this Date
 			// Use the connection to prepare the query string
@@ -772,9 +656,8 @@ public class Database {
 			stmt.setString(3, date + "%");
 
 			// Execute the query and record the number of rows affected
-			rowsAffected = stmt.executeUpdate();
-			System.out.println(rowsAffected + " appointments were cancelled.");
-
+			stmt.executeUpdate();
+		
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -795,16 +678,8 @@ public class Database {
 			stmt.setString(2, date);
 
 			// Execute the query and record the number of rows affected
-			int rowsAffected = stmt.executeUpdate();
+			stmt.executeUpdate();
 
-			// Request was successfully deleted
-			if (rowsAffected == 1) {
-				System.out.format("Successfully removed request off for %s on %s\n", username, date);
-			}
-			// No rows were updated in the database
-			else {
-				System.out.format("ERROR: could not remove request off for %s on %s\n", date, username);
-			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -989,7 +864,7 @@ public class Database {
 				dailyAvail[i] = 1;
 			}
 		} else {
-			System.out.println("Incorrect start/end times provided...");
+			//Incorrect start/end times were provided
 			return new int[] {};
 		}
 		// Return the generated bitmap
