@@ -246,6 +246,36 @@ public class Dashboard {
 		lbldentask.setHorizontalAlignment(SwingConstants.CENTER);
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
+		
+				JPanel pnlMainMenuContent = new JPanel();
+				pnlMainMenuContent.setBounds(218, 0, 846, 681);
+				frame.getContentPane().add(pnlMainMenuContent);
+				pnlMainMenuContent.setLayout(null);
+				
+						lblMainMenuWelcome = new JLabel("Welcome " + userUsername);
+						lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+						lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
+						lblMainMenuWelcome.setBounds(0, 0, 846, 94);
+						pnlMainMenuContent.add(lblMainMenuWelcome);
+						
+								JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask!");
+								lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
+								lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
+								lblWelcomeToDentask.setBounds(10, 179, 826, 110);
+								pnlMainMenuContent.add(lblWelcomeToDentask);
+								
+										JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
+										lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
+										lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
+										lblSelectAnyOf.setBounds(10, 348, 826, 64);
+										pnlMainMenuContent.add(lblSelectAnyOf);
+										
+										JLabel lblTheUserManual = new JLabel("The User Manual is available at request");
+										lblTheUserManual.setHorizontalAlignment(SwingConstants.CENTER);
+										lblTheUserManual.setFont(new Font("Tahoma", Font.PLAIN, 20));
+										lblTheUserManual.setBounds(10, 404, 826, 64);
+										pnlMainMenuContent.add(lblTheUserManual);
+										pnlMainMenuContent.setVisible(true);
 
 		JPanel pnlViewAppContent = new JPanel();
 		pnlViewAppContent.setBounds(218, 0, 846, 681);
@@ -341,30 +371,6 @@ public class Dashboard {
 
 			}
 		});
-
-		JPanel pnlMainMenuContent = new JPanel();
-		pnlMainMenuContent.setBounds(218, 0, 846, 681);
-		frame.getContentPane().add(pnlMainMenuContent);
-		pnlMainMenuContent.setLayout(null);
-
-		lblMainMenuWelcome = new JLabel("Welcome " + userUsername);
-		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
-		pnlMainMenuContent.add(lblMainMenuWelcome);
-
-		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask!");
-		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWelcomeToDentask.setBounds(10, 179, 826, 110);
-		pnlMainMenuContent.add(lblWelcomeToDentask);
-
-		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
-		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblSelectAnyOf.setBounds(10, 348, 826, 64);
-		pnlMainMenuContent.add(lblSelectAnyOf);
-		pnlMainMenuContent.setVisible(true);
 
 		JPanel pnlMakeAppContent = new JPanel();
 		pnlMakeAppContent.setBounds(218, 0, 846, 681);
@@ -920,7 +926,7 @@ public class Dashboard {
 					cboxAppointments.removeAllItems();
 
 					for (int i = 0; i < updatedApps.size(); i++) {
-						if (updatedApps.get(i).getResult().contains("Cancelled")) {
+						if (updatedApps.get(i).getResult() != null && updatedApps.get(i).getResult().contains("Cancelled")) {
 
 							String name = (updatedApps.get(i).getDate() + " at " + updatedApps.get(i).getTime());
 							Appointment tmp = updatedApps.get(i);

@@ -15,6 +15,9 @@ public class DenTask {
 		login();
 	}
 
+	/**
+	 * Runs application
+	 */
 	public static void login() {
 		LoginScreen.main(null);
 	}
