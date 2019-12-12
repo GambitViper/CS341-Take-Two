@@ -46,8 +46,16 @@ import java.awt.event.ItemEvent;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 
+/**
+ * Class responsible for representing dashboard items of Employee User Types
+ * 
+ * @author Zach Baklund, Matt Milos Last Updated: 12/5/2019
+ */
 public class EmployeeDashboard {
 
+	/**
+	 * Dashboard data internal attributes for editable fields and form information
+	 */
 	private JFrame frame;
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
@@ -56,9 +64,8 @@ public class EmployeeDashboard {
 	private JPasswordField txtCurrentPassword;
 	private JPasswordField txtNewPassword;
 	private JPasswordField txtConfirmedPassword;
-	private JComboBox cboxViewedAppointment;
+	private JComboBox<ComboItem> cboxViewedAppointment;
 	private JTextArea txtAppDetails;
-
 	private JComboBox<ComboItem> month_cb;
 	private JComboBox<ComboItem> day_cb;
 	private JComboBox<ComboItem> year_cb;
@@ -66,20 +73,8 @@ public class EmployeeDashboard {
 	private JComboBox<ComboItem> apptTime_cb;
 	private JComboBox<ComboItem> emplSelect_cb;
 	private JTextField apptType_field;
-
-	private JComboBox cbMondayS;
-	private JComboBox cbMondayE;
-	private JComboBox cbTuesdayS;
-	private JComboBox cbTuesdayE;
-	private JComboBox cbWednesdayS;
-	private JComboBox cbWednesdayE;
-	private JComboBox cbThursdayS;
-	private JComboBox cbThursdayE;
-	private JComboBox cbFridayS;
-	private JComboBox cbFridayE;
 	private JLabel lblError;
 	private JLabel lblMainMenuWelcome;
-
 	private String userUsername;
 	private Appointment viewedApp;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -265,36 +260,36 @@ public class EmployeeDashboard {
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
 		pnlLogOut.setBorder(blackline);
-		
-				JPanel pnlMainMenuContent = new JPanel();
-				pnlMainMenuContent.setBounds(218, 0, 846, 681);
-				frame.getContentPane().add(pnlMainMenuContent);
-				pnlMainMenuContent.setLayout(null);
-				
-						lblMainMenuWelcome = new JLabel("Main Menu");
-						lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
-						lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
-						lblMainMenuWelcome.setBounds(0, 0, 846, 94);
-						pnlMainMenuContent.add(lblMainMenuWelcome);
-						
-								JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask!");
-								lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
-								lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
-								lblWelcomeToDentask.setBounds(10, 160, 836, 94);
-								pnlMainMenuContent.add(lblWelcomeToDentask);
-								
-										JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
-										lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
-										lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
-										lblSelectAnyOf.setBounds(10, 284, 826, 60);
-										pnlMainMenuContent.add(lblSelectAnyOf);
-										
-										JLabel lblTheUserManual = new JLabel("The User Manual is available at request");
-										lblTheUserManual.setHorizontalAlignment(SwingConstants.CENTER);
-										lblTheUserManual.setFont(new Font("Tahoma", Font.PLAIN, 20));
-										lblTheUserManual.setBounds(10, 339, 826, 60);
-										pnlMainMenuContent.add(lblTheUserManual);
-										pnlMainMenuContent.setVisible(true);
+
+		JPanel pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+
+		lblMainMenuWelcome = new JLabel("Main Menu");
+		lblMainMenuWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenuWelcome.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenuWelcome.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenuWelcome);
+
+		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask!");
+		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblWelcomeToDentask.setBounds(10, 160, 836, 94);
+		pnlMainMenuContent.add(lblWelcomeToDentask);
+
+		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
+		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectAnyOf.setBounds(10, 284, 826, 60);
+		pnlMainMenuContent.add(lblSelectAnyOf);
+
+		JLabel lblTheUserManual = new JLabel("The User Manual is available at request");
+		lblTheUserManual.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTheUserManual.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTheUserManual.setBounds(10, 339, 826, 60);
+		pnlMainMenuContent.add(lblTheUserManual);
+		pnlMainMenuContent.setVisible(true);
 
 		JPanel pnlViewAppContent = new JPanel();
 		pnlViewAppContent.setBounds(218, 0, 846, 681);
@@ -313,7 +308,7 @@ public class EmployeeDashboard {
 		lblSelectAppoint.setBounds(12, 178, 826, 45);
 		pnlViewAppContent.add(lblSelectAppoint);
 
-		cboxViewedAppointment = new JComboBox();
+		cboxViewedAppointment = new JComboBox<>();
 		cboxViewedAppointment.setBounds(252, 236, 350, 38);
 		pnlViewAppContent.add(cboxViewedAppointment);
 
@@ -448,7 +443,7 @@ public class EmployeeDashboard {
 		lblAppointmentTime.setBounds(345, 159, 149, 30);
 		pnlMakeAppContent.add(lblAppointmentTime);
 
-		apptTime_cb = new JComboBox();
+		apptTime_cb = new JComboBox<>();
 		apptTime_cb.setBounds(308, 200, 220, 20);
 		pnlMakeAppContent.add(apptTime_cb);
 
@@ -498,43 +493,43 @@ public class EmployeeDashboard {
 		lblAvailability_1.setFont(new Font("Tahoma", Font.BOLD, 35));
 		lblAvailability_1.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JComboBox cbMondayS_1 = new JComboBox();
+		JComboBox<ComboItem> cbMondayS_1 = new JComboBox<>();
 		cbMondayS_1.setBounds(97, 213, 90, 33);
 		pnlAvailabilityContent.add(cbMondayS_1);
 
-		JComboBox cbMondayE_1 = new JComboBox();
+		JComboBox<ComboItem> cbMondayE_1 = new JComboBox<>();
 		cbMondayE_1.setBounds(97, 291, 90, 33);
 		pnlAvailabilityContent.add(cbMondayE_1);
 
-		JComboBox cbTuesdayS_1 = new JComboBox();
+		JComboBox<ComboItem> cbTuesdayS_1 = new JComboBox<>();
 		cbTuesdayS_1.setBounds(226, 213, 90, 33);
 		pnlAvailabilityContent.add(cbTuesdayS_1);
 
-		JComboBox cbWednesdayS_1 = new JComboBox();
+		JComboBox<ComboItem> cbWednesdayS_1 = new JComboBox<>();
 		cbWednesdayS_1.setBounds(353, 213, 90, 33);
 		pnlAvailabilityContent.add(cbWednesdayS_1);
 
-		JComboBox cbThursdayS_1 = new JComboBox();
+		JComboBox<ComboItem> cbThursdayS_1 = new JComboBox<>();
 		cbThursdayS_1.setBounds(479, 213, 90, 33);
 		pnlAvailabilityContent.add(cbThursdayS_1);
 
-		JComboBox cbFridayS_1 = new JComboBox();
+		JComboBox<ComboItem> cbFridayS_1 = new JComboBox<>();
 		cbFridayS_1.setBounds(612, 213, 90, 33);
 		pnlAvailabilityContent.add(cbFridayS_1);
 
-		JComboBox cbTuesdayE_1 = new JComboBox();
+		JComboBox<ComboItem> cbTuesdayE_1 = new JComboBox<>();
 		cbTuesdayE_1.setBounds(226, 291, 90, 33);
 		pnlAvailabilityContent.add(cbTuesdayE_1);
 
-		JComboBox cbWednesdayE_1 = new JComboBox();
+		JComboBox<ComboItem> cbWednesdayE_1 = new JComboBox<>();
 		cbWednesdayE_1.setBounds(353, 291, 90, 33);
 		pnlAvailabilityContent.add(cbWednesdayE_1);
 
-		JComboBox cbThursdayE_1 = new JComboBox();
+		JComboBox<ComboItem> cbThursdayE_1 = new JComboBox<>();
 		cbThursdayE_1.setBounds(479, 291, 90, 33);
 		pnlAvailabilityContent.add(cbThursdayE_1);
 
-		JComboBox cbFridayE_1 = new JComboBox();
+		JComboBox<ComboItem> cbFridayE_1 = new JComboBox<>();
 		cbFridayE_1.setBounds(612, 291, 90, 33);
 		pnlAvailabilityContent.add(cbFridayE_1);
 
@@ -1075,7 +1070,7 @@ public class EmployeeDashboard {
 				String valMS = ((ComboItem) tmp1).getValue();
 
 				Object tmp2 = cbMondayE_1.getSelectedItem();
-				String valME = ((ComboItem) tmp1).getValue();
+				String valME = ((ComboItem) tmp2).getValue();
 
 				tmp.updateDailyAvailability(userUsername, "Monday", valMS, valME);
 

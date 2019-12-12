@@ -6,6 +6,12 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Class responsible for login functions,
+ * hashing and registration logic
+ * 
+ * @author Zach Baklund, Matt Milos Last Updated: 12/5/2019
+ */
 public class Login {
 
 	/*

@@ -1,5 +1,10 @@
 package Classes;
 
+/**
+ * Class responsible for representing the key value pairs in our dropdown boxes
+ * 
+ * @author Matt Milos Last Updated: 12/5/2019
+ */
 public class ComboItem {
 	
 	private String key;

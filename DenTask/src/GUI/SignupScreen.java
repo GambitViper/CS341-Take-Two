@@ -26,6 +26,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * Class responsible for Signup Screen GUI
+ * 
+ * @author Matt Milos Last Updated: 12/5/2019
+ */
 public class SignupScreen {
 
 	private JFrame frame;

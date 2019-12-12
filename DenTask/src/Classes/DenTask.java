@@ -7,7 +7,7 @@ import GUI.LoginScreen;
  *
  * CS341
  * Authors: Matt Milos, Tom Jensen, Zach Baklund
- * 
+ * Last Updated: 12/5/2019
  **/
 
 public class DenTask {

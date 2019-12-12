@@ -27,6 +27,11 @@ import javax.swing.JPasswordField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * Class responsible for Login Screen GUI
+ * 
+ * @author Matt Milos Last Updated: 12/5/2019
+ */
 public class LoginScreen extends JFrame{
 
 	/**

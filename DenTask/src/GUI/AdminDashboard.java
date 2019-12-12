@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -28,26 +27,29 @@ import Classes.Login;
 import Classes.User;
 
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.JRadioButton;
-import javax.swing.JList;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.ButtonGroup;
 
+/**
+ * Class responsible for representing dashboard items of Admin User Types
+ * 
+ * @author Zach Baklund, Matt Milos Last Updated: 12/5/2019
+ */
 public class AdminDashboard {
 
+	/**
+	 * Dashboard data internal attributes for editable fields and form information
+	 */
 	private JFrame frame;
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
-	private String[] types = { "Dentist", "Hygienist", "Patient" };
 	private JTextField txtEmail;
 	private JTextField txtPhoneNumber;
 	private JTextField txtUsername;
@@ -55,9 +57,7 @@ public class AdminDashboard {
 	private JPasswordField txtPasswordConfirmed;
 	private JLabel lblError;
 	private JRadioButton radDentist, radHygienist;
-	private JComboBox cboxUsers;
-	private JComboBox cboxAppAppointment;
-
+	private JComboBox<ComboItem> cboxUsers;
 	private JPanel pnlDeleteProfile;
 	private JPanel pnlMakeProfiles;
 	private JPanel pnlViewAppointments;
@@ -196,38 +196,44 @@ public class AdminDashboard {
 		lbldentask.setHorizontalAlignment(SwingConstants.CENTER);
 		lbldentask.setBounds(0, 594, 220, 28);
 		panel.add(lbldentask);
-		
-				pnlMainMenuContent = new JPanel();
-				pnlMainMenuContent.setBounds(218, 0, 846, 681);
-				frame.getContentPane().add(pnlMainMenuContent);
-				pnlMainMenuContent.setLayout(null);
-				
-						JLabel lblMainMenu_1 = new JLabel("Main Menu");
-						lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
-						lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
-						lblMainMenu_1.setBounds(0, 0, 846, 94);
-						pnlMainMenuContent.add(lblMainMenu_1);
-						
-								JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask");
-								lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
-								lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
-								lblWelcomeToDentask.setBounds(85, 140, 677, 123);
-								pnlMainMenuContent.add(lblWelcomeToDentask);
-								
-										JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
-										lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
-										lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
-										lblSelectAnyOf.setBounds(85, 314, 677, 85);
-										pnlMainMenuContent.add(lblSelectAnyOf);
-										
-										JLabel lblTheUserManual = new JLabel("The User Manual is available at request");
-										lblTheUserManual.setHorizontalAlignment(SwingConstants.CENTER);
-										lblTheUserManual.setFont(new Font("Tahoma", Font.PLAIN, 20));
-										lblTheUserManual.setBounds(85, 378, 677, 85);
-										pnlMainMenuContent.add(lblTheUserManual);
-										pnlMainMenuContent.setVisible(true);
-										pnlMainMenuContent.setVisible(true);
 
+		/***************************
+		 * THIS IS FOR WELCOME PANE *
+		 ***************************/
+		pnlMainMenuContent = new JPanel();
+		pnlMainMenuContent.setBounds(218, 0, 846, 681);
+		frame.getContentPane().add(pnlMainMenuContent);
+		pnlMainMenuContent.setLayout(null);
+
+		JLabel lblMainMenu_1 = new JLabel("Main Menu");
+		lblMainMenu_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainMenu_1.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblMainMenu_1.setBounds(0, 0, 846, 94);
+		pnlMainMenuContent.add(lblMainMenu_1);
+
+		JLabel lblWelcomeToDentask = new JLabel("Welcome to DenTask");
+		lblWelcomeToDentask.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblWelcomeToDentask.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcomeToDentask.setBounds(85, 140, 677, 123);
+		pnlMainMenuContent.add(lblWelcomeToDentask);
+
+		JLabel lblSelectAnyOf = new JLabel("Select any of the panel's on the right menu to go to that page");
+		lblSelectAnyOf.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblSelectAnyOf.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectAnyOf.setBounds(85, 314, 677, 85);
+		pnlMainMenuContent.add(lblSelectAnyOf);
+
+		JLabel lblTheUserManual = new JLabel("The User Manual is available at request");
+		lblTheUserManual.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTheUserManual.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTheUserManual.setBounds(85, 378, 677, 85);
+		pnlMainMenuContent.add(lblTheUserManual);
+		pnlMainMenuContent.setVisible(true);
+		pnlMainMenuContent.setVisible(true);
+
+		/**************************************
+		 * THIS IS FOR VIEW APPOINTMENTS PANE *
+		 **************************************/
 		pnlViewAppointments = new JPanel();
 		pnlViewAppointments.setBounds(218, 0, 846, 681);
 		frame.getContentPane().add(pnlViewAppointments);
@@ -244,7 +250,7 @@ public class AdminDashboard {
 		lblChooseDentisthygienist.setBounds(58, 154, 200, 40);
 		pnlViewAppointments.add(lblChooseDentisthygienist);
 
-		JComboBox cboxAppDenHyg = new JComboBox();
+		JComboBox<ComboItem> cboxAppDenHyg = new JComboBox<>();
 		cboxAppDenHyg.setBounds(58, 205, 200, 40);
 		pnlViewAppointments.add(cboxAppDenHyg);
 
@@ -315,7 +321,7 @@ public class AdminDashboard {
 		lblChooseAppointment.setBounds(537, 154, 200, 40);
 		pnlViewAppointments.add(lblChooseAppointment);
 
-		JComboBox cboxAppAppointment_1 = new JComboBox();
+		JComboBox<ComboItem> cboxAppAppointment_1 = new JComboBox<>();
 
 		cboxAppAppointment_1.setBounds(537, 205, 200, 40);
 		pnlViewAppointments.add(cboxAppAppointment_1);
@@ -744,7 +750,7 @@ public class AdminDashboard {
 		btnDeleteUser.setBounds(145, 324, 571, 80);
 		pnlDeleteProfile.add(btnDeleteUser);
 
-		cboxUsers = new JComboBox();
+		cboxUsers = new JComboBox<>();
 		cboxUsers.setBounds(262, 223, 320, 60);
 		pnlDeleteProfile.add(cboxUsers);
 
@@ -828,7 +834,6 @@ public class AdminDashboard {
 
 		String pass1 = String.valueOf(txtPassword.getPassword());
 		String pass2 = String.valueOf(txtPasswordConfirmed.getPassword());
-		int empType = 3;
 
 		User dummy = null;
 		try {
@@ -851,7 +856,6 @@ public class AdminDashboard {
 							1);
 					setDefaultAvailability(txtUsername.getText());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return true;
